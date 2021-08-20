@@ -1,16 +1,21 @@
 ---
-title: "My website and data analysis portfolio"
+title: "Nicholas Mallis: Data Analysis Portfolio"
 output: 
   html_document:
     toc: FALSE
 ---
 
-# Hello
 
-### And hello again
+
+### University of Georgia Epidemiology & Biostatistics 
+
+
+![](/Users/nicholasmallis/Desktop/MADA_Fall_2021/NicholasMallis-MADA-portfolio/example.png)
 
 Welcome to **my website** and _data analysis portfolio._ 
 
-
 * Please use the `Menu Bar` above to look around.
-* Have fun!
+ 
+
+
+
