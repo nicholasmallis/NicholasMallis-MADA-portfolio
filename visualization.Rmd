@@ -1,0 +1,10 @@
+---
+title: "Visualization"
+output: 
+  html_document:
+    toc: FALSE
+---
+
+This will contain the future visualization exercise.
+
+

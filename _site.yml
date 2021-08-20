@@ -1,0 +1,24 @@
+name: "My Data Analysis Portfolio"
+output_dir: 'docs'
+output:
+  html_document:
+    theme: cosmo
+    highlight: zenburn
+    toc: false
+navbar:
+  type: inverse
+  title: "My Data Analysis Portfolio"
+  left:
+    - text: "About Me"
+      href: ./aboutme.html
+    - text: "Projects"
+      menu:
+        - text: "R Coding"
+          href: ./rcoding.html
+        - text: "Visualization"
+          href: ./visualization.html
+        - text: "Tidy Tuesday"
+          href: ./tidytuesday.html
+  right:
+    - icon: fa-github fa-lg
+      href: URL-TO-THIS-REPOSITORY-HERE        
