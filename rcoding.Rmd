@@ -7,4 +7,129 @@ output:
 
 This will contain the future R coding exercise.
 
+```{r}
+#first loading some packages
+#for plotting
+library(ggplot2)
+
+
+#loading the dslabs
+library(dslabs)
+#help file for gapminder
+help(gapminder)
+#data structure overview
+str(gapminder)
+#get a summary of data
+summary(gapminder)
+#determining the type of object gapminder is
+class(gapminder)
+
+```
+
+```{r}
+#data processing chunk
+
+#the following code subsets the data from African countries
+#and names the new dataset africadata
+
+africadata <-  gapminder[which(gapminder$continent=='Africa'), ]
+
+#checking to make sure it worked using table
+#here we see that only observations from Africa remain
+
+table(africadata$continent)
+
+#new data1: making new variable/object that contains only infant_mortality and life_expectancy
+
+select1 <- c("infant_mortality", "life_expectancy")
+newdata1 <- africadata[select1]
+
+
+#newdata2: making new variable/object that contains only population and life_expectancy
+
+select2 <- c("population", "life_expectancy")
+newdata2 <- africadata[select2]
+
+#checking newdata1 with str and summary
+str(newdata1)
+summary(newdata1)
+
+#checking newdata2 with str and summary
+str(newdata2)
+summary(newdata2)
+
+
+```
+
+
+```{r}
+#plotting
+
+#plotting life expectancy and infant mortality
+ggplot(newdata1, aes(x=infant_mortality, y=life_expectancy)) + geom_point() 
+
+
+#plotting life expectancy and population size(log transformed)
+ggplot(newdata2, aes(x=population, y=life_expectancy))  + geom_point()
+  scale_x_log10() 
+
+#taking another look at africa data
+
+#We notice the year variable. After using the table function, we see that
+#there are 51 countries with data from 1960 to 2016. There are repeated measures for each country, which causes the "streaks" of data
+table(africadata$year)
+
+
+```
+
+```{r}
+#more data processing
+
+#figuring out which years have missing data for infant mortality
+#here I used "table" to show which years were missing data
+
+table(africadata$year,(africadata$infant_mortality=="Na"))
+
+#subsetting the data from year 2000
+
+africadata2000 <-  africadata[which(africadata$year==2000), ]
+
+
+#checking using str and summary
+
+str(africadata2000)
+summary(africadata2000)
+
+```
+
+```{r}
+#more plotting
+
+#plotting life expectancy and infant mortality
+ggplot(africadata2000, aes(x=infant_mortality, y=life_expectancy)) + geom_point() 
+
+
+#plotting life expectancy and population size(log transformed)
+ggplot(africadata2000, aes(x=population, y=life_expectancy))  + geom_point() + scale_x_log10() 
+
+
+```
+
+```{r}
+#a simple fit
+
+#fit1: life expectancy as outcome and infant mortality as predictor
+fit1 <- lm(africadata2000$life_expectancy ~ africadata2000$infant_mortality)
+
+#fit2: life expectancy as outcome and population size as predictor
+fit2 <- lm(africadata2000$life_expectancy ~ africadata2000$population)
+
+summary(fit1)
+summary(fit2)
+
+```
+Interpretation: Looking at the simple model with life expectancy as the outcome and infant mortality as the predictor, we see that the coefficient for infant mortality had a p-value of < 0.0001 so we reject the null hypothesis that the two variables are independent. The coefficient for infant mortality was -0.18916, indicating that among African countries, a one unit increase in infant mortality is associated with a -0.18916 decrease in life expectancy. 
+
+Looking at the simple model with life expectancy as the outcome and population size as the predictor, we see that the coefficient for population size had a p-value of 0.616 so we fail to reject the null hypothesis that the two variables are independent. From this simple model, there does not seem to be an asccociation between population size and life expectancy among African countries. 
+
 

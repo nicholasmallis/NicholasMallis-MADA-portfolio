@@ -12,10 +12,9 @@ output:
 
 ![](/Users/nicholasmallis/Desktop/MADA_Fall_2021/NicholasMallis-MADA-portfolio/example.png)
 
-Welcome to **my website** and _data analysis portfolio._ 
+##Welcome to **my website** and _data analysis portfolio._ 
 
-* Please use the `Menu Bar` above to look around.
- 
+
 
 
 
