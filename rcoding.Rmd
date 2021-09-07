@@ -5,8 +5,9 @@ output:
     toc: FALSE
 ---
 
-This will contain the future R coding exercise.
 
+
+###Loading and Checking Data
 ```{r}
 #first loading some packages
 #for plotting
@@ -26,6 +27,7 @@ class(gapminder)
 
 ```
 
+###Processing Data
 ```{r}
 #data processing chunk
 
@@ -61,17 +63,19 @@ summary(newdata2)
 
 ```
 
-
+###Plotting
 ```{r}
 #plotting
 
 #plotting life expectancy and infant mortality
-ggplot(newdata1, aes(x=infant_mortality, y=life_expectancy)) + geom_point() 
+ggplot(newdata1, aes(x=infant_mortality, y=life_expectancy)) + geom_point() +
+  ggtitle("Scatterplot of Life Expectancy and Infant Mortality Among African Countries") +
+  xlab("Infant Mortality") + ylab("Life Expectancy")
 
 
 #plotting life expectancy and population size(log transformed)
-ggplot(newdata2, aes(x=population, y=life_expectancy))  + geom_point()
-  scale_x_log10() 
+ggplot(newdata2, aes(x=population, y=life_expectancy))  + geom_point() +
+  scale_x_log10() + ggtitle("Scatterplot of Life Expectancy and Population Size Among African Countries") + xlab("Population Size (Log Transformed)") + ylab("Life Expectancy")
 
 #taking another look at africa data
 
@@ -82,6 +86,7 @@ table(africadata$year)
 
 ```
 
+###More data processing
 ```{r}
 #more data processing
 
@@ -102,19 +107,25 @@ summary(africadata2000)
 
 ```
 
+###More plotting (for year 2000 this time)
 ```{r}
 #more plotting
 
 #plotting life expectancy and infant mortality
-ggplot(africadata2000, aes(x=infant_mortality, y=life_expectancy)) + geom_point() 
+ggplot(africadata2000, aes(x=infant_mortality, y=life_expectancy)) + geom_point() + ggtitle("Scatterplot of Life Expectancy and Infant Mortality Among African Countries") +
+  xlab("Infant Mortality") + ylab("Life Expectancy")
 
 
 #plotting life expectancy and population size(log transformed)
-ggplot(africadata2000, aes(x=population, y=life_expectancy))  + geom_point() + scale_x_log10() 
+ggplot(africadata2000, aes(x=population, y=life_expectancy))  + geom_point() +
+scale_x_log10() + ggtitle("Scatterplot of Life Expectancy and Population Size Among African Countries") + xlab("Population Size (Log Transformed)") + ylab("Life Expectancy")
 
 
 ```
 
+
+
+###A simple fit
 ```{r}
 #a simple fit
 
@@ -128,7 +139,9 @@ summary(fit1)
 summary(fit2)
 
 ```
-Interpretation: Looking at the simple model with life expectancy as the outcome and infant mortality as the predictor, we see that the coefficient for infant mortality had a p-value of < 0.0001 so we reject the null hypothesis that the two variables are independent. The coefficient for infant mortality was -0.18916, indicating that among African countries, a one unit increase in infant mortality is associated with a -0.18916 decrease in life expectancy. 
+###Interpretation:
+
+Looking at the simple model with life expectancy as the outcome and infant mortality as the predictor, we see that the coefficient for infant mortality had a p-value of < 0.0001 so we reject the null hypothesis that the two variables are independent. The coefficient for infant mortality was -0.18916, indicating that among African countries, a one unit increase in infant mortality is associated with a -0.18916 decrease in life expectancy. 
 
 Looking at the simple model with life expectancy as the outcome and population size as the predictor, we see that the coefficient for population size had a p-value of 0.616 so we fail to reject the null hypothesis that the two variables are independent. From this simple model, there does not seem to be an asccociation between population size and life expectancy among African countries. 
 

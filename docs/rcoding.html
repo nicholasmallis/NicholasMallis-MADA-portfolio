@@ -341,7 +341,8 @@ $(document).ready(function () {
 </div>
 
 
-<p>This will contain the future R coding exercise.</p>
+<div id="loading-and-checking-data" class="section level3">
+<h3>Loading and Checking Data</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#first loading some packages</span>
 <span class="co">#for plotting</span>
 <span class="kw">library</span>(ggplot2)
@@ -392,6 +393,9 @@ $(document).ready(function () {
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#determining the type of object gapminder is</span>
 <span class="kw">class</span>(gapminder)</code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
+</div>
+<div id="processing-data" class="section level3">
+<h3>Processing Data</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#data processing chunk</span>
 
 <span class="co">#the following code subsets the data from African countries</span>
@@ -445,20 +449,22 @@ newdata2 &lt;-<span class="st"> </span>africadata[select2]
 ##  3rd Qu.: 13888152   3rd Qu.:60.10  
 ##  Max.   :182201962   Max.   :77.60  
 ##  NA&#39;s   :51</code></pre>
+</div>
+<div id="plotting" class="section level3">
+<h3>Plotting</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#plotting</span>
 
 <span class="co">#plotting life expectancy and infant mortality</span>
-<span class="kw">ggplot</span>(newdata1, <span class="kw">aes</span>(<span class="dt">x=</span>infant_mortality, <span class="dt">y=</span>life_expectancy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() </code></pre></div>
+<span class="kw">ggplot</span>(newdata1, <span class="kw">aes</span>(<span class="dt">x=</span>infant_mortality, <span class="dt">y=</span>life_expectancy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Scatterplot of Life Expectancy and Infant Mortality Among African Countries&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Infant Mortality&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Life Expectancy&quot;</span>)</code></pre></div>
 <pre><code>## Warning: Removed 226 rows containing missing values (geom_point).</code></pre>
 <p><img src="rcoding_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#plotting life expectancy and population size(log transformed)</span>
-<span class="kw">ggplot</span>(newdata2, <span class="kw">aes</span>(<span class="dt">x=</span>population, <span class="dt">y=</span>life_expectancy))  <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
+<span class="kw">ggplot</span>(newdata2, <span class="kw">aes</span>(<span class="dt">x=</span>population, <span class="dt">y=</span>life_expectancy))  <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_x_log10</span>() <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Scatterplot of Life Expectancy and Population Size Among African Countries&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Population Size (Log Transformed)&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Life Expectancy&quot;</span>)</code></pre></div>
 <pre><code>## Warning: Removed 51 rows containing missing values (geom_point).</code></pre>
 <p><img src="rcoding_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">scale_x_log10</span>() </code></pre></div>
-<pre><code>## &lt;ScaleContinuousPosition&gt;
-##  Range:  
-##  Limits:    0 --    1</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#taking another look at africa data</span>
 
 <span class="co">#We notice the year variable. After using the table function, we see that</span>
@@ -473,6 +479,9 @@ newdata2 &lt;-<span class="st"> </span>africadata[select2]
 ##   51   51   51   51   51   51   51   51   51   51   51   51   51   51   51   51 
 ## 2008 2009 2010 2011 2012 2013 2014 2015 2016 
 ##   51   51   51   51   51   51   51   51   51</code></pre>
+</div>
+<div id="more-data-processing" class="section level3">
+<h3>More data processing</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#more data processing</span>
 
 <span class="co">#figuring out which years have missing data for infant mortality</span>
@@ -581,14 +590,22 @@ africadata2000 &lt;-<span class="st">  </span>africadata[<span class="kw">which<
 ##  Southern Africa          : 5  
 ##  Australia and New Zealand: 0  
 ##  (Other)                  : 0</code></pre>
+</div>
+<div id="more-plotting-for-year-2000-this-time" class="section level3">
+<h3>More plotting (for year 2000 this time)</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#more plotting</span>
 
 <span class="co">#plotting life expectancy and infant mortality</span>
-<span class="kw">ggplot</span>(africadata2000, <span class="kw">aes</span>(<span class="dt">x=</span>infant_mortality, <span class="dt">y=</span>life_expectancy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() </code></pre></div>
+<span class="kw">ggplot</span>(africadata2000, <span class="kw">aes</span>(<span class="dt">x=</span>infant_mortality, <span class="dt">y=</span>life_expectancy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Scatterplot of Life Expectancy and Infant Mortality Among African Countries&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Infant Mortality&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Life Expectancy&quot;</span>)</code></pre></div>
 <p><img src="rcoding_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#plotting life expectancy and population size(log transformed)</span>
-<span class="kw">ggplot</span>(africadata2000, <span class="kw">aes</span>(<span class="dt">x=</span>population, <span class="dt">y=</span>life_expectancy))  <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_log10</span>() </code></pre></div>
+<span class="kw">ggplot</span>(africadata2000, <span class="kw">aes</span>(<span class="dt">x=</span>population, <span class="dt">y=</span>life_expectancy))  <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="kw">scale_x_log10</span>() <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Scatterplot of Life Expectancy and Population Size Among African Countries&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Population Size (Log Transformed)&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Life Expectancy&quot;</span>)</code></pre></div>
 <p><img src="rcoding_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+</div>
+<div id="a-simple-fit" class="section level3">
+<h3>A simple fit</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#a simple fit</span>
 
 <span class="co">#fit1: life expectancy as outcome and infant mortality as predictor</span>
@@ -635,8 +652,12 @@ fit2 &lt;-<span class="st"> </span><span class="kw">lm</span>(africadata2000<spa
 ## Residual standard error: 8.524 on 49 degrees of freedom
 ## Multiple R-squared:  0.005176,   Adjusted R-squared:  -0.01513 
 ## F-statistic: 0.2549 on 1 and 49 DF,  p-value: 0.6159</code></pre>
-<p>Interpretation: Looking at the simple model with life expectancy as the outcome and infant mortality as the predictor, we see that the coefficient for infant mortality had a p-value of &lt; 0.0001 so we reject the null hypothesis that the two variables are independent. The coefficient for infant mortality was -0.18916, indicating that among African countries, a one unit increase in infant mortality is associated with a -0.18916 decrease in life expectancy.</p>
+</div>
+<div id="interpretation" class="section level3">
+<h3>Interpretation:</h3>
+<p>Looking at the simple model with life expectancy as the outcome and infant mortality as the predictor, we see that the coefficient for infant mortality had a p-value of &lt; 0.0001 so we reject the null hypothesis that the two variables are independent. The coefficient for infant mortality was -0.18916, indicating that among African countries, a one unit increase in infant mortality is associated with a -0.18916 decrease in life expectancy.</p>
 <p>Looking at the simple model with life expectancy as the outcome and population size as the predictor, we see that the coefficient for population size had a p-value of 0.616 so we fail to reject the null hypothesis that the two variables are independent. From this simple model, there does not seem to be an asccociation between population size and life expectancy among African countries.</p>
+</div>
 
 
 
