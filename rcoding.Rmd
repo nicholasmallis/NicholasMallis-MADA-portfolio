@@ -12,6 +12,7 @@ output:
 #first loading some packages
 #for plotting
 library(ggplot2)
+library(tidyverse)
 
 
 #loading the dslabs
@@ -91,7 +92,8 @@ table(africadata$year)
 #more data processing
 
 #figuring out which years have missing data for infant mortality
-#here I used "table" to show which years were missing data
+#here I used "table" to show which years had complete data. Those with 51 
+#were complete and anything less than that are incomplete
 
 table(africadata$year,(africadata$infant_mortality=="Na"))
 
@@ -141,7 +143,7 @@ summary(fit2)
 ```
 ###Interpretation:
 
-Looking at the simple model with life expectancy as the outcome and infant mortality as the predictor, we see that the coefficient for infant mortality had a p-value of < 0.0001 so we reject the null hypothesis that the two variables are independent. The coefficient for infant mortality was -0.18916, indicating that among African countries, a one unit increase in infant mortality is associated with a -0.18916 decrease in life expectancy. 
+Looking at the simple model with life expectancy as the outcome and infant mortality as the predictor, we see that the coefficient for infant mortality had a p-value of < 0.0001 so we reject the null hypothesis that the two variables are independent. The coefficient for infant mortality was -0.18916, indicating that among African countries in year 2000, a one unit increase in infant mortality is associated with a 0.18916 decrease in life expectancy. 
 
 Looking at the simple model with life expectancy as the outcome and population size as the predictor, we see that the coefficient for population size had a p-value of 0.616 so we fail to reject the null hypothesis that the two variables are independent. From this simple model, there does not seem to be an asccociation between population size and life expectancy among African countries. 
 

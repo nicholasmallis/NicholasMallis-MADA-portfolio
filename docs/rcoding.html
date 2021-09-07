@@ -346,9 +346,16 @@ $(document).ready(function () {
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#first loading some packages</span>
 <span class="co">#for plotting</span>
 <span class="kw">library</span>(ggplot2)
-
-
-<span class="co">#loading the dslabs</span>
+<span class="kw">library</span>(tidyverse)</code></pre></div>
+<pre><code>## ── Attaching packages ─────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ tibble  3.0.3     ✓ dplyr   1.0.2
+## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
+## ✓ readr   1.4.0     ✓ forcats 0.5.0
+## ✓ purrr   0.3.4</code></pre>
+<pre><code>## ── Conflicts ────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#loading the dslabs</span>
 <span class="kw">library</span>(dslabs)
 <span class="co">#help file for gapminder</span>
 <span class="kw">help</span>(gapminder)
@@ -485,7 +492,8 @@ newdata2 &lt;-<span class="st"> </span>africadata[select2]
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#more data processing</span>
 
 <span class="co">#figuring out which years have missing data for infant mortality</span>
-<span class="co">#here I used &quot;table&quot; to show which years were missing data</span>
+<span class="co">#here I used &quot;table&quot; to show which years had complete data. Those with 51 </span>
+<span class="co">#were complete and anything less than that are incomplete</span>
 
 <span class="kw">table</span>(africadata<span class="op">$</span>year,(africadata<span class="op">$</span>infant_mortality<span class="op">==</span><span class="st">&quot;Na&quot;</span>))</code></pre></div>
 <pre><code>##       
@@ -655,7 +663,7 @@ fit2 &lt;-<span class="st"> </span><span class="kw">lm</span>(africadata2000<spa
 </div>
 <div id="interpretation" class="section level3">
 <h3>Interpretation:</h3>
-<p>Looking at the simple model with life expectancy as the outcome and infant mortality as the predictor, we see that the coefficient for infant mortality had a p-value of &lt; 0.0001 so we reject the null hypothesis that the two variables are independent. The coefficient for infant mortality was -0.18916, indicating that among African countries, a one unit increase in infant mortality is associated with a -0.18916 decrease in life expectancy.</p>
+<p>Looking at the simple model with life expectancy as the outcome and infant mortality as the predictor, we see that the coefficient for infant mortality had a p-value of &lt; 0.0001 so we reject the null hypothesis that the two variables are independent. The coefficient for infant mortality was -0.18916, indicating that among African countries in year 2000, a one unit increase in infant mortality is associated with a 0.18916 decrease in life expectancy.</p>
 <p>Looking at the simple model with life expectancy as the outcome and population size as the predictor, we see that the coefficient for population size had a p-value of 0.616 so we fail to reject the null hypothesis that the two variables are independent. From this simple model, there does not seem to be an asccociation between population size and life expectancy among African countries.</p>
 </div>
 
