@@ -350,8 +350,16 @@ $(document).ready(function () {
 <div id="loading-and-checking-data" class="section level3">
 <h3>Loading and Checking Data</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#packages</span>
-<span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(ggplot2)
+<span class="kw">library</span>(tidyverse)</code></pre></div>
+<pre><code>## ── Attaching packages ───────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
+## ✓ tibble  3.0.3     ✓ dplyr   1.0.2
+## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
+## ✓ readr   1.4.0     ✓ forcats 0.5.0</code></pre>
+<pre><code>## ── Conflicts ──────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
 <span class="kw">library</span>(readr)
 <span class="kw">library</span>(here)</code></pre></div>
 <pre><code>## here() starts at /Users/nicholasmallis/Desktop/MADA_Fall_2021/NicholasMallis-MADA-portfolio</code></pre>
@@ -361,7 +369,7 @@ data_location &lt;-<span class="st"> </span>here<span class="op">::</span><span 
 <span class="co">#reading in data</span>
 data &lt;-<span class="st"> </span><span class="kw">read_csv</span>(data_location)</code></pre></div>
 <pre><code>## 
-## ── Column specification ────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────
 ## cols(
 ##   congress = col_double(),
 ##   chamber = col_character(),
@@ -458,7 +466,35 @@ new<span class="op">$</span>year2 &lt;-<span class="st"> </span>lubridate<span c
       <span class="dt">panel.grid.minor.y =</span> <span class="kw">element_blank</span>(),
       <span class="dt">panel.grid.major =</span> <span class="kw">element_line</span>(<span class="dt">colour =</span> <span class="st">&quot;#cccccc&quot;</span>),
       <span class="dt">plot.background =</span> <span class="kw">element_rect</span>(<span class="dt">fill =</span> <span class="st">&quot;#EBEBEB&quot;</span>))
-<span class="co"># this brings the title into the figure</span>
+<span class="co"># this brings the title into the figure +</span>
+  <span class="kw">theme</span>(<span class="dt">panel.grid.minor.x =</span> <span class="kw">element_blank</span>(),
+      <span class="dt">panel.grid.minor.y =</span> <span class="kw">element_blank</span>(),
+      <span class="dt">panel.grid.major =</span> <span class="kw">element_line</span>(<span class="dt">colour =</span> <span class="st">&quot;#cccccc&quot;</span>),
+      <span class="dt">plot.background =</span> <span class="kw">element_rect</span>(<span class="dt">fill =</span> <span class="st">&quot;#EBEBEB&quot;</span>))</code></pre></div>
+<pre><code>## List of 4
+##  $ panel.grid.major  :List of 6
+##   ..$ colour       : chr &quot;#cccccc&quot;
+##   ..$ size         : NULL
+##   ..$ linetype     : NULL
+##   ..$ lineend      : NULL
+##   ..$ arrow        : logi FALSE
+##   ..$ inherit.blank: logi FALSE
+##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_line&quot; &quot;element&quot;
+##  $ panel.grid.minor.x: list()
+##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_blank&quot; &quot;element&quot;
+##  $ panel.grid.minor.y: list()
+##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_blank&quot; &quot;element&quot;
+##  $ plot.background   :List of 5
+##   ..$ fill         : chr &quot;#EBEBEB&quot;
+##   ..$ colour       : NULL
+##   ..$ size         : NULL
+##   ..$ linetype     : NULL
+##   ..$ inherit.blank: logi FALSE
+##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_rect&quot; &quot;element&quot;
+##  - attr(*, &quot;class&quot;)= chr [1:2] &quot;theme&quot; &quot;gg&quot;
+##  - attr(*, &quot;complete&quot;)= logi FALSE
+##  - attr(*, &quot;validate&quot;)= logi TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># this brings the title into the figure</span>
 
 <span class="kw">print</span>(p)</code></pre></div>
 <p><img src="visualization_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
