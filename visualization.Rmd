@@ -81,8 +81,13 @@ p <- ggplot(new, aes(x=year2, y=name, group=party)) + #plots mean age for each y
 
   theme(panel.grid.minor =   element_blank(), panel.grid.major =   element_line(colour = "gray",size=0.5)) + #adjusting grid
   
-  theme(plot.title = element_text(face = "bold")) #bolding title
-
+  theme(plot.title = element_text(face = "bold")) +  #bolding title 
+  
+  theme(panel.grid.minor.x = element_blank(),
+      panel.grid.minor.y = element_blank(),
+      panel.grid.major = element_line(colour = "#cccccc"),
+      plot.background = element_rect(fill = "#EBEBEB"))
+# this brings the title into the figure
 
 print(p)
 
