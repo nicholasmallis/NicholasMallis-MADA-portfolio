@@ -5,6 +5,95 @@ output:
     toc: FALSE
 ---
 
-This will contain the future visualization exercise.
+#FiveThirtyEight Figure
+[Full Article Here](https://fivethirtyeight.com/features/both-republicans-and-democrats-have-an-age-problem/)
+
+<center> ![](/Users/nicholasmallis/Desktop/MADA_Fall_2021/NicholasMallis-MADA-portfolio/538.jpg) </center>
+
+###Loading and Checking Data
+```{r}
+
+
+#packages
+library(tidyverse)
+library(ggplot2)
+library(readr)
+library(here)
+
+#setting paths
+data_location <- here::here("data","congress-terms copy.csv")
+
+#reading in data
+data <- read_csv(data_location)
+
+#taking a look
+glimpse(data)
+
+```
+
+
+###Now I need to do quite a bit of data management to get it in the form we need to plot
+```{r}
+
+#this creates a new variable for age of each politician using their term start and birthday
+data$age <- as.numeric(round((as.Date(data$termstart) - as.Date(data$birthday))/365))
+
+#this creates a new variable that seperates the year in which each politicial started their term
+data$year <- substring(data$termstart,1,4) 
+
+#this calculates the mean age for each year by party and makes a new dataset that we'll use to plot
+new <- data %>%
+  group_by(year, party ) %>%
+  summarise_at(vars(age), list(name = mean))
+
+#checking. looks good, but we need to look at only republican and democrat
+print(new)
+
+#here we subset the two parties that we need. we don't need to look at independent
+new <- new[ which(new$party=='D' | new$party== 'R'),]
+
+#finally, we make a new year variable that is saved as a date.
+new$year2 <- lubridate::ymd(new$year, truncated = 2L)
+
+
+```
+
+
+####Plotting
+```{r}
+p <- ggplot(new, aes(x=year2, y=name, group=party)) + #plots mean age for each year by party
+  
+  geom_line(aes(color=party), size=1.1) + #adds the line for each party and colors by party
+  
+  scale_y_continuous(limits= c(40, 61), breaks=c(40, 45, 50, 55, 60), labels=c("40", "45", "50", "55", "60 yrs")) + #scales the y axis and labels the ticks like they have them in the figure
+  
+  labs(title= "Average Age of Members of Congress", subtitle= "At start of term, 1947-2013") + #main and subtitle
+  
+  xlab(" ") + ylab(" ") + #takes away axis labels like they have them
+  
+  scale_x_date(breaks = scales::breaks_pretty(6), date_labels= c( "'10", "1950", "'60",  "'70", "'80", "'90", "2000")) + #date scale and tick labels like they have them
+  
+  scale_color_manual(values=c('dodgerblue','firebrick1')) + theme(legend.position = "none") + #setting colors 
+  
+  annotate(geom="text",x=as.Date("1965-01-01"), y=56,label="Republicans",fontface="bold", color="firebrick1") + #adding text
+  
+  annotate(geom="text",x=as.Date("1996-01-01"), y=57,label="Democrats",fontface="bold", color="dodgerblue") + #adding text
+
+  theme(panel.grid.minor =   element_blank(), panel.grid.major =   element_line(colour = "gray",size=0.5)) + #adjusting grid
+  
+  theme(plot.title = element_text(face = "bold")) #bolding title
+
+
+print(p)
+
+
+```
+
+####Comparing
+<center> ![](/Users/nicholasmallis/Desktop/MADA_Fall_2021/NicholasMallis-MADA-portfolio/538.jpg) </center>
+
+
+
+###Final Thoughts: This is only about 100 lines of code and a fairly simple plot, but it was a journey getting the tick marks and everything as close as I could get it to the original. Definiteley took me a lot of googling and time, but I feel like I understand a lot more about the infinite options of R graphics.
 
 

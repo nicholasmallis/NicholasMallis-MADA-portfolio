@@ -42,6 +42,74 @@
     </style>
 
 
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #cccccc; background-color: #303030; }
+code > span.kw { color: #f0dfaf; } /* Keyword */
+code > span.dt { color: #dfdfbf; } /* DataType */
+code > span.dv { color: #dcdccc; } /* DecVal */
+code > span.bn { color: #dca3a3; } /* BaseN */
+code > span.fl { color: #c0bed1; } /* Float */
+code > span.ch { color: #dca3a3; } /* Char */
+code > span.st { color: #cc9393; } /* String */
+code > span.co { color: #7f9f7f; } /* Comment */
+code > span.ot { color: #efef8f; } /* Other */
+code > span.al { color: #ffcfaf; } /* Alert */
+code > span.fu { color: #efef8f; } /* Function */
+code > span.er { color: #c3bf9f; } /* Error */
+code > span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+code > span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code > span.sc { color: #dca3a3; } /* SpecialChar */
+code > span.vs { color: #cc9393; } /* VerbatimString */
+code > span.ss { color: #cc9393; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { } /* Variable */
+code > span.cf { color: #f0dfaf; } /* ControlFlow */
+code > span.op { color: #f0efd0; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code > span.at { } /* Attribute */
+code > span.do { color: #7f9f7f; } /* Documentation */
+code > span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+code > span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -273,7 +341,134 @@ $(document).ready(function () {
 </div>
 
 
-<p>This will contain the future visualization exercise.</p>
+<div id="fivethirtyeight-figure" class="section level1">
+<h1>FiveThirtyEight Figure</h1>
+<p><a href="https://fivethirtyeight.com/features/both-republicans-and-democrats-have-an-age-problem/">Full Article Here</a></p>
+<center>
+<img src="538.jpg" />
+</center>
+<div id="loading-and-checking-data" class="section level3">
+<h3>Loading and Checking Data</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#packages</span>
+<span class="kw">library</span>(tidyverse)
+<span class="kw">library</span>(ggplot2)
+<span class="kw">library</span>(readr)
+<span class="kw">library</span>(here)</code></pre></div>
+<pre><code>## here() starts at /Users/nicholasmallis/Desktop/MADA_Fall_2021/NicholasMallis-MADA-portfolio</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#setting paths</span>
+data_location &lt;-<span class="st"> </span>here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>,<span class="st">&quot;congress-terms copy.csv&quot;</span>)
+
+<span class="co">#reading in data</span>
+data &lt;-<span class="st"> </span><span class="kw">read_csv</span>(data_location)</code></pre></div>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────
+## cols(
+##   congress = col_double(),
+##   chamber = col_character(),
+##   bioguide = col_character(),
+##   firstname = col_character(),
+##   middlename = col_character(),
+##   lastname = col_character(),
+##   suffix = col_character(),
+##   birthday = col_date(format = &quot;&quot;),
+##   state = col_character(),
+##   party = col_character(),
+##   incumbent = col_character(),
+##   termstart = col_date(format = &quot;&quot;),
+##   age = col_double()
+## )</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#taking a look</span>
+<span class="kw">glimpse</span>(data)</code></pre></div>
+<pre><code>## Rows: 18,635
+## Columns: 13
+## $ congress   &lt;dbl&gt; 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80…
+## $ chamber    &lt;chr&gt; &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;hou…
+## $ bioguide   &lt;chr&gt; &quot;M000112&quot;, &quot;D000448&quot;, &quot;S000001&quot;, &quot;E000023&quot;, &quot;L000296&quot;, &quot;G0…
+## $ firstname  &lt;chr&gt; &quot;Joseph&quot;, &quot;Robert&quot;, &quot;Adolph&quot;, &quot;Charles&quot;, &quot;William&quot;, &quot;James…
+## $ middlename &lt;chr&gt; &quot;Jefferson&quot;, &quot;Lee&quot;, &quot;Joachim&quot;, &quot;Aubrey&quot;, NA, &quot;A.&quot;, &quot;Joseph…
+## $ lastname   &lt;chr&gt; &quot;Mansfield&quot;, &quot;Doughton&quot;, &quot;Sabath&quot;, &quot;Eaton&quot;, &quot;Lewis&quot;, &quot;Gall…
+## $ suffix     &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ birthday   &lt;date&gt; 1861-02-09, 1863-11-07, 1866-04-04, 1868-03-29, 1868-09-2…
+## $ state      &lt;chr&gt; &quot;TX&quot;, &quot;NC&quot;, &quot;IL&quot;, &quot;NJ&quot;, &quot;KY&quot;, &quot;PA&quot;, &quot;CA&quot;, &quot;NY&quot;, &quot;WI&quot;, &quot;MA&quot;…
+## $ party      &lt;chr&gt; &quot;D&quot;, &quot;D&quot;, &quot;D&quot;, &quot;R&quot;, &quot;R&quot;, &quot;R&quot;, &quot;R&quot;, &quot;D&quot;, &quot;R&quot;, &quot;R&quot;, &quot;D&quot;, &quot;R&quot;…
+## $ incumbent  &lt;chr&gt; &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;No&quot;, &quot;No&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes…
+## $ termstart  &lt;date&gt; 1947-01-03, 1947-01-03, 1947-01-03, 1947-01-03, 1947-01-0…
+## $ age        &lt;dbl&gt; 85.9, 83.2, 80.7, 78.8, 78.3, 78.0, 77.9, 76.8, 76.0, 75.8…</code></pre>
+</div>
+<div id="now-i-need-to-do-quite-a-bit-of-data-management-to-get-it-in-the-form-we-need-to-plot" class="section level3">
+<h3>Now I need to do quite a bit of data management to get it in the form we need to plot</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#this creates a new variable for age of each politician using their term start and birthday</span>
+data<span class="op">$</span>age &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">round</span>((<span class="kw">as.Date</span>(data<span class="op">$</span>termstart) <span class="op">-</span><span class="st"> </span><span class="kw">as.Date</span>(data<span class="op">$</span>birthday))<span class="op">/</span><span class="dv">365</span>))
+
+<span class="co">#this creates a new variable that seperates the year in which each politicial started their term</span>
+data<span class="op">$</span>year &lt;-<span class="st"> </span><span class="kw">substring</span>(data<span class="op">$</span>termstart,<span class="dv">1</span>,<span class="dv">4</span>) 
+
+<span class="co">#this calculates the mean age for each year by party and makes a new dataset that we&#39;ll use to plot</span>
+new &lt;-<span class="st"> </span>data <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(year, party ) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise_at</span>(<span class="kw">vars</span>(age), <span class="kw">list</span>(<span class="dt">name =</span> mean))
+
+<span class="co">#checking. looks good, but we need to look at only republican and democrat</span>
+<span class="kw">print</span>(new)</code></pre></div>
+<pre><code>## # A tibble: 104 x 3
+## # Groups:   year [34]
+##    year  party  name
+##    &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1 1947  AL     40.5
+##  2 1947  D      52.1
+##  3 1947  R      53.0
+##  4 1949  AL     46  
+##  5 1949  D      51.5
+##  6 1949  I      38  
+##  7 1949  L      34  
+##  8 1949  R      54.6
+##  9 1951  D      52.3
+## 10 1951  I      47  
+## # … with 94 more rows</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#here we subset the two parties that we need. we don&#39;t need to look at independent</span>
+new &lt;-<span class="st"> </span>new[ <span class="kw">which</span>(new<span class="op">$</span>party<span class="op">==</span><span class="st">&#39;D&#39;</span> <span class="op">|</span><span class="st"> </span>new<span class="op">$</span>party<span class="op">==</span><span class="st"> &#39;R&#39;</span>),]
+
+<span class="co">#finally, we make a new year variable that is saved as a date.</span>
+new<span class="op">$</span>year2 &lt;-<span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(new<span class="op">$</span>year, <span class="dt">truncated =</span> 2L)</code></pre></div>
+<div id="plotting" class="section level4">
+<h4>Plotting</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="kw">ggplot</span>(new, <span class="kw">aes</span>(<span class="dt">x=</span>year2, <span class="dt">y=</span>name, <span class="dt">group=</span>party)) <span class="op">+</span><span class="st"> </span><span class="co">#plots mean age for each year by party</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">color=</span>party), <span class="dt">size=</span><span class="fl">1.1</span>) <span class="op">+</span><span class="st"> </span><span class="co">#adds the line for each party and colors by party</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits=</span> <span class="kw">c</span>(<span class="dv">40</span>, <span class="dv">61</span>), <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">40</span>, <span class="dv">45</span>, <span class="dv">50</span>, <span class="dv">55</span>, <span class="dv">60</span>), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;40&quot;</span>, <span class="st">&quot;45&quot;</span>, <span class="st">&quot;50&quot;</span>, <span class="st">&quot;55&quot;</span>, <span class="st">&quot;60 yrs&quot;</span>)) <span class="op">+</span><span class="st"> </span><span class="co">#scales the y axis and labels the ticks like they have them in the figure</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span> <span class="st">&quot;Average Age of Members of Congress&quot;</span>, <span class="dt">subtitle=</span> <span class="st">&quot;At start of term, 1947-2013&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="co">#main and subtitle</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot; &quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot; &quot;</span>) <span class="op">+</span><span class="st"> </span><span class="co">#takes away axis labels like they have them</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="kw">scale_x_date</span>(<span class="dt">breaks =</span> scales<span class="op">::</span><span class="kw">breaks_pretty</span>(<span class="dv">6</span>), <span class="dt">date_labels=</span> <span class="kw">c</span>( <span class="st">&quot;&#39;10&quot;</span>, <span class="st">&quot;1950&quot;</span>, <span class="st">&quot;&#39;60&quot;</span>,  <span class="st">&quot;&#39;70&quot;</span>, <span class="st">&quot;&#39;80&quot;</span>, <span class="st">&quot;&#39;90&quot;</span>, <span class="st">&quot;2000&quot;</span>)) <span class="op">+</span><span class="st"> </span><span class="co">#date scale and tick labels like they have them</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">&#39;dodgerblue&#39;</span>,<span class="st">&#39;firebrick1&#39;</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="co">#setting colors </span>
+<span class="st">  </span>
+<span class="st">  </span><span class="kw">annotate</span>(<span class="dt">geom=</span><span class="st">&quot;text&quot;</span>,<span class="dt">x=</span><span class="kw">as.Date</span>(<span class="st">&quot;1965-01-01&quot;</span>), <span class="dt">y=</span><span class="dv">56</span>,<span class="dt">label=</span><span class="st">&quot;Republicans&quot;</span>,<span class="dt">fontface=</span><span class="st">&quot;bold&quot;</span>, <span class="dt">color=</span><span class="st">&quot;firebrick1&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="co">#adding text</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="kw">annotate</span>(<span class="dt">geom=</span><span class="st">&quot;text&quot;</span>,<span class="dt">x=</span><span class="kw">as.Date</span>(<span class="st">&quot;1996-01-01&quot;</span>), <span class="dt">y=</span><span class="dv">57</span>,<span class="dt">label=</span><span class="st">&quot;Democrats&quot;</span>,<span class="dt">fontface=</span><span class="st">&quot;bold&quot;</span>, <span class="dt">color=</span><span class="st">&quot;dodgerblue&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="co">#adding text</span>
+
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.grid.minor =</span>   <span class="kw">element_blank</span>(), <span class="dt">panel.grid.major =</span>   <span class="kw">element_line</span>(<span class="dt">colour =</span> <span class="st">&quot;gray&quot;</span>,<span class="dt">size=</span><span class="fl">0.5</span>)) <span class="op">+</span><span class="st"> </span><span class="co">#adjusting grid</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>)) <span class="co">#bolding title</span>
+
+
+<span class="kw">print</span>(p)</code></pre></div>
+<p><img src="visualization_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="comparing" class="section level4">
+<h4>Comparing</h4>
+<center>
+<img src="538.jpg" />
+</center>
+</div>
+</div>
+<div id="final-thoughts-this-is-only-about-100-lines-of-code-and-a-fairly-simple-plot-but-it-was-a-journey-getting-the-tick-marks-and-everything-as-close-as-i-could-get-it-to-the-original.-definiteley-took-me-a-lot-of-googling-and-time-but-i-feel-like-i-understand-a-lot-more-about-the-infinite-options-of-r-graphics." class="section level3">
+<h3>Final Thoughts: This is only about 100 lines of code and a fairly simple plot, but it was a journey getting the tick marks and everything as close as I could get it to the original. Definiteley took me a lot of googling and time, but I feel like I understand a lot more about the infinite options of R graphics.</h3>
+</div>
+</div>
 
 
 
