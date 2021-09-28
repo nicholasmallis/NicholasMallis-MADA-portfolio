@@ -5,5 +5,274 @@ output:
     toc: FALSE
 ---
 
-This will contain the future Tidy Tuesday exercise.
+###Since the data was a bit limited, I mainly explore time trends and distributions of what type of papers were being written most. I also look at which authors were most prolific and what categories they were publishing. My comments should guide you step-by-step through my thought process. 
+
+##Loading and Checking Data
+```{r}
+
+
+#packages
+library(tidyverse)
+library(ggplot2)
+library(readr)
+library(here)
+
+
+
+# Get the Data
+
+papers <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/papers.csv')
+authors <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/authors.csv')
+programs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/programs.csv')
+paper_authors <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/paper_authors.csv')
+paper_programs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/paper_programs.csv')
+
+
+#looking at each dataset
+glimpse(papers)
+
+glimpse(authors)
+
+glimpse(programs)
+
+glimpse(paper_authors)
+
+glimpse(paper_programs)
+
+
+#merging all together
+joined <- left_join(papers, paper_authors) %>% 
+  left_join(authors) %>% 
+  left_join(paper_programs) %>% 
+  left_join(programs)%>% 
+  mutate(
+    catalogue_group = str_sub(paper, 1, 1),
+    catalogue_group = case_when(
+      catalogue_group == "h" ~ "Historical",
+      catalogue_group == "t" ~ "Technical",
+      catalogue_group == "w" ~ "General"
+    ),
+    .after = paper
+  ) 
+
+#checking
+glimpse(joined)
+
+
+#saving data as a csv to folder
+write.csv(joined,"/Users/nicholasmallis/Desktop/MADA_Fall_2021/NicholasMallis-MADA-portfolio/Data/tidy.csv", row.names = FALSE)
+
+
+#let's see how big the dataset is?
+nrow(joined)
+
+
+#from the glimpse above, we see that there might be a lot missing for
+#program, program_desc, and program category. let's look closer
+prop.table(table(joined$program, useNA = "always"))
+prop.table(table(joined$program_desc, useNA = "always"))
+prop.table(table(joined$program_category, useNA = "always"))
+
+
+
+#It's not too bad. The highest one was program category and it
+#was only missing %1
+
+#let's go ahead and check the others too, but this time use sum(is.na)
+#looks like nothing is missing here
+sum(is.na(joined$catalogue_group))
+sum(is.na(joined$year))
+sum(is.na(joined$month))
+
+
+#looking at top of data
+head(joined)
+
+#looking at bottom of data
+tail(joined)
+
+
+#But how many specific papers?
+#I'm interested in looking at categories of papers across time,
+#but it appears that the data is laid out by author and not paper title.
+
+#Here we table title and glimpse at the number of observations.
+#Looks like there are 29,419 rows after this so there would be that many papers
+tab <- as.data.frame(table(joined$title))
+glimpse(tab)
+
+#Let's subset the data to only count each paper once
+
+library(data.table)
+DT <- data.table(joined, key="title")
+
+new <- DT[, n := rank(paper, ties.method="first"), by = key(DT)][n == 1]
+
+joined_df <- new[order(new$title),] 
+
+#Making the new data frame results in a new one with 29,419 observations which matches our 
+#table from before
+glimpse(joined_df)
+
+
+
+```
+###Some Data Exploration/Plotting
+```{r}
+
+
+#a simple bar plot of program_category
+ggplot(joined_df, aes(x=program_category)) +
+  geom_bar(fill = "#0073C2FF") + labs(title= "Counts of NBER Papers by Program Category , 1973-2021") + xlab("Program Category") + ylab("Count") 
+
+#now again without the NAs
+complete <- joined_df[complete.cases(joined_df), ]
+ggplot(complete, aes(x=program_category)) +
+  geom_bar(fill = "#0073C2FF") + labs(title= "Counts of NBER Papers by Program Category , 1973-2021") + xlab("Program Category") + ylab("Count") 
+
+
+#A simple plot of program
+ggplot(joined_df, aes(x=program)) +
+  geom_bar(fill = "red") + labs(title= "Counts of NBER Papers by Specific Program, 1973-2021") + xlab("Program Abbreviation") + ylab("Count") 
+
+#now again without the NAs
+ggplot(complete, aes(x=program)) +
+  geom_bar(fill = "red") + labs(title= "Counts of NBER Papers by Specific Program, 1973-2021") + xlab("Program Abbreviation") + ylab("Count") 
+
+
+#getting full names to check what we just learned
+table(joined_df$program_desc)
+
+#It looks like Labor Studies, Political Economics, and Economic Fluctuations and Growth 
+#were most common.
+
+#let's look at year, but first some data management
+joined_df$year2 <- lubridate::ymd(joined_df$year, truncated = 2L)
+
+#Now plotting the new year variable
+#Here we see a sharp increase between year 2000 and now.
+#And and even sharper increase from 2019 to 2021
+ggplot(joined_df, aes(x=year2)) +
+  geom_bar(fill = "#0073C2FF") + labs(title= "Counts of NBER Papers by Year, 1973-2021") + xlab("Year") + ylab("Count") 
+
+
+#Now we can look at this over time by program category
+#It seems that Micro papers have made up most of the papers being written
+#since the mid 90's and contribute most to the steep increase
+#in papers. 
+ggplot(joined_df, aes(x=year2, fill=program_category)) + geom_bar() +
+  labs(title= "Counts of NBER Papers by Year and Program Category, 1973-2021") + xlab("Year") + ylab("Count") 
+
+
+#Same thing here, but now I omit the missing.
+complete$year2 <- lubridate::ymd(complete$year, truncated = 2L)
+ggplot(complete, aes(x=year2, fill=program_category)) + geom_bar() +
+  labs(title= "Counts of NBER Papers by Year and Program Category, 1973-2021") + xlab("Year") + ylab("Count") 
+
+
+#I might be reaching here, but let's look at what month is most common for paper.
+#Nothing to interesting
+ggplot(joined_df, aes(x=month, fill=program_category)) + geom_bar() 
+
+#Now let's look at each specific program by year
+ggplot(joined_df, aes(x=year2, fill=program)) + geom_bar() + labs(title= "Counts of NBER Papers by Year and Specific Program, 1973-2021") + xlab("Year") + ylab("Count") 
+
+
+#Sort of difficult to see with so many categories. I am particularly
+#interested in how the quantity of healthcare related papers has changed over time
+#Here I will make a new variable called 'health' that groups all the the health related
+#papers together
+
+table(joined_df$program_desc)
+
+#new categories
+joined_df$health <- "Non-Health Related"
+joined_df$health[ is.na(joined_df$program_desc)] <- NA
+joined_df$health[joined_df$program_desc=="Health Care" | joined_df$program_desc=="Health Economics"] <- "Health Related"
+
+#Checking. Looks good
+table(joined_df$health, useNA = "always")
+
+#First plotting without time
+ggplot(joined_df, aes(x=health)) +
+  geom_bar(fill = "#0073C2FF") + labs(title= "Counts of NBER Papers by Health Related Topics, 1973-2021") + xlab("Program") + ylab("Count") 
+
+#Now plotting health accross time.
+#It looks like there a lot more health papers in 2020
+#which makes sense of course. But there were a lot more papers in 
+#general in 2020
+ggplot(joined_df, aes(x=year2, fill=health)) + geom_bar() +
+  labs(title= "Counts of NBER Papers by Health Related Topics by Year, 1973-2021") + xlab("Year") + ylab("Count") 
+
+
+
+
+
+
+#Last, I'd like to see which author has written the most papers
+#First we'll table all names and create a new data frame.
+#But we have to use our original dataset before we set it to one paper an observation
+totals <- as.data.frame(table(joined$name))
+
+glimpse(totals)
+
+#Then we'll sort this new data frame by frequency
+totals <- totals[order(-totals$Freq),]
+
+#And look at the totals. It looks like
+#Jonathan Gruber had the most papers 
+#next to James J Heckman
+
+
+#But let's make this a nice table
+mostpapers <- as.tibble(head(totals, n=10L))
+mostpapers <- mostpapers %>% 
+  rename(
+    Name= Var1 ,
+    Number_of_Papers= Freq  
+    )
+
+print(mostpapers)
+
+
+#Based on what we saw before, I assume that he will have written
+#papers about Labor Studies, Political Economics, and Economic Fluctuations and Growth
+#in the last 30 years, but I could be wrong.
+
+#Let's subset the data to only look at Jonathn Gruber's papers
+gruber <- joined[which(joined$name=='Jonathan Gruber'), ]
+gruber$year2 <- lubridate::ymd(gruber$year, truncated = 2L)
+ 
+#Now we'll recreate some of the other plots with only grubers information
+#Based on this plot, it looks like John Gruber was most prolific in year 2000 and
+#year 2020
+
+ggplot(gruber, aes(x=year2)) + geom_bar() +  labs(title= "John Gruber's Paper Counts by Year, 1990-2021") + xlab("Year") + ylab("Count") 
+
+
+#Examining the most common topics he researches
+#Looks like he is most interested in Public Economics. 
+#I guess I was wrong!
+ggplot(gruber, aes(x=program)) + geom_bar() + labs(title= "John Gruber's Papers, 1990-2021") + xlab("Year") + ylab("Count") 
+
+
+#Let's see what he wrote about most in 2020. 
+#First one more subset
+gruber_2020 <- gruber[which(gruber$year2=='2020-01-01'), ]
+
+#Now plotting and again. Looks like Healthcare and Health Econ were the highest
+ggplot(gruber_2020, aes(x=program)) + geom_bar() + labs(title= "John Gruber's Paper Topics in 2020") + xlab("Topics") + ylab("Count") 
+
+table(gruber_2020$program)
+
+
+
+```
+
+
+
+
+
+
+
 
