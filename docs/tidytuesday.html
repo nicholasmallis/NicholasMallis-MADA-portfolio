@@ -356,7 +356,7 @@ $(document).ready(function () {
 
 papers &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/papers.csv&#39;</span>)</code></pre></div>
 <pre><code>## 
-## ── Column specification ─────────────────────────
+## ── Column specification ──────────────
 ## cols(
 ##   paper = col_character(),
 ##   year = col_double(),
@@ -365,7 +365,7 @@ papers &lt;-<span class="st"> </span>readr<span class="op">::</span><span class=
 ## )</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">authors &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/authors.csv&#39;</span>)</code></pre></div>
 <pre><code>## 
-## ── Column specification ─────────────────────────
+## ── Column specification ──────────────
 ## cols(
 ##   author = col_character(),
 ##   name = col_character(),
@@ -374,7 +374,7 @@ papers &lt;-<span class="st"> </span>readr<span class="op">::</span><span class=
 ## )</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">programs &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/programs.csv&#39;</span>)</code></pre></div>
 <pre><code>## 
-## ── Column specification ─────────────────────────
+## ── Column specification ──────────────
 ## cols(
 ##   program = col_character(),
 ##   program_desc = col_character(),
@@ -382,14 +382,14 @@ papers &lt;-<span class="st"> </span>readr<span class="op">::</span><span class=
 ## )</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">paper_authors &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/paper_authors.csv&#39;</span>)</code></pre></div>
 <pre><code>## 
-## ── Column specification ─────────────────────────
+## ── Column specification ──────────────
 ## cols(
 ##   paper = col_character(),
 ##   author = col_character()
 ## )</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">paper_programs &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/paper_programs.csv&#39;</span>)</code></pre></div>
 <pre><code>## 
-## ── Column specification ─────────────────────────
+## ── Column specification ──────────────
 ## cols(
 ##   paper = col_character(),
 ##   program = col_character()
@@ -687,7 +687,10 @@ joined_df<span class="op">$</span>year2 &lt;-<span class="st"> </span>lubridate<
 <span class="co">#And and even sharper increase from 2019 to 2021</span>
 <span class="kw">ggplot</span>(joined_df, <span class="kw">aes</span>(<span class="dt">x=</span>year2)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">fill =</span> <span class="st">&quot;#0073C2FF&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">title=</span> <span class="st">&quot;Counts of NBER Papers by Year, 1973-2021&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Count&quot;</span>) </code></pre></div>
-<p><img src="tidytuesday_files/figure-html/unnamed-chunk-6-1.png" width="672" /> ###Now we can look at this over time by program category. It seems that Micro papers have made up most of the papers being written since the mid 90's and contribute most to the steep increase in papers.</p>
+<p><img src="tidytuesday_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="now-we-can-look-at-this-over-time-by-program-category.-it-seems-that-micro-papers-have-made-up-most-of-the-papers-being-written-since-the-mid-90s-and-contribute-most-to-the-steep-increase-in-papers." class="section level3">
+<h3>Now we can look at this over time by program category. It seems that Micro papers have made up most of the papers being written since the mid 90's and contribute most to the steep increase in papers.</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(joined_df, <span class="kw">aes</span>(<span class="dt">x=</span>year2, <span class="dt">fill=</span>program_category)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span> <span class="st">&quot;Counts of NBER Papers by Year and Program Category, 1973-2021&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Count&quot;</span>) </code></pre></div>
 <p><img src="tidytuesday_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
