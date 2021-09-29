@@ -65,20 +65,20 @@ write.csv(joined,"/Users/nicholasmallis/Desktop/MADA_Fall_2021/NicholasMallis-MA
 
 #let's see how big the dataset is?
 nrow(joined)
+```
 
-
-#from the glimpse above, we see that there might be a lot missing for
-#program, program_desc, and program category. let's look closer
+####From the glimpse above, we see that there might be a lot missing for program, program_desc, and program category. Let's look closer.
+```{r}
+#We'll use prop.table to get the percentage of missing.
 prop.table(table(joined$program, useNA = "always"))
 prop.table(table(joined$program_desc, useNA = "always"))
 prop.table(table(joined$program_category, useNA = "always"))
+```
 
+###It's not too bad. The highest one was program category and it was only missing %1
+```{r}
 
-
-#It's not too bad. The highest one was program category and it
-#was only missing %1
-
-#let's go ahead and check the others too, but this time use sum(is.na)
+#Let's go ahead and check the others too, but this time use sum(is.na)
 #looks like nothing is missing here
 sum(is.na(joined$catalogue_group))
 sum(is.na(joined$year))
@@ -90,12 +90,12 @@ head(joined)
 
 #looking at bottom of data
 tail(joined)
+```
 
 
-#But how many specific papers?
-#I'm interested in looking at categories of papers across time,
-#but it appears that the data is laid out by author and not paper title.
+###But how many specific papers? I'm interested in looking at categories of papers across time,but it appears that the data is laid out by author and not paper title.
 
+```{r}
 #Here we table title and glimpse at the number of observations.
 #Looks like there are 29,419 rows after this so there would be that many papers
 tab <- as.data.frame(table(joined$title))
@@ -105,21 +105,20 @@ glimpse(tab)
 
 library(data.table)
 DT <- data.table(joined, key="title")
+DT <- DT[, n := rank(paper, ties.method="first"), by = key(DT)][n == 1]
+joined_df <- DT[order(DT$title),] 
 
-new <- DT[, n := rank(paper, ties.method="first"), by = key(DT)][n == 1]
-
-joined_df <- new[order(new$title),] 
-
-#Making the new data frame results in a new one with 29,419 observations which matches our 
-#table from before
+#Making the new data frame results in a new one with 29,419 observations which matches our table from before
 glimpse(joined_df)
+
+#checking. looks good. Note: I commented out the following because the output was so large...
+#table(joined_df$title)
 
 
 
 ```
 ###Some Data Exploration/Plotting
 ```{r}
-
 
 #a simple bar plot of program_category
 ggplot(joined_df, aes(x=program_category)) +
@@ -142,10 +141,9 @@ ggplot(complete, aes(x=program)) +
 
 #getting full names to check what we just learned
 table(joined_df$program_desc)
-
-#It looks like Labor Studies, Political Economics, and Economic Fluctuations and Growth 
-#were most common.
-
+```
+###It looks like Labor Studies, Political Economics, and Economic Fluctuations and Growth were most common.
+```{r}
 #let's look at year, but first some data management
 joined_df$year2 <- lubridate::ymd(joined_df$year, truncated = 2L)
 
@@ -155,11 +153,11 @@ joined_df$year2 <- lubridate::ymd(joined_df$year, truncated = 2L)
 ggplot(joined_df, aes(x=year2)) +
   geom_bar(fill = "#0073C2FF") + labs(title= "Counts of NBER Papers by Year, 1973-2021") + xlab("Year") + ylab("Count") 
 
+```
+###Now we can look at this over time by program category. It seems that Micro papers have made up most of the papers being written since the mid 90's and contribute most to the steep increase in papers.
 
-#Now we can look at this over time by program category
-#It seems that Micro papers have made up most of the papers being written
-#since the mid 90's and contribute most to the steep increase
-#in papers. 
+
+```{r}
 ggplot(joined_df, aes(x=year2, fill=program_category)) + geom_bar() +
   labs(title= "Counts of NBER Papers by Year and Program Category, 1973-2021") + xlab("Year") + ylab("Count") 
 
@@ -176,13 +174,10 @@ ggplot(joined_df, aes(x=month, fill=program_category)) + geom_bar()
 
 #Now let's look at each specific program by year
 ggplot(joined_df, aes(x=year2, fill=program)) + geom_bar() + labs(title= "Counts of NBER Papers by Year and Specific Program, 1973-2021") + xlab("Year") + ylab("Count") 
+```
 
-
-#Sort of difficult to see with so many categories. I am particularly
-#interested in how the quantity of healthcare related papers has changed over time
-#Here I will make a new variable called 'health' that groups all the the health related
-#papers together
-
+###Sort of difficult to see with so many categories. I am particularly interested in how the quantity of healthcare related papers has changed over time. Here I will make a new variable called 'health' that groups all the the health related papers together
+```{r}
 table(joined_df$program_desc)
 
 #new categories
@@ -204,10 +199,10 @@ ggplot(joined_df, aes(x=health)) +
 ggplot(joined_df, aes(x=year2, fill=health)) + geom_bar() +
   labs(title= "Counts of NBER Papers by Health Related Topics by Year, 1973-2021") + xlab("Year") + ylab("Count") 
 
+```
 
 
-
-
+```{r}
 
 #Last, I'd like to see which author has written the most papers
 #First we'll table all names and create a new data frame.
