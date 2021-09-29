@@ -156,10 +156,12 @@ ggplot(joined_df, aes(x=year2)) +
 ```
 
 
-###Now we can look at this over time by program category. It seems that Micro papers have made up most of the papers being written since the mid 90's and contribute most to the steep increase in papers.
 
 
 ```{r}
+
+#Now we can look at this over time by program category. It seems that Micro papers have made up most of the papers being written since the mid 90's and contribute most to the steep increase in papers.
+
 ggplot(joined_df, aes(x=year2, fill=program_category)) + geom_bar() +
   labs(title= "Counts of NBER Papers by Year and Program Category, 1973-2021") + xlab("Year") + ylab("Count") 
 
