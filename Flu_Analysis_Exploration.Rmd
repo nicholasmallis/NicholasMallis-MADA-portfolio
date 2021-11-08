@@ -6,7 +6,7 @@ output: html_document
 ---
 
 
-This is part of an analysis exercise I did in a Modern Applied data analysis course at UGA with Dr. Andreas Handel. We used data on flu patients You can find the full steps to data cleaning on more information [here at the github page](https://github.com/nicholasmallis/NicholasMallis-MADA-analysis3)
+This is part of an analysis exercise I did in a Modern Applied Data Analysis course at UGA with Dr. Andreas Handel. We used data on flu patients You can find the full steps to data cleaning on more information [here at the github page](https://github.com/nicholasmallis/NicholasMallis-MADA-analysis3)
 
 ###Data Loading and Cleaning
 ```{r}
