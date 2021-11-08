@@ -1,0 +1,330 @@
+---
+title: "Flu Analysis: Decision Tree"
+author: "Nicholas Mallis"
+date: "11/2/2021"
+output: html_document
+---
+
+This is part of an analysis exercise I did in a Modern Applied data analysis course at UGA with Dr. Andreas Handel. We used data on flu patients You can find the full steps to data cleaning on more information [here at the github page](https://github.com/nicholasmallis/NicholasMallis-MADA-analysis3)
+
+
+Note: The contents of this exercise include code, output, and figures for fitting the null models and Decision Tree. I unfortunately still could not get my LASSO or Random Forest models to work, even after using your code . Everytime I try to run tune_grid(), R crashes. I tried multiple ways and seeked help, but nothing would work.I'm not sure if it's my computer. I have a seperate R script called LASSO and RF.R which includes include code, output, and figures for fitting the null models, LASSO, and Random Forests. While these do not work on my computer, maybe they will on yours?
+
+
+
+# Setting up
+```{r message=FALSE, results =FALSE}
+#loading packages
+library(broom)
+library(here) #for data loading/saving
+library(tidyverse)
+library(recipes)
+library(tidymodels)
+library(workflowr) 
+library(parsnip)
+library(rsample)
+library(rpart)
+library(glmnet)
+library(ranger)
+library(modeldata)
+library(rpart.plot)
+library(dials)
+library(workflows)
+library(vip)
+library(glmnet)
+library(yardstick)
+library(doParallel) # for parallel computing 
+```
+
+
+#Loading Data
+
+
+```{r message=FALSE, results =FALSE}
+#first loading in processed data
+data_location <- here::here("files","processeddata.rds")
+
+#load data. 
+data <- readRDS(data_location)
+
+#checking
+glimpse(data)
+
+```
+
+#Setting up: Random Seed, Data Split, and Cross Validation 
+
+
+```{r}
+
+set.seed(123)
+
+data_split <- initial_split(data, prop = .7, strata = BodyTemp)
+
+train_data <- training(data_split)
+test_data  <- testing(data_split)
+
+folds <- vfold_cv(train_data, v = 5, r=5, strata= "BodyTemp")
+folds
+
+```
+
+
+Creating a Recipe/Workflow
+```{r}
+#Recipe() has two arguments: a formula and the data
+bodytemp_cont_rec <- recipe(BodyTemp ~ ., data = train_data) %>%
+  step_dummy(all_nominal_predictors()) #adding step_dummy
+
+#Build a model specification using the parsnip package
+lm_mod <- linear_reg() %>%
+  set_engine("lm") 
+
+#Model workflow pairs a model and recipe together
+bodytemp_cont_workflow <- 
+  workflow() %>%
+  add_model(lm_mod) %>%
+  add_recipe(bodytemp_cont_rec)
+
+
+```
+
+#Fitting the Null Model
+```{r}
+
+# Creates a simple recipe that fits null model
+bodytmp_rec_null <- recipe(BodyTemp ~  1 , data = train_data)
+
+# Set a model as we did in the previous exercise
+lr_mod <- 
+  linear_reg() %>% 
+  set_engine("lm")
+
+bodytmp_wflow_null <- 
+  workflow() %>% 
+  add_model(lr_mod) %>% 
+  add_recipe(bodytmp_rec_null)
+
+# Fitting the model
+bodytmp_fit_null <- 
+  bodytmp_wflow_null %>% 
+  fit(data = train_data)
+
+# Extracting Model/Recipes with Parsnip
+bodytmp_fit_null %>% 
+  extract_fit_parsnip() %>% 
+  tidy()
+
+
+# Obtaining Predictions
+predict(bodytmp_fit_null, train_data)
+
+bodytmp_aug_null <- 
+  augment(bodytmp_fit_null, train_data)
+
+bodytmp_aug_null %>%
+  select(BodyTemp)
+
+
+# Calculating Root RMSE 
+rmse_train <- bodytmp_aug_null %>% 
+  rmse(truth = BodyTemp, .pred)
+
+# RMSE 1.21
+rmse_train
+
+
+
+# Now on Test Data
+
+
+# Obtaining Predictions
+predict(bodytmp_fit_null, test_data)
+
+bodytmp_aug_null <- 
+  augment(bodytmp_fit_null, test_data)
+
+bodytmp_aug_null %>%
+  select(BodyTemp)
+
+
+# Calculating Root RMSE 
+rmse_test <- bodytmp_aug_null %>% 
+  rmse(truth = BodyTemp, .pred)
+
+# RMSE 1.16
+rmse_test 
+```
+
+###Here we see that the RMSE on train data from the null model is 1.21
+```{r}
+# RMSE 1.21
+rmse_train
+```
+
+
+
+#Fitting a Tree
+```{r}
+# TREE 
+
+# model specification
+tune_spec <- 
+  decision_tree(
+    cost_complexity = tune(),
+    tree_depth = tune()
+  ) %>% 
+  set_engine("rpart") %>% 
+  set_mode("regression")    # setting it to regression instead of classification
+
+tune_spec
+
+
+# tuning grid specification
+tree_grid <- grid_regular(cost_complexity(),
+                          tree_depth(),
+                          levels = 5)
+
+
+tree_grid %>% 
+  count(tree_depth)
+
+
+# Tune a workflow() that bundles together a model
+# specification and a recipe or model preprocessor.
+# Here we use a workflow() with a straightforward formula; 
+# if this model required more involved data preprocessing, 
+# we could use add_recipe() instead of add_formula().
+
+
+tree_wf <- workflow() %>%
+  add_model(tune_spec) %>%
+  add_recipe(bodytemp_cont_rec) # using predefined recipe
+
+```
+
+
+
+```{r}
+# tuning using cross-validation and the tune_grid() function
+tree_res <- 
+  tree_wf %>% 
+  tune_grid(resamples = folds, grid = tree_grid)
+```
+
+```{r}
+tree_res %>% 
+  collect_metrics()
+
+# Once you have done the tuning, you can take a look at some diagnostics
+#by sending your object returned from the tune_grid() function to autoplot(). 
+#For instance if you tuned the tree and saved the result as tree_tune_res,
+#you can run tree_tune_res %>% autoplot(). Depending on the model, the plot
+#will be different, but in general it shows you what happened during the tuning process.
+
+#plotting metrics
+tree_res %>% autoplot()
+
+
+# Next, you want to get the model that the tuning process has determined 
+# is the best. You can get the best-fit model with select_best() 
+# and finalize_workflow() and then do one more fit to the training data with 
+# this final workflow using the fit() function. Follow the examples in the tutorial.
+
+# selecting best
+best_tree <- tree_res %>%
+  select_best(tree_res, metric = "rsq")
+
+best_tree
+
+
+
+# finalizing model
+final_wf <- 
+  tree_wf %>% 
+  finalize_workflow(best_tree)
+
+final_wf
+
+# one more fit to the training data with 
+# this final workflow using the fit() function
+
+final_fit <- 
+  final_wf %>%
+  last_fit(data_split) 
+
+
+# RMSE= 1.23, not much different from the null
+final_fit %>%
+  collect_metrics()
+
+#Collecting Predictions
+tree_pred <- final_fit %>%
+  collect_predictions() 
+
+```
+
+
+
+
+```{r}
+# Make two plots, one that shows model predictions from the tuned model 
+# versus actual outcomes
+  
+ggplot(data=tree_pred, aes(x=.pred, y=BodyTemp)) + geom_point() + labs(title= "Plot of Model Predictions from Tuned Model vs Actual Outcomes", 
+       x= "Model Predictions", y= "Actual Outcomes") 
+
+#calculating residuals
+tree_pred$resid <- tree_pred$BodyTemp - tree_pred$.pred 
+
+# one that plots residuals.
+# plotting residuals 
+ggplot(data=tree_pred, aes(x=.pred , y=resid)) + geom_point() +
+  labs(title= "Plot of Model Predictions from Tuned Model vs Actual Outcomes", 
+       x= "Model Predictions", y= "Residuals") 
+
+
+
+# Look at/print the model performance and compare it with the null model
+# (still only on training data). Here, we want the performance of the tuned, 
+# best-fitting model on the CV dataset (we are not yet touching the test data). 
+# You can get that for instance with the show_best() function, which gives you
+# the mean cross-validated performance for the best models. It also shows the
+# standard deviation for the performance. Compare that model performance with the null model
+
+```
+
+
+###Comparing RMSE to Null
+
+The tree model does not perform very well, and the model only predicts a few discrete
+outcome values. That’s also noticeable when we compare RMSE for the tree model(1.23) 
+and the null model (1.21). They are very similar.
+
+```{r}
+# RMSE= 1.23
+show_best(final_fit, metric= "rmse")
+
+# Null Model. RMSE 1.21
+rmse_train
+```
+
+
+###Tree Plot
+```{r}
+final_fit %>%
+  extract_fit_engine() %>%
+  rpart.plot(roundint = FALSE)
+
+```
+
+
+### Estimate variable importance based on the model’s structure.
+```{r}
+library(vip)
+
+final_fit %>% 
+  extract_fit_parsnip() %>% 
+  vip()
+```
+

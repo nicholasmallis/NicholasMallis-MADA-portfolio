@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Nicholas Mallis" />
+
+<meta name="date" content="2021-10-12" />
+
+<title>Simple Regression Analysis: Flu Data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #cccccc; background-color: #303030; }
+code > span.kw { color: #f0dfaf; } /* Keyword */
+code > span.dt { color: #dfdfbf; } /* DataType */
+code > span.dv { color: #dcdccc; } /* DecVal */
+code > span.bn { color: #dca3a3; } /* BaseN */
+code > span.fl { color: #c0bed1; } /* Float */
+code > span.ch { color: #dca3a3; } /* Char */
+code > span.st { color: #cc9393; } /* String */
+code > span.co { color: #7f9f7f; } /* Comment */
+code > span.ot { color: #efef8f; } /* Other */
+code > span.al { color: #ffcfaf; } /* Alert */
+code > span.fu { color: #efef8f; } /* Function */
+code > span.er { color: #c3bf9f; } /* Error */
+code > span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+code > span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code > span.sc { color: #dca3a3; } /* SpecialChar */
+code > span.vs { color: #cc9393; } /* VerbatimString */
+code > span.ss { color: #cc9393; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { } /* Variable */
+code > span.cf { color: #f0dfaf; } /* ControlFlow */
+code > span.op { color: #f0efd0; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code > span.at { } /* Attribute */
+code > span.do { color: #7f9f7f; } /* Documentation */
+code > span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+code > span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">My Data Analysis Portfolio</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="./aboutme.html">About Me</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Projects
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./rcoding.html">R Coding</a>
+    </li>
+    <li>
+      <a href="./visualization.html">Visualization</a>
+    </li>
+    <li>
+      <a href="./tidytuesday.html">Tidy Tuesday</a>
+    </li>
+    <li>
+      <a href="./tidytuesday_exercise2.html">Tidy Tuesday 2 Exercise</a>
+    </li>
+    <li>
+      <a href="./Flu_Analysis_Exploration.html">Flu Data Analysis: Exploration</a>
+    </li>
+    <li>
+      <a href="./Flu_Analysis_Simple.html">Flu Data Analysis: Simple and Multivariate Regression</a>
+    </li>
+    <li>
+      <a href="./Flu_Analysis_Complex.html">Flu Data Analysis: Decision Tree and Test/Train Split</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/nicholasmallis/NicholasMallis-MADA-portfolio">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Simple Regression Analysis: Flu Data</h1>
+<h4 class="author">Nicholas Mallis</h4>
+<h4 class="date">10/12/2021</h4>
+
+</div>
+
+
+<p>This is part of an analysis exercise I did in a Modern Applied data analysis course at UGA with Dr. Andreas Handel. We used data on flu patients You can find the full steps to data cleaning on more information <a href="https://github.com/nicholasmallis/NicholasMallis-MADA-analysis3">here at the github page</a></p>
+<div id="data-loading" class="section level3">
+<h3>Data Loading</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#loads needed packages.</span>
+<span class="kw">library</span>(ggplot2) <span class="co">#for plotting</span>
+<span class="kw">library</span>(broom) <span class="co">#for cleaning up output from lm()</span>
+<span class="kw">library</span>(here) <span class="co">#for data loading/saving</span>
+<span class="kw">library</span>(tidyverse)
+<span class="kw">library</span>(dplyr)
+
+<span class="co">#path to data</span>
+<span class="co">#note the use of the here() package and not absolute paths</span>
+data_location &lt;-<span class="st"> </span>here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;processeddata.rds&quot;</span>)
+
+<span class="co">#load data. </span>
+mydata &lt;-<span class="st"> </span><span class="kw">readRDS</span>(data_location)</code></pre></div>
+</div>
+<div id="linear-models" class="section level2">
+<h2>Linear Models</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidymodels)  <span class="co"># for the parsnip package, along with the rest of tidymodels</span>
+
+<span class="co"># Helper packages</span>
+<span class="kw">library</span>(readr)       <span class="co"># for importing data</span>
+<span class="kw">library</span>(broom.mixed) <span class="co"># for converting bayesian models to tidy tibbles</span>
+<span class="kw">library</span>(dotwhisker)  <span class="co"># for visualizing regression results</span></code></pre></div>
+<pre><code>## Registered S3 methods overwritten by &#39;parameters&#39;:
+##   method                           from      
+##   as.double.parameters_kurtosis    datawizard
+##   as.double.parameters_skewness    datawizard
+##   as.double.parameters_smoothness  datawizard
+##   as.numeric.parameters_kurtosis   datawizard
+##   as.numeric.parameters_skewness   datawizard
+##   as.numeric.parameters_smoothness datawizard
+##   print.parameters_distribution    datawizard
+##   print.parameters_kurtosis        datawizard
+##   print.parameters_skewness        datawizard
+##   summary.parameters_kurtosis      datawizard
+##   summary.parameters_skewness      datawizard</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#setting engine</span>
+lm_mod &lt;-<span class="st"> </span>
+<span class="st">  </span><span class="kw">linear_reg</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;lm&quot;</span>)
+
+<span class="co">#running model</span>
+lm_fit &lt;-<span class="st"> </span>
+<span class="st">  </span>lm_mod <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">fit</span>(BodyTemp <span class="op">~</span><span class="st"> </span>RunnyNose, <span class="dt">data =</span> mydata)
+lm_fit</code></pre></div>
+<pre><code>## parsnip model object
+## 
+## Fit time:  3ms 
+## 
+## Call:
+## stats::lm(formula = BodyTemp ~ RunnyNose, data = data)
+## 
+## Coefficients:
+##  (Intercept)  RunnyNoseYes  
+##      99.1431       -0.2926</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#saving as table</span>
+lm_fit_table &lt;-<span class="st"> </span><span class="kw">tidy</span>(lm_fit)
+
+<span class="co">#saved it as a file</span>
+summarytable_file2 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;lm_fit_table.rds&quot;</span>)
+<span class="kw">saveRDS</span>(lm_fit_table, <span class="dt">file =</span> summarytable_file2)
+
+<span class="co">#using glance to get statistics</span>
+lm_fit_stats &lt;-<span class="st"> </span><span class="kw">glance</span>(lm_fit)
+
+
+<span class="co">#saved it as a file</span>
+summarytable_file3 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;lm_fit_stats.rds&quot;</span>)
+<span class="kw">saveRDS</span>(lm_fit_stats, <span class="dt">file =</span> summarytable_file3)</code></pre></div>
+<p>Now I display the saved file for an improved aesthetic.</p>
+<table>
+<caption>Coefficients from Simple Linear Regression Model with Body Temperature as the outcome and Runny Nose as the predictor</caption>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">99.1431280</td>
+<td align="right">0.0819076</td>
+<td align="right">1210.425819</td>
+<td align="right">0.00000</td>
+</tr>
+<tr class="even">
+<td align="left">RunnyNoseYes</td>
+<td align="right">-0.2926463</td>
+<td align="right">0.0971409</td>
+<td align="right">-3.012595</td>
+<td align="right">0.00268</td>
+</tr>
+</tbody>
+</table>
+<p>Now I display the saved file for an improved aesthetic.</p>
+<table style="width:100%;">
+<caption>Simple Linear Regression Model with Body Temperature as the outcome and Runny Nose as the predictor</caption>
+<colgroup>
+<col width="9%" />
+<col width="12%" />
+<col width="8%" />
+<col width="9%" />
+<col width="7%" />
+<col width="3%" />
+<col width="9%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="10%" />
+<col width="5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">r.squared</th>
+<th align="right">adj.r.squared</th>
+<th align="right">sigma</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">df</th>
+<th align="right">logLik</th>
+<th align="right">AIC</th>
+<th align="right">BIC</th>
+<th align="right">deviance</th>
+<th align="right">df.residual</th>
+<th align="right">nobs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.0123132</td>
+<td align="right">0.0109564</td>
+<td align="right">1.189777</td>
+<td align="right">9.075731</td>
+<td align="right">0.00268</td>
+<td align="right">1</td>
+<td align="right">-1161.673</td>
+<td align="right">2329.346</td>
+<td align="right">2343.125</td>
+<td align="right">1030.535</td>
+<td align="right">728</td>
+<td align="right">730</td>
+</tr>
+</tbody>
+</table>
+<p>Fits another linear model to the continuous outcome using all (important) predictors of interest.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#same thing this time, but for multivariable</span>
+lm_mod2 &lt;-<span class="st"> </span>
+<span class="st">  </span><span class="kw">linear_reg</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;lm&quot;</span>)
+
+lm_fit2 &lt;-<span class="st"> </span>
+<span class="st">  </span>lm_mod2 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">fit</span>(BodyTemp <span class="op">~</span><span class="st">  </span>.<span class="op">-</span>SwollenLymphNodes <span class="op">-</span><span class="st"> </span>Wheeze, <span class="dt">data =</span> mydata)
+lm_fit2</code></pre></div>
+<pre><code>## parsnip model object
+## 
+## Fit time:  10ms 
+## 
+## Call:
+## stats::lm(formula = BodyTemp ~ . - SwollenLymphNodes - Wheeze, 
+##     data = data)
+## 
+## Coefficients:
+##        (Intercept)  ChestCongestionYes     ChillsSweatsYes  NasalCongestionYes  
+##          98.289481            0.090488            0.198723           -0.236564  
+##          SneezeYes          FatigueYes  SubjectiveFeverYes         HeadacheYes  
+##          -0.377652            0.261334            0.415613           -0.008026  
+##         Weakness.L          Weakness.Q          Weakness.C    CoughIntensity.L  
+##           0.260476            0.131109            0.025478            0.185175  
+##   CoughIntensity.Q    CoughIntensity.C           Myalgia.L           Myalgia.Q  
+##          -0.170584            0.131620           -0.127985           -0.145555  
+##          Myalgia.C        RunnyNoseYes           AbPainYes        ChestPainYes  
+##           0.096334           -0.067614            0.021928            0.090996  
+##        DiarrheaYes            EyePnYes         InsomniaYes         ItchyEyeYes  
+##          -0.145627            0.142853           -0.006453           -0.007723  
+##          NauseaYes            EarPnYes      PharyngitisYes       BreathlessYes  
+##          -0.024566            0.087189            0.267819            0.062433  
+##         ToothPnYes            VomitYes  
+##          -0.043296            0.149671</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#saving table of all coefficients</span>
+lm_fit_full_table &lt;-<span class="st"> </span><span class="kw">tidy</span>(lm_fit2)
+
+<span class="co">#saved it as a file</span>
+summarytable_file4 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;lm_fit_full_table.rds&quot;</span>)
+<span class="kw">saveRDS</span>(lm_fit_full_table, <span class="dt">file =</span> summarytable_file4)
+
+<span class="co">#using glance to get statistics</span>
+lm_fit_full_stats &lt;-<span class="st"> </span><span class="kw">glance</span>(lm_fit2)
+
+<span class="co">#saved it as a file</span>
+summarytable_file5 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;lm_fit_full_stats.rds&quot;</span>)
+<span class="kw">saveRDS</span>(lm_fit_full_stats, <span class="dt">file =</span> summarytable_file5)</code></pre></div>
+<p>Now I display the saved file for an improved aesthetic.</p>
+<table>
+<caption>Coefficients from Multivariate Linear Regression Model with Body Temperature as the outcome and Runny Nose and all other covariates as the predictors</caption>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">98.2894813</td>
+<td align="right">0.2383490</td>
+<td align="right">412.3762702</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">ChestCongestionYes</td>
+<td align="right">0.0904876</td>
+<td align="right">0.0969783</td>
+<td align="right">0.9330705</td>
+<td align="right">0.3511053</td>
+</tr>
+<tr class="odd">
+<td align="left">ChillsSweatsYes</td>
+<td align="right">0.1987234</td>
+<td align="right">0.1270472</td>
+<td align="right">1.5641702</td>
+<td align="right">0.1182296</td>
+</tr>
+<tr class="even">
+<td align="left">NasalCongestionYes</td>
+<td align="right">-0.2365638</td>
+<td align="right">0.1132424</td>
+<td align="right">-2.0890037</td>
+<td align="right">0.0370680</td>
+</tr>
+<tr class="odd">
+<td align="left">SneezeYes</td>
+<td align="right">-0.3776520</td>
+<td align="right">0.0978457</td>
+<td align="right">-3.8596680</td>
+<td align="right">0.0001240</td>
+</tr>
+<tr class="even">
+<td align="left">FatigueYes</td>
+<td align="right">0.2613343</td>
+<td align="right">0.1605875</td>
+<td align="right">1.6273638</td>
+<td align="right">0.1041099</td>
+</tr>
+<tr class="odd">
+<td align="left">SubjectiveFeverYes</td>
+<td align="right">0.4156130</td>
+<td align="right">0.1021694</td>
+<td align="right">4.0678830</td>
+<td align="right">0.0000528</td>
+</tr>
+<tr class="even">
+<td align="left">HeadacheYes</td>
+<td align="right">-0.0080257</td>
+<td align="right">0.1252887</td>
+<td align="right">-0.0640576</td>
+<td align="right">0.9489426</td>
+</tr>
+<tr class="odd">
+<td align="left">Weakness.L</td>
+<td align="right">0.2604760</td>
+<td align="right">0.1621236</td>
+<td align="right">1.6066508</td>
+<td align="right">0.1085820</td>
+</tr>
+<tr class="even">
+<td align="left">Weakness.Q</td>
+<td align="right">0.1311088</td>
+<td align="right">0.1154737</td>
+<td align="right">1.1353999</td>
+<td align="right">0.2565964</td>
+</tr>
+<tr class="odd">
+<td align="left">Weakness.C</td>
+<td align="right">0.0254779</td>
+<td align="right">0.0819156</td>
+<td align="right">0.3110258</td>
+<td align="right">0.7558736</td>
+</tr>
+<tr class="even">
+<td align="left">CoughIntensity.L</td>
+<td align="right">0.1851749</td>
+<td align="right">0.1428124</td>
+<td align="right">1.2966307</td>
+<td align="right">0.1951856</td>
+</tr>
+<tr class="odd">
+<td align="left">CoughIntensity.Q</td>
+<td align="right">-0.1705838</td>
+<td align="right">0.1120502</td>
+<td align="right">-1.5223871</td>
+<td align="right">0.1283637</td>
+</tr>
+<tr class="even">
+<td align="left">CoughIntensity.C</td>
+<td align="right">0.1316203</td>
+<td align="right">0.0873641</td>
+<td align="right">1.5065717</td>
+<td align="right">0.1323716</td>
+</tr>
+<tr class="odd">
+<td align="left">Myalgia.L</td>
+<td align="right">-0.1279847</td>
+<td align="right">0.1469963</td>
+<td align="right">-0.8706662</td>
+<td align="right">0.3842349</td>
+</tr>
+<tr class="even">
+<td align="left">Myalgia.Q</td>
+<td align="right">-0.1455552</td>
+<td align="right">0.1052010</td>
+<td align="right">-1.3835914</td>
+<td align="right">0.1669247</td>
+</tr>
+<tr class="odd">
+<td align="left">Myalgia.C</td>
+<td align="right">0.0963340</td>
+<td align="right">0.0805044</td>
+<td align="right">1.1966304</td>
+<td align="right">0.2318558</td>
+</tr>
+<tr class="even">
+<td align="left">RunnyNoseYes</td>
+<td align="right">-0.0676145</td>
+<td align="right">0.1081778</td>
+<td align="right">-0.6250312</td>
+<td align="right">0.5321543</td>
+</tr>
+<tr class="odd">
+<td align="left">AbPainYes</td>
+<td align="right">0.0219283</td>
+<td align="right">0.1400241</td>
+<td align="right">0.1566037</td>
+<td align="right">0.8756023</td>
+</tr>
+<tr class="even">
+<td align="left">ChestPainYes</td>
+<td align="right">0.0909959</td>
+<td align="right">0.1062000</td>
+<td align="right">0.8568354</td>
+<td align="right">0.3918291</td>
+</tr>
+<tr class="odd">
+<td align="left">DiarrheaYes</td>
+<td align="right">-0.1456270</td>
+<td align="right">0.1294966</td>
+<td align="right">-1.1245621</td>
+<td align="right">0.2611601</td>
+</tr>
+<tr class="even">
+<td align="left">EyePnYes</td>
+<td align="right">0.1428531</td>
+<td align="right">0.1292539</td>
+<td align="right">1.1052133</td>
+<td align="right">0.2694469</td>
+</tr>
+<tr class="odd">
+<td align="left">InsomniaYes</td>
+<td align="right">-0.0064532</td>
+<td align="right">0.0908777</td>
+<td align="right">-0.0710102</td>
+<td align="right">0.9434099</td>
+</tr>
+<tr class="even">
+<td align="left">ItchyEyeYes</td>
+<td align="right">-0.0077230</td>
+<td align="right">0.1098313</td>
+<td align="right">-0.0703165</td>
+<td align="right">0.9439618</td>
+</tr>
+<tr class="odd">
+<td align="left">NauseaYes</td>
+<td align="right">-0.0245658</td>
+<td align="right">0.1019988</td>
+<td align="right">-0.2408441</td>
+<td align="right">0.8097465</td>
+</tr>
+<tr class="even">
+<td align="left">EarPnYes</td>
+<td align="right">0.0871890</td>
+<td align="right">0.1122521</td>
+<td align="right">0.7767250</td>
+<td align="right">0.4375834</td>
+</tr>
+<tr class="odd">
+<td align="left">PharyngitisYes</td>
+<td align="right">0.2678187</td>
+<td align="right">0.1183938</td>
+<td align="right">2.2621000</td>
+<td align="right">0.0239971</td>
+</tr>
+<tr class="even">
+<td align="left">BreathlessYes</td>
+<td align="right">0.0624325</td>
+<td align="right">0.0959177</td>
+<td align="right">0.6508972</td>
+<td align="right">0.5153264</td>
+</tr>
+<tr class="odd">
+<td align="left">ToothPnYes</td>
+<td align="right">-0.0432965</td>
+<td align="right">0.1134105</td>
+<td align="right">-0.3817677</td>
+<td align="right">0.7027495</td>
+</tr>
+<tr class="even">
+<td align="left">VomitYes</td>
+<td align="right">0.1496706</td>
+<td align="right">0.1510626</td>
+<td align="right">0.9907849</td>
+<td align="right">0.3221330</td>
+</tr>
+</tbody>
+</table>
+<p>Now I display the saved file for an improved aesthetic.</p>
+<table>
+<caption>Multivariate Linear Regression Model with Body Temperature as the outcome and Runny Nose and all other covariates as the predictors</caption>
+<thead>
+<tr class="header">
+<th align="right">null.deviance</th>
+<th align="right">df.null</th>
+<th align="right">logLik</th>
+<th align="right">AIC</th>
+<th align="right">BIC</th>
+<th align="right">deviance</th>
+<th align="right">df.residual</th>
+<th align="right">nobs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">944.6515</td>
+<td align="right">729</td>
+<td align="right">-377.6031</td>
+<td align="right">815.2062</td>
+<td align="right">952.9976</td>
+<td align="right">755.2062</td>
+<td align="right">700</td>
+<td align="right">730</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="comparing-both-linear-models" class="section level1">
+<h1>Comparing both linear models:</h1>
+<p>Here I use ANOVA to test whether the more complex model is significantly better at capturing the data than the simpler model. The resulting p-value is sufficiently low so we conclude that the more complex model is significantly better than the simpler model. Also, from the glance() output prior, we see that the AIC for the multivariate model is lower that the simple model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">comparing_lm_anova &lt;-<span class="st"> </span><span class="kw">anova</span>(lm_fit<span class="op">$</span>fit, lm_fit2<span class="op">$</span>fit)
+
+<span class="kw">tidy</span>(<span class="kw">anova</span>(lm_fit<span class="op">$</span>fit, lm_fit2<span class="op">$</span>fit))</code></pre></div>
+<pre><code>## [38;5;246m# A tibble: 2 × 6[39m
+##   res.df   rss    df sumsq statistic      p.value
+##    [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;dbl&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m        [3m[38;5;246m&lt;dbl&gt;[39m[23m
+## [38;5;250m1[39m    728 [4m1[24m031.    [31mNA[39m   [31mNA[39m      [31mNA[39m    [31mNA[39m          
+## [38;5;250m2[39m    700  918.    28  112.      3.06  0.000[4m0[24m[4m0[24m[4m0[24m304</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">summarytable_file6 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;comparing_lm_anova.rds&quot;</span>)
+<span class="kw">saveRDS</span>(comparing_lm_anova, <span class="dt">file =</span> summarytable_file6)</code></pre></div>
+<p>Now I display the saved file for an improved aesthetic.</p>
+<table>
+<caption>ANOVA Table Comparing the Simple and Complex Models</caption>
+<thead>
+<tr class="header">
+<th align="right">Res.Df</th>
+<th align="right">RSS</th>
+<th align="right">Df</th>
+<th align="right">Sum of Sq</th>
+<th align="right">F</th>
+<th align="right">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">728</td>
+<td align="right">1030.5349</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="right">700</td>
+<td align="right">918.1929</td>
+<td align="right">28</td>
+<td align="right">112.342</td>
+<td align="right">3.058781</td>
+<td align="right">3e-07</td>
+</tr>
+</tbody>
+</table>
+<div id="logistic-models" class="section level3">
+<h3>Logistic Models</h3>
+<p>Fits a logistic model to the categorical outcome using only the main predictor of interest.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#setting engine</span>
+log_mod &lt;-<span class="st"> </span>
+<span class="st">  </span><span class="kw">logistic_reg</span>()  <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;glm&quot;</span>)
+
+log_fit &lt;-<span class="st"> </span>
+<span class="st">  </span>log_mod <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">fit</span>(Nausea <span class="op">~</span><span class="st"> </span>RunnyNose , <span class="dt">data =</span> mydata)
+log_fit</code></pre></div>
+<pre><code>## parsnip model object
+## 
+## Fit time:  5ms 
+## 
+## Call:  stats::glm(formula = Nausea ~ RunnyNose, family = stats::binomial, 
+##     data = data)
+## 
+## Coefficients:
+##  (Intercept)  RunnyNoseYes  
+##     -0.65781       0.05018  
+## 
+## Degrees of Freedom: 729 Total (i.e. Null);  728 Residual
+## Null Deviance:       944.7 
+## Residual Deviance: 944.6     AIC: 948.6</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#saving coeffiecents in a table</span>
+log_fit_table &lt;-<span class="st"> </span><span class="kw">tidy</span>(log_fit)
+
+<span class="co">#save as a table object in resutls </span>
+summarytable_file7 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;log_fit_table.rds&quot;</span>)
+<span class="kw">saveRDS</span>(log_fit_table, <span class="dt">file =</span> summarytable_file7)
+
+<span class="co">#glancing at stats</span>
+log_fit_stats &lt;-<span class="st"> </span><span class="kw">glance</span>(log_fit)
+
+<span class="co">#saving</span>
+summarytable_file8 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;log_fit_stats.rds&quot;</span>)
+<span class="kw">saveRDS</span>(log_fit_stats, <span class="dt">file =</span> summarytable_file8)</code></pre></div>
+<table>
+<caption>Simple Logistic Model with Runny Nose as the Predictor and Nausea as the Outcome</caption>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-0.6578078</td>
+<td align="right">0.1452003</td>
+<td align="right">-4.5303474</td>
+<td align="right">0.0000059</td>
+</tr>
+<tr class="even">
+<td align="left">RunnyNoseYes</td>
+<td align="right">0.0501828</td>
+<td align="right">0.1718249</td>
+<td align="right">0.2920578</td>
+<td align="right">0.7702424</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>Simple Logistic Model with Runny Nose as the Predictor and Nausea as the Outcome</caption>
+<thead>
+<tr class="header">
+<th align="right">null.deviance</th>
+<th align="right">df.null</th>
+<th align="right">logLik</th>
+<th align="right">AIC</th>
+<th align="right">BIC</th>
+<th align="right">deviance</th>
+<th align="right">df.residual</th>
+<th align="right">nobs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">944.6515</td>
+<td align="right">729</td>
+<td align="right">-472.283</td>
+<td align="right">948.5661</td>
+<td align="right">957.7521</td>
+<td align="right">944.5661</td>
+<td align="right">728</td>
+<td align="right">730</td>
+</tr>
+</tbody>
+</table>
+<p>Fits another logistic model to the categorical outcome using all (important) predictors of interest. Compares the model results for the categorical model with just the main predictor and all predictors.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#same here but for multivariable model</span>
+log_mod2 &lt;-<span class="st"> </span>
+<span class="st">  </span><span class="kw">logistic_reg</span>()  <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;glm&quot;</span>)
+
+log_fit2 &lt;-<span class="st"> </span>
+<span class="st">  </span>log_mod2 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">fit</span>(Nausea <span class="op">~</span><span class="st">  </span>.<span class="op">-</span>SwollenLymphNodes <span class="op">-</span><span class="st"> </span>Wheeze, <span class="dt">data =</span> mydata)
+log_fit2</code></pre></div>
+<pre><code>## parsnip model object
+## 
+## Fit time:  13ms 
+## 
+## Call:  stats::glm(formula = Nausea ~ . - SwollenLymphNodes - Wheeze, 
+##     family = stats::binomial, data = data)
+## 
+## Coefficients:
+##        (Intercept)  ChestCongestionYes     ChillsSweatsYes  NasalCongestionYes  
+##           -0.55533             0.24327             0.29102             0.39597  
+##          SneezeYes          FatigueYes  SubjectiveFeverYes         HeadacheYes  
+##            0.15451             0.19830             0.20265             0.32505  
+##         Weakness.L          Weakness.Q          Weakness.C    CoughIntensity.L  
+##            0.65140             0.31658            -0.10505            -0.80362  
+##   CoughIntensity.Q    CoughIntensity.C           Myalgia.L           Myalgia.Q  
+##           -0.13191            -0.12758             0.15506            -0.05884  
+##          Myalgia.C        RunnyNoseYes           AbPainYes        ChestPainYes  
+##           -0.09715             0.05510             0.94186             0.03436  
+##        DiarrheaYes            EyePnYes         InsomniaYes         ItchyEyeYes  
+##            1.06332            -0.31520             0.07645            -0.04829  
+##           EarPnYes      PharyngitisYes       BreathlessYes          ToothPnYes  
+##           -0.22568             0.20810             0.43366             0.48306  
+##           VomitYes            BodyTemp  
+##            2.40936            -0.02431  
+## 
+## Degrees of Freedom: 729 Total (i.e. Null);  700 Residual
+## Null Deviance:       944.7 
+## Residual Deviance: 755.2     AIC: 815.2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">log_fit_full_table &lt;-<span class="st"> </span><span class="kw">tidy</span>(log_fit2)
+
+summarytable_file9 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;log_fit_full_table.rds&quot;</span>)
+<span class="kw">saveRDS</span>(log_fit_full_table, <span class="dt">file =</span> summarytable_file9)
+
+log_fit_full_stats &lt;-<span class="st"> </span><span class="kw">glance</span>(log_fit2)
+
+summarytable_file10 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;log_fit_full_stats.rds&quot;</span>)
+<span class="kw">saveRDS</span>(log_fit_full_stats, <span class="dt">file =</span> summarytable_file10)</code></pre></div>
+<table>
+<caption>Multivariate Logistic Model with Runny Nose and other Covariates as the Predictors and Nausea as the Outcome</caption>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-0.5553275</td>
+<td align="right">7.8153089</td>
+<td align="right">-0.0710564</td>
+<td align="right">0.9433529</td>
+</tr>
+<tr class="even">
+<td align="left">ChestCongestionYes</td>
+<td align="right">0.2432739</td>
+<td align="right">0.2094147</td>
+<td align="right">1.1616852</td>
+<td align="right">0.2453634</td>
+</tr>
+<tr class="odd">
+<td align="left">ChillsSweatsYes</td>
+<td align="right">0.2910160</td>
+<td align="right">0.2859557</td>
+<td align="right">1.0176958</td>
+<td align="right">0.3088226</td>
+</tr>
+<tr class="even">
+<td align="left">NasalCongestionYes</td>
+<td align="right">0.3959720</td>
+<td align="right">0.2503094</td>
+<td align="right">1.5819307</td>
+<td align="right">0.1136654</td>
+</tr>
+<tr class="odd">
+<td align="left">SneezeYes</td>
+<td align="right">0.1545068</td>
+<td align="right">0.2087549</td>
+<td align="right">0.7401349</td>
+<td align="right">0.4592182</td>
+</tr>
+<tr class="even">
+<td align="left">FatigueYes</td>
+<td align="right">0.1983005</td>
+<td align="right">0.3711360</td>
+<td align="right">0.5343068</td>
+<td align="right">0.5931293</td>
+</tr>
+<tr class="odd">
+<td align="left">SubjectiveFeverYes</td>
+<td align="right">0.2026473</td>
+<td align="right">0.2199752</td>
+<td align="right">0.9212279</td>
+<td align="right">0.3569314</td>
+</tr>
+<tr class="even">
+<td align="left">HeadacheYes</td>
+<td align="right">0.3250487</td>
+<td align="right">0.2854688</td>
+<td align="right">1.1386486</td>
+<td align="right">0.2548498</td>
+</tr>
+<tr class="odd">
+<td align="left">Weakness.L</td>
+<td align="right">0.6514048</td>
+<td align="right">0.3568834</td>
+<td align="right">1.8252595</td>
+<td align="right">0.0679619</td>
+</tr>
+<tr class="even">
+<td align="left">Weakness.Q</td>
+<td align="right">0.3165758</td>
+<td align="right">0.2579560</td>
+<td align="right">1.2272471</td>
+<td align="right">0.2197297</td>
+</tr>
+<tr class="odd">
+<td align="left">Weakness.C</td>
+<td align="right">-0.1050525</td>
+<td align="right">0.1821895</td>
+<td align="right">-0.5766113</td>
+<td align="right">0.5642020</td>
+</tr>
+<tr class="even">
+<td align="left">CoughIntensity.L</td>
+<td align="right">-0.8036217</td>
+<td align="right">0.2994401</td>
+<td align="right">-2.6837482</td>
+<td align="right">0.0072802</td>
+</tr>
+<tr class="odd">
+<td align="left">CoughIntensity.Q</td>
+<td align="right">-0.1319126</td>
+<td align="right">0.2308283</td>
+<td align="right">-0.5714749</td>
+<td align="right">0.5676778</td>
+</tr>
+<tr class="even">
+<td align="left">CoughIntensity.C</td>
+<td align="right">-0.1275750</td>
+<td align="right">0.1816199</td>
+<td align="right">-0.7024289</td>
+<td align="right">0.4824117</td>
+</tr>
+<tr class="odd">
+<td align="left">Myalgia.L</td>
+<td align="right">0.1550586</td>
+<td align="right">0.3134828</td>
+<td align="right">0.4946319</td>
+<td align="right">0.6208600</td>
+</tr>
+<tr class="even">
+<td align="left">Myalgia.Q</td>
+<td align="right">-0.0588441</td>
+<td align="right">0.2287706</td>
+<td align="right">-0.2572188</td>
+<td align="right">0.7970099</td>
+</tr>
+<tr class="odd">
+<td align="left">Myalgia.C</td>
+<td align="right">-0.0971484</td>
+<td align="right">0.1759147</td>
+<td align="right">-0.5522471</td>
+<td align="right">0.5807791</td>
+</tr>
+<tr class="even">
+<td align="left">RunnyNoseYes</td>
+<td align="right">0.0551042</td>
+<td align="right">0.2300359</td>
+<td align="right">0.2395460</td>
+<td align="right">0.8106823</td>
+</tr>
+<tr class="odd">
+<td align="left">AbPainYes</td>
+<td align="right">0.9418584</td>
+<td align="right">0.2799456</td>
+<td align="right">3.3644338</td>
+<td align="right">0.0007670</td>
+</tr>
+<tr class="even">
+<td align="left">ChestPainYes</td>
+<td align="right">0.0343628</td>
+<td align="right">0.2246580</td>
+<td align="right">0.1529560</td>
+<td align="right">0.8784330</td>
+</tr>
+<tr class="odd">
+<td align="left">DiarrheaYes</td>
+<td align="right">1.0633215</td>
+<td align="right">0.2572543</td>
+<td align="right">4.1333476</td>
+<td align="right">0.0000358</td>
+</tr>
+<tr class="even">
+<td align="left">EyePnYes</td>
+<td align="right">-0.3152024</td>
+<td align="right">0.2740321</td>
+<td align="right">-1.1502387</td>
+<td align="right">0.2500456</td>
+</tr>
+<tr class="odd">
+<td align="left">InsomniaYes</td>
+<td align="right">0.0764545</td>
+<td align="right">0.1928241</td>
+<td align="right">0.3964989</td>
+<td align="right">0.6917371</td>
+</tr>
+<tr class="even">
+<td align="left">ItchyEyeYes</td>
+<td align="right">-0.0482943</td>
+<td align="right">0.2296263</td>
+<td align="right">-0.2103169</td>
+<td align="right">0.8334203</td>
+</tr>
+<tr class="odd">
+<td align="left">EarPnYes</td>
+<td align="right">-0.2256843</td>
+<td align="right">0.2346472</td>
+<td align="right">-0.9618024</td>
+<td align="right">0.3361489</td>
+</tr>
+<tr class="even">
+<td align="left">PharyngitisYes</td>
+<td align="right">0.2081013</td>
+<td align="right">0.2570364</td>
+<td align="right">0.8096182</td>
+<td align="right">0.4181596</td>
+</tr>
+<tr class="odd">
+<td align="left">BreathlessYes</td>
+<td align="right">0.4336604</td>
+<td align="right">0.1983859</td>
+<td align="right">2.1859439</td>
+<td align="right">0.0288197</td>
+</tr>
+<tr class="even">
+<td align="left">ToothPnYes</td>
+<td align="right">0.4830566</td>
+<td align="right">0.2272528</td>
+<td align="right">2.1256350</td>
+<td align="right">0.0335337</td>
+</tr>
+<tr class="odd">
+<td align="left">VomitYes</td>
+<td align="right">2.4093591</td>
+<td align="right">0.3470922</td>
+<td align="right">6.9415535</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">BodyTemp</td>
+<td align="right">-0.0243092</td>
+<td align="right">0.0793813</td>
+<td align="right">-0.3062337</td>
+<td align="right">0.7594267</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>Multivariate Logistic Model with Runny Nose and other Covariates as the Predictors and Nausea as the Outcome</caption>
+<thead>
+<tr class="header">
+<th align="right">null.deviance</th>
+<th align="right">df.null</th>
+<th align="right">logLik</th>
+<th align="right">AIC</th>
+<th align="right">BIC</th>
+<th align="right">deviance</th>
+<th align="right">df.residual</th>
+<th align="right">nobs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">944.6515</td>
+<td align="right">729</td>
+<td align="right">-377.6031</td>
+<td align="right">815.2062</td>
+<td align="right">952.9976</td>
+<td align="right">755.2062</td>
+<td align="right">700</td>
+<td align="right">730</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="comparing-both-logistic-models" class="section level1">
+<h1>Comparing both logistic models:</h1>
+<p>Due to the high scaled deviance 189.73, we conclude that the model with all predictors is significantly better at capturing the data than the simpler model. Also, from the glance() output prior, we see that the AIC for the multivariate model is lower that the simple model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#using anova to compare both the complex and simple</span>
+anova_log &lt;-<span class="st"> </span><span class="kw">anova</span>(log_fit<span class="op">$</span>fit, log_fit2<span class="op">$</span>fit)
+
+<span class="co">#saving as table</span>
+summarytable_file11 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;anova_log.rds&quot;</span>)
+<span class="kw">saveRDS</span>(anova_log, <span class="dt">file =</span> summarytable_file11)</code></pre></div>
+<table>
+<caption>Comparing the Simple and Complex Models</caption>
+<thead>
+<tr class="header">
+<th align="right">Resid. Df</th>
+<th align="right">Resid. Dev</th>
+<th align="right">Df</th>
+<th align="right">Deviance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">728</td>
+<td align="right">944.5661</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="right">700</td>
+<td align="right">755.2062</td>
+<td align="right">28</td>
+<td align="right">189.3598</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

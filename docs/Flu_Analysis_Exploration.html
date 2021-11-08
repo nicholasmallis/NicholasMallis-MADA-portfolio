@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Nicholas Mallis" />
+
+
+<title>Flu Data Analysis: Exploration</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/table1-1.0/table1_defaults.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #cccccc; background-color: #303030; }
+code > span.kw { color: #f0dfaf; } /* Keyword */
+code > span.dt { color: #dfdfbf; } /* DataType */
+code > span.dv { color: #dcdccc; } /* DecVal */
+code > span.bn { color: #dca3a3; } /* BaseN */
+code > span.fl { color: #c0bed1; } /* Float */
+code > span.ch { color: #dca3a3; } /* Char */
+code > span.st { color: #cc9393; } /* String */
+code > span.co { color: #7f9f7f; } /* Comment */
+code > span.ot { color: #efef8f; } /* Other */
+code > span.al { color: #ffcfaf; } /* Alert */
+code > span.fu { color: #efef8f; } /* Function */
+code > span.er { color: #c3bf9f; } /* Error */
+code > span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+code > span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code > span.sc { color: #dca3a3; } /* SpecialChar */
+code > span.vs { color: #cc9393; } /* VerbatimString */
+code > span.ss { color: #cc9393; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { } /* Variable */
+code > span.cf { color: #f0dfaf; } /* ControlFlow */
+code > span.op { color: #f0efd0; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code > span.at { } /* Attribute */
+code > span.do { color: #7f9f7f; } /* Documentation */
+code > span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+code > span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">My Data Analysis Portfolio</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="./aboutme.html">About Me</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Projects
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="./rcoding.html">R Coding</a>
+    </li>
+    <li>
+      <a href="./visualization.html">Visualization</a>
+    </li>
+    <li>
+      <a href="./tidytuesday.html">Tidy Tuesday</a>
+    </li>
+    <li>
+      <a href="./tidytuesday_exercise2.html">Tidy Tuesday 2 Exercise</a>
+    </li>
+    <li>
+      <a href="./Flu_Analysis_Exploration.html">Flu Data Analysis: Exploration</a>
+    </li>
+    <li>
+      <a href="./Flu_Analysis_Simple.html">Flu Data Analysis: Simple and Multivariate Regression</a>
+    </li>
+    <li>
+      <a href="./Flu_Analysis_Complex.html">Flu Data Analysis: Decision Tree and Test/Train Split</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/nicholasmallis/NicholasMallis-MADA-portfolio">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Flu Data Analysis: Exploration</h1>
+<h4 class="author">Nicholas Mallis</h4>
+<h4 class="date">11/8/2021</h4>
+
+</div>
+
+
+<p>This is part of an analysis exercise I did in a Modern Applied data analysis course at UGA with Dr. Andreas Handel. We used data on flu patients You can find the full steps to data cleaning on more information <a href="https://github.com/nicholasmallis/NicholasMallis-MADA-analysis3">here at the github page</a></p>
+<div id="data-loading-and-cleaning" class="section level3">
+<h3>Data Loading and Cleaning</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#load needed packages. make sure they are installed.</span>
+<span class="kw">library</span>(ggplot2) <span class="co">#for plotting</span>
+<span class="kw">library</span>(broom) <span class="co">#for cleaning up output from lm()</span>
+<span class="kw">library</span>(here) <span class="co">#for data loading/saving</span>
+<span class="kw">library</span>(tidyverse)
+
+<span class="co">#path to data</span>
+<span class="co">#note the use of the here() package and not absolute paths</span>
+data_location &lt;-<span class="st"> </span>here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>,<span class="st">&quot;processeddata.rds&quot;</span>)
+
+<span class="co">#load data. </span>
+mydata &lt;-<span class="st"> </span><span class="kw">readRDS</span>(data_location)
+
+<span class="kw">glimpse</span>(mydata)</code></pre></div>
+<pre><code>## Rows: 730
+## Columns: 26
+## $ SwollenLymphNodes [3m[38;5;246m&lt;fct&gt;[39m[23m Yes, Yes, Yes, Yes, Yes, No, No, No, Yes, No, Yes, Y…
+## $ ChestCongestion   [3m[38;5;246m&lt;fct&gt;[39m[23m No, Yes, Yes, Yes, No, No, No, Yes, Yes, Yes, Yes, Y…
+## $ ChillsSweats      [3m[38;5;246m&lt;fct&gt;[39m[23m No, No, Yes, Yes, Yes, Yes, Yes, Yes, Yes, No, Yes, …
+## $ NasalCongestion   [3m[38;5;246m&lt;fct&gt;[39m[23m No, Yes, Yes, Yes, No, No, No, Yes, Yes, Yes, Yes, Y…
+## $ Sneeze            [3m[38;5;246m&lt;fct&gt;[39m[23m No, No, Yes, Yes, No, Yes, No, Yes, No, No, No, No, …
+## $ Fatigue           [3m[38;5;246m&lt;fct&gt;[39m[23m Yes, Yes, Yes, Yes, Yes, Yes, Yes, Yes, Yes, Yes, Ye…
+## $ SubjectiveFever   [3m[38;5;246m&lt;fct&gt;[39m[23m Yes, Yes, Yes, Yes, Yes, Yes, Yes, Yes, Yes, No, Yes…
+## $ Headache          [3m[38;5;246m&lt;fct&gt;[39m[23m Yes, Yes, Yes, Yes, Yes, Yes, No, Yes, Yes, Yes, Yes…
+## $ Weakness          [3m[38;5;246m&lt;ord&gt;[39m[23m Mild, Severe, Severe, Severe, Moderate, Moderate, Mi…
+## $ CoughIntensity    [3m[38;5;246m&lt;ord&gt;[39m[23m Severe, Severe, Mild, Moderate, None, Moderate, Seve…
+## $ Myalgia           [3m[38;5;246m&lt;ord&gt;[39m[23m Mild, Severe, Severe, Severe, Mild, Moderate, Mild, …
+## $ RunnyNose         [3m[38;5;246m&lt;fct&gt;[39m[23m No, No, Yes, Yes, No, No, Yes, Yes, Yes, Yes, No, No…
+## $ AbPain            [3m[38;5;246m&lt;fct&gt;[39m[23m No, No, Yes, No, No, No, No, No, No, No, Yes, Yes, N…
+## $ ChestPain         [3m[38;5;246m&lt;fct&gt;[39m[23m No, No, Yes, No, No, Yes, Yes, No, No, No, No, Yes, …
+## $ Diarrhea          [3m[38;5;246m&lt;fct&gt;[39m[23m No, No, No, No, No, Yes, No, No, No, No, No, No, No,…
+## $ EyePn             [3m[38;5;246m&lt;fct&gt;[39m[23m No, No, No, No, Yes, No, No, No, No, No, Yes, No, Ye…
+## $ Insomnia          [3m[38;5;246m&lt;fct&gt;[39m[23m No, No, Yes, Yes, Yes, No, No, Yes, Yes, Yes, Yes, Y…
+## $ ItchyEye          [3m[38;5;246m&lt;fct&gt;[39m[23m No, No, No, No, No, No, No, No, No, No, No, No, Yes,…
+## $ Nausea            [3m[38;5;246m&lt;fct&gt;[39m[23m No, No, Yes, Yes, Yes, Yes, No, No, Yes, Yes, Yes, Y…
+## $ EarPn             [3m[38;5;246m&lt;fct&gt;[39m[23m No, Yes, No, Yes, No, No, No, No, No, No, No, Yes, Y…
+## $ Pharyngitis       [3m[38;5;246m&lt;fct&gt;[39m[23m Yes, Yes, Yes, Yes, Yes, Yes, Yes, No, No, No, Yes, …
+## $ Breathless        [3m[38;5;246m&lt;fct&gt;[39m[23m No, No, Yes, No, No, Yes, No, No, No, Yes, No, Yes, …
+## $ ToothPn           [3m[38;5;246m&lt;fct&gt;[39m[23m No, No, Yes, No, No, No, No, No, Yes, No, No, Yes, N…
+## $ Vomit             [3m[38;5;246m&lt;fct&gt;[39m[23m No, No, No, No, No, No, Yes, No, No, No, Yes, Yes, N…
+## $ Wheeze            [3m[38;5;246m&lt;fct&gt;[39m[23m No, No, No, Yes, No, Yes, No, No, No, No, No, Yes, N…
+## $ BodyTemp          [3m[38;5;246m&lt;dbl&gt;[39m[23m 98.3, 100.4, 100.8, 98.8, 100.5, 98.4, 102.5, 98.4, …</code></pre>
+<p>Descriptive Statistics: Tabling the Main Outcome(s) and Covariates using the table1 package <div class="Rtable1"><table class="Rtable1">
+<thead>
+<tr>
+<th class='rowlabel firstrow lastrow'></th>
+<th class='firstrow lastrow'><span class='stratlabel'>Total<br><span class='stratn'>(N=730)</span></span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class='rowlabel firstrow'><span class='varlabel'>Nausea</span></td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>No</td>
+<td>475 (65.1%)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Yes</td>
+<td class='lastrow'>255 (34.9%)</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'><span class='varlabel'>BodyTemp</span></td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>Mean (SD)</td>
+<td>98.9 (1.20)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Median [Min, Max]</td>
+<td class='lastrow'>98.5 [97.2, 103]</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'><span class='varlabel'>RunnyNose</span></td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>No</td>
+<td>211 (28.9%)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Yes</td>
+<td class='lastrow'>519 (71.1%)</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'><span class='varlabel'>SwollenLymphNodes</span></td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>No</td>
+<td>418 (57.3%)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Yes</td>
+<td class='lastrow'>312 (42.7%)</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'><span class='varlabel'>ChestCongestion</span></td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>No</td>
+<td>323 (44.2%)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Yes</td>
+<td class='lastrow'>407 (55.8%)</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'><span class='varlabel'>Weakness</span></td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>None</td>
+<td>49 (6.7%)</td>
+</tr>
+<tr>
+<td class='rowlabel'>Mild</td>
+<td>223 (30.5%)</td>
+</tr>
+<tr>
+<td class='rowlabel'>Moderate</td>
+<td>338 (46.3%)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Severe</td>
+<td class='lastrow'>120 (16.4%)</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'><span class='varlabel'>NasalCongestion</span></td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>No</td>
+<td>167 (22.9%)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Yes</td>
+<td class='lastrow'>563 (77.1%)</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'><span class='varlabel'>Sneeze</span></td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>No</td>
+<td>339 (46.4%)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Yes</td>
+<td class='lastrow'>391 (53.6%)</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'><span class='varlabel'>Fatigue</span></td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>No</td>
+<td>64 (8.8%)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Yes</td>
+<td class='lastrow'>666 (91.2%)</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'><span class='varlabel'>SubjectiveFever</span></td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>No</td>
+<td>230 (31.5%)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Yes</td>
+<td class='lastrow'>500 (68.5%)</td>
+</tr>
+<tr>
+<td class='rowlabel firstrow'><span class='varlabel'>Headache</span></td>
+<td class='firstrow'></td>
+</tr>
+<tr>
+<td class='rowlabel'>No</td>
+<td>115 (15.8%)</td>
+</tr>
+<tr>
+<td class='rowlabel lastrow'>Yes</td>
+<td class='lastrow'>615 (84.2%)</td>
+</tr>
+</tbody>
+</table>
+</div></p>
+</div>
+<div id="plotting-nausea" class="section level3">
+<h3>Plotting Nausea</h3>
+<p>Here we see that 255 (34.9%) of participants reported nausea. <img src="Flu_Analysis_Exploration_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="plotting-temperature" class="section level3">
+<h3>Plotting Temperature</h3>
+<p>The median body temperature was 98.5 with a minimum of 97.2 and a maximum of 103. Based on the histogram below, we see that the data seems to be skewed with a tail to the right. <img src="Flu_Analysis_Exploration_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="plotting-runny-nose" class="section level3">
+<h3>Plotting Runny Nose</h3>
+<p>Here we see that 519 (71.1%) of participants reported experiecing a runny nose. <img src="Flu_Analysis_Exploration_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="plotting-body-temperature-vs-runny-nose" class="section level3">
+<h3>Plotting Body Temperature vs Runny Nose</h3>
+<p>Here we see that the median(IQR) body temperature was lower in the group who experienced a runny nose was higher at 98.5(98.2-99.2) compared with those who did not experience a runny nose at 98.8 (98.2-99.6).</p>
+<p><img src="Flu_Analysis_Exploration_files/figure-html/unnamed-chunk-6-1.png" width="672" /> ###Calculating Statistics on Body Temperature by Runny Nose Status</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#define quantiles of interest</span>
+q =<span class="st"> </span><span class="kw">c</span>(.<span class="dv">25</span>, .<span class="dv">75</span>)
+
+<span class="co">#calculate quantiles by grouping variable</span>
+table &lt;-<span class="st"> </span>mydata <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(RunnyNose) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean=</span> <span class="kw">round</span>(<span class="kw">mean</span>(BodyTemp), <span class="dv">1</span>) ,
+            <span class="dt">sd=</span> <span class="kw">round</span>(<span class="kw">sd</span>(BodyTemp), <span class="dv">1</span>),
+            <span class="dt">median =</span> <span class="kw">round</span>(<span class="kw">median</span>(BodyTemp, <span class="dt">na.rm=</span><span class="ot">TRUE</span>), <span class="dv">1</span>),
+            <span class="dt">quant25 =</span> <span class="kw">round</span>(<span class="kw">quantile</span>(BodyTemp, <span class="dt">probs =</span> q[<span class="dv">1</span>], <span class="dt">na.rm=</span><span class="ot">TRUE</span>), <span class="dv">1</span>), 
+            <span class="dt">quant75 =</span> <span class="kw">round</span>(<span class="kw">quantile</span>(BodyTemp, <span class="dt">probs =</span> q[<span class="dv">2</span>], <span class="dt">na.rm=</span> <span class="ot">TRUE</span>), <span class="dv">1</span>))
+
+
+
+<span class="co">#i also combine the 25th percentile and 75th into a character string seperated by a &quot;-&quot;</span>
+table<span class="op">$</span>IQR &lt;-<span class="st"> </span><span class="kw">paste</span>(table<span class="op">$</span>quant25, table<span class="op">$</span>quant75, <span class="dt">sep =</span> <span class="st">&quot;-&quot;</span>)
+
+<span class="co">#then i add parentheses around it using this function</span>
+addparentheses &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw">paste</span>(<span class="st">&quot;(&quot;</span>, x, <span class="st">&quot;)&quot;</span>)}
+table<span class="op">$</span>IQR &lt;-<span class="st"> </span><span class="kw">addparentheses</span>(table<span class="op">$</span>IQR)
+
+
+<span class="co"># we don&#39;t need the first row or middle colums so we delete them</span>
+table &lt;-<span class="st"> </span>table[, <span class="op">-</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">6</span>)]
+
+<span class="kw">names</span>(table)[<span class="dv">1</span>] &lt;-<span class="st"> &quot;Runny Nose Status&quot;</span></code></pre></div>
+<p>Now we display the table below</p>
+<table>
+<caption>Table 1. Mean, Median, and IQR of Body Temperature by Runny Nose Status</caption>
+<thead>
+<tr class="header">
+<th align="left">Runny Nose Status</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">median</th>
+<th align="left">IQR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">No</td>
+<td align="right">99.1</td>
+<td align="right">1.3</td>
+<td align="right">98.8</td>
+<td align="left">( 98.2-99.6 )</td>
+</tr>
+<tr class="even">
+<td align="left">Yes</td>
+<td align="right">98.9</td>
+<td align="right">1.1</td>
+<td align="right">98.5</td>
+<td align="left">( 98.2-99.2 )</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="plotting-swollen-lymph-nodes" class="section level3">
+<h3>Plotting Swollen Lymph Nodes</h3>
+<p>Here we see that 312 (42.7%) of participants reported experiecing swollen lymph nodes. <img src="Flu_Analysis_Exploration_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="plotting-body-temperature-by-swollen-lymph-nodes" class="section level3">
+<h3>Plotting Body Temperature by Swollen Lymph Nodes</h3>
+<p>Here we see that the median body temperature was fairly close between those who reported swollen lymph nodes and those who did not. <img src="Flu_Analysis_Exploration_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="plotting-chest-congestion" class="section level3">
+<h3>Plotting Chest Congestion</h3>
+<p>Here we see that 407 (55.8%) of participants reported experiecing chest congestion. <img src="Flu_Analysis_Exploration_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+<div id="plotting-weakness-level" class="section level3">
+<h3>Plotting Weakness Level</h3>
+<p>Here we see that 120 (16.4%) reported severe weakness, 338 (46.3%) reported moderate weakness, and 223 (30.5%) reported mild weakness.</p>
+<p><img src="Flu_Analysis_Exploration_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

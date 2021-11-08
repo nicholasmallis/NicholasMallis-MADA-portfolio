@@ -317,6 +317,18 @@ $(document).ready(function () {
     <li>
       <a href="./tidytuesday.html">Tidy Tuesday</a>
     </li>
+    <li>
+      <a href="./tidytuesday_exercise2.html">Tidy Tuesday 2 Exercise</a>
+    </li>
+    <li>
+      <a href="./Flu_Analysis_Exploration.html">Flu Data Analysis: Exploration</a>
+    </li>
+    <li>
+      <a href="./Flu_Analysis_Simple.html">Flu Data Analysis: Simple and Multivariate Regression</a>
+    </li>
+    <li>
+      <a href="./Flu_Analysis_Complex.html">Flu Data Analysis: Decision Tree and Test/Train Split</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -350,9 +362,11 @@ $(document).ready(function () {
 <span class="kw">library</span>(tidyverse)
 <span class="kw">library</span>(ggplot2)
 <span class="kw">library</span>(readr)
-<span class="kw">library</span>(here)</code></pre></div>
-<pre><code>## here() starts at /Users/nicholasmallis/Desktop/MADA_Fall_2021/NicholasMallis-MADA-portfolio</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get the Data</span>
+<span class="kw">library</span>(here)
+
+
+
+<span class="co"># Get the Data</span>
 
 papers &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-28/papers.csv&#39;</span>)</code></pre></div>
 <pre><code>## 
@@ -398,33 +412,33 @@ papers &lt;-<span class="st"> </span>readr<span class="op">::</span><span class=
 <span class="kw">glimpse</span>(papers)</code></pre></div>
 <pre><code>## Rows: 29,434
 ## Columns: 4
-## $ paper &lt;chr&gt; &quot;w0001&quot;, &quot;w0002&quot;, &quot;w0003&quot;, &quot;w0004&quot;, &quot;w0005&quot;, &quot;w0006&quot;, &quot;w0007&quot;, &quot;…
-## $ year  &lt;dbl&gt; 1973, 1973, 1973, 1973, 1973, 1973, 1973, 1973, 1973, 1973, 1973…
-## $ month &lt;dbl&gt; 6, 6, 6, 7, 7, 7, 8, 9, 9, 9, 9, 10, 10, 10, 10, 11, 11, 11, 12,…
-## $ title &lt;chr&gt; &quot;Education, Information, and Efficiency&quot;, &quot;Hospital Utilization:…</code></pre>
+## $ paper [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;w0001&quot;, &quot;w0002&quot;, &quot;w0003&quot;, &quot;w0004&quot;, &quot;w0005&quot;, &quot;w0006&quot;, &quot;w0007&quot;, &quot;…
+## $ year  [3m[38;5;246m&lt;dbl&gt;[39m[23m 1973, 1973, 1973, 1973, 1973, 1973, 1973, 1973, 1973, 1973, 1973…
+## $ month [3m[38;5;246m&lt;dbl&gt;[39m[23m 6, 6, 6, 7, 7, 7, 8, 9, 9, 9, 9, 10, 10, 10, 10, 11, 11, 11, 12,…
+## $ title [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;Education, Information, and Efficiency&quot;, &quot;Hospital Utilization:…</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">glimpse</span>(authors)</code></pre></div>
 <pre><code>## Rows: 15,437
 ## Columns: 4
-## $ author     &lt;chr&gt; &quot;w0001.1&quot;, &quot;w0002.1&quot;, &quot;w0003.1&quot;, &quot;w0004.1&quot;, &quot;w0005.1&quot;, &quot;w00…
-## $ name       &lt;chr&gt; &quot;Finis Welch&quot;, &quot;Barry R Chiswick&quot;, &quot;Swarnjit S Arora&quot;, &quot;Lee…
-## $ user_nber  &lt;chr&gt; &quot;finis_welch&quot;, &quot;barry_chiswick&quot;, &quot;swarnjit_arora&quot;, NA, &quot;jam…
-## $ user_repec &lt;chr&gt; NA, &quot;pch425&quot;, NA, &quot;pli669&quot;, &quot;psm28&quot;, NA, NA, NA, &quot;pli259&quot;, …</code></pre>
+## $ author     [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;w0001.1&quot;, &quot;w0002.1&quot;, &quot;w0003.1&quot;, &quot;w0004.1&quot;, &quot;w0005.1&quot;, &quot;w00…
+## $ name       [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;Finis Welch&quot;, &quot;Barry R Chiswick&quot;, &quot;Swarnjit S Arora&quot;, &quot;Lee…
+## $ user_nber  [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;finis_welch&quot;, &quot;barry_chiswick&quot;, &quot;swarnjit_arora&quot;, NA, &quot;jam…
+## $ user_repec [3m[38;5;246m&lt;chr&gt;[39m[23m NA, &quot;pch425&quot;, NA, &quot;pli669&quot;, &quot;psm28&quot;, NA, NA, NA, &quot;pli259&quot;, …</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">glimpse</span>(programs)</code></pre></div>
 <pre><code>## Rows: 21
 ## Columns: 3
-## $ program          &lt;chr&gt; &quot;AG&quot;, &quot;AP&quot;, &quot;CF&quot;, &quot;CH&quot;, &quot;DAE&quot;, &quot;DEV&quot;, &quot;ED&quot;, &quot;EEE&quot;, &quot;E…
-## $ program_desc     &lt;chr&gt; &quot;Economics of Aging&quot;, &quot;Asset Pricing&quot;, &quot;Corporate Fin…
-## $ program_category &lt;chr&gt; &quot;Micro&quot;, &quot;Finance&quot;, &quot;Finance&quot;, &quot;Micro&quot;, &quot;Micro&quot;, &quot;Mic…</code></pre>
+## $ program          [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;AG&quot;, &quot;AP&quot;, &quot;CF&quot;, &quot;CH&quot;, &quot;DAE&quot;, &quot;DEV&quot;, &quot;ED&quot;, &quot;EEE&quot;, &quot;E…
+## $ program_desc     [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;Economics of Aging&quot;, &quot;Asset Pricing&quot;, &quot;Corporate Fin…
+## $ program_category [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;Micro&quot;, &quot;Finance&quot;, &quot;Finance&quot;, &quot;Micro&quot;, &quot;Micro&quot;, &quot;Mic…</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">glimpse</span>(paper_authors)</code></pre></div>
 <pre><code>## Rows: 67,090
 ## Columns: 2
-## $ paper  &lt;chr&gt; &quot;w0001&quot;, &quot;w0002&quot;, &quot;w0003&quot;, &quot;w0004&quot;, &quot;w0005&quot;, &quot;w0006&quot;, &quot;w0007&quot;, …
-## $ author &lt;chr&gt; &quot;w0001.1&quot;, &quot;w0002.1&quot;, &quot;w0003.1&quot;, &quot;w0004.1&quot;, &quot;w0005.1&quot;, &quot;w0006.1…</code></pre>
+## $ paper  [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;w0001&quot;, &quot;w0002&quot;, &quot;w0003&quot;, &quot;w0004&quot;, &quot;w0005&quot;, &quot;w0006&quot;, &quot;w0007&quot;, …
+## $ author [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;w0001.1&quot;, &quot;w0002.1&quot;, &quot;w0003.1&quot;, &quot;w0004.1&quot;, &quot;w0005.1&quot;, &quot;w0006.1…</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">glimpse</span>(paper_programs)</code></pre></div>
 <pre><code>## Rows: 53,996
 ## Columns: 2
-## $ paper   &lt;chr&gt; &quot;w0074&quot;, &quot;w0087&quot;, &quot;w0087&quot;, &quot;w0107&quot;, &quot;w0116&quot;, &quot;w0117&quot;, &quot;w0129&quot;,…
-## $ program &lt;chr&gt; &quot;EFG&quot;, &quot;IFM&quot;, &quot;ITI&quot;, &quot;PE&quot;, &quot;PE&quot;, &quot;LS&quot;, &quot;HE&quot;, &quot;IFM&quot;, &quot;ITI&quot;, &quot;HE…</code></pre>
+## $ paper   [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;w0074&quot;, &quot;w0087&quot;, &quot;w0087&quot;, &quot;w0107&quot;, &quot;w0116&quot;, &quot;w0117&quot;, &quot;w0129&quot;,…
+## $ program [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;EFG&quot;, &quot;IFM&quot;, &quot;ITI&quot;, &quot;PE&quot;, &quot;PE&quot;, &quot;LS&quot;, &quot;HE&quot;, &quot;IFM&quot;, &quot;ITI&quot;, &quot;HE…</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#merging all together</span>
 joined &lt;-<span class="st"> </span><span class="kw">left_join</span>(papers, paper_authors) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">left_join</span>(authors) <span class="op">%&gt;%</span><span class="st"> </span>
@@ -447,18 +461,18 @@ joined &lt;-<span class="st"> </span><span class="kw">left_join</span>(papers, p
 <span class="kw">glimpse</span>(joined)</code></pre></div>
 <pre><code>## Rows: 130,081
 ## Columns: 12
-## $ paper            &lt;chr&gt; &quot;w0001&quot;, &quot;w0002&quot;, &quot;w0003&quot;, &quot;w0004&quot;, &quot;w0005&quot;, &quot;w0006&quot;,…
-## $ catalogue_group  &lt;chr&gt; &quot;General&quot;, &quot;General&quot;, &quot;General&quot;, &quot;General&quot;, &quot;General&quot;…
-## $ year             &lt;dbl&gt; 1973, 1973, 1973, 1973, 1973, 1973, 1973, 1973, 1973,…
-## $ month            &lt;dbl&gt; 6, 6, 6, 7, 7, 7, 8, 9, 9, 9, 9, 9, 10, 10, 10, 10, 1…
-## $ title            &lt;chr&gt; &quot;Education, Information, and Efficiency&quot;, &quot;Hospital U…
-## $ author           &lt;chr&gt; &quot;w0001.1&quot;, &quot;w0002.1&quot;, &quot;w0003.1&quot;, &quot;w0004.1&quot;, &quot;w0005.1&quot;…
-## $ name             &lt;chr&gt; &quot;Finis Welch&quot;, &quot;Barry R Chiswick&quot;, &quot;Swarnjit S Arora&quot;…
-## $ user_nber        &lt;chr&gt; &quot;finis_welch&quot;, &quot;barry_chiswick&quot;, &quot;swarnjit_arora&quot;, NA…
-## $ user_repec       &lt;chr&gt; NA, &quot;pch425&quot;, NA, &quot;pli669&quot;, &quot;psm28&quot;, NA, NA, NA, &quot;pli…
-## $ program          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-## $ program_desc     &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-## $ program_category &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…</code></pre>
+## $ paper            [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;w0001&quot;, &quot;w0002&quot;, &quot;w0003&quot;, &quot;w0004&quot;, &quot;w0005&quot;, &quot;w0006&quot;,…
+## $ catalogue_group  [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;General&quot;, &quot;General&quot;, &quot;General&quot;, &quot;General&quot;, &quot;General&quot;…
+## $ year             [3m[38;5;246m&lt;dbl&gt;[39m[23m 1973, 1973, 1973, 1973, 1973, 1973, 1973, 1973, 1973,…
+## $ month            [3m[38;5;246m&lt;dbl&gt;[39m[23m 6, 6, 6, 7, 7, 7, 8, 9, 9, 9, 9, 9, 10, 10, 10, 10, 1…
+## $ title            [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;Education, Information, and Efficiency&quot;, &quot;Hospital U…
+## $ author           [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;w0001.1&quot;, &quot;w0002.1&quot;, &quot;w0003.1&quot;, &quot;w0004.1&quot;, &quot;w0005.1&quot;…
+## $ name             [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;Finis Welch&quot;, &quot;Barry R Chiswick&quot;, &quot;Swarnjit S Arora&quot;…
+## $ user_nber        [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;finis_welch&quot;, &quot;barry_chiswick&quot;, &quot;swarnjit_arora&quot;, NA…
+## $ user_repec       [3m[38;5;246m&lt;chr&gt;[39m[23m NA, &quot;pch425&quot;, NA, &quot;pli669&quot;, &quot;psm28&quot;, NA, NA, NA, &quot;pli…
+## $ program          [3m[38;5;246m&lt;chr&gt;[39m[23m NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+## $ program_desc     [3m[38;5;246m&lt;chr&gt;[39m[23m NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+## $ program_category [3m[38;5;246m&lt;chr&gt;[39m[23m NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#saving data as a csv to folder</span>
 <span class="kw">write.csv</span>(joined,<span class="st">&quot;/Users/nicholasmallis/Desktop/MADA_Fall_2021/NicholasMallis-MADA-portfolio/Data/tidy.csv&quot;</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)
 
@@ -582,6 +596,9 @@ tab &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span cl
 <span class="kw">library</span>(data.table)</code></pre></div>
 <pre><code>## 
 ## Attaching package: &#39;data.table&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:rlang&#39;:
+## 
+##     :=</code></pre>
 <pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
 ## 
 ##     between, first, last</code></pre>
