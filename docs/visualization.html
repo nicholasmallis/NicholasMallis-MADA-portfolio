@@ -322,7 +322,7 @@ $(document).ready(function () {
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="URL-TO-THIS-REPOSITORY-HERE">
+  <a href="https://github.com/nicholasmallis/NicholasMallis-MADA-portfolio">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -361,7 +361,7 @@ data_location &lt;-<span class="st"> </span>here<span class="op">::</span><span 
 <span class="co">#reading in data</span>
 data &lt;-<span class="st"> </span><span class="kw">read_csv</span>(data_location)</code></pre></div>
 <pre><code>## 
-## ── Column specification ──────────────
+## ── Column specification ────────────────────────────────────────────────────────
 ## cols(
 ##   congress = col_double(),
 ##   chamber = col_character(),
@@ -381,19 +381,19 @@ data &lt;-<span class="st"> </span><span class="kw">read_csv</span>(data_locatio
 <span class="kw">glimpse</span>(data)</code></pre></div>
 <pre><code>## Rows: 18,635
 ## Columns: 13
-## $ congress   &lt;dbl&gt; 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80…
-## $ chamber    &lt;chr&gt; &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;hou…
-## $ bioguide   &lt;chr&gt; &quot;M000112&quot;, &quot;D000448&quot;, &quot;S000001&quot;, &quot;E000023&quot;, &quot;L000296&quot;, &quot;G0…
-## $ firstname  &lt;chr&gt; &quot;Joseph&quot;, &quot;Robert&quot;, &quot;Adolph&quot;, &quot;Charles&quot;, &quot;William&quot;, &quot;James…
-## $ middlename &lt;chr&gt; &quot;Jefferson&quot;, &quot;Lee&quot;, &quot;Joachim&quot;, &quot;Aubrey&quot;, NA, &quot;A.&quot;, &quot;Joseph…
-## $ lastname   &lt;chr&gt; &quot;Mansfield&quot;, &quot;Doughton&quot;, &quot;Sabath&quot;, &quot;Eaton&quot;, &quot;Lewis&quot;, &quot;Gall…
-## $ suffix     &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ birthday   &lt;date&gt; 1861-02-09, 1863-11-07, 1866-04-04, 1868-03-29, 1868-09-2…
-## $ state      &lt;chr&gt; &quot;TX&quot;, &quot;NC&quot;, &quot;IL&quot;, &quot;NJ&quot;, &quot;KY&quot;, &quot;PA&quot;, &quot;CA&quot;, &quot;NY&quot;, &quot;WI&quot;, &quot;MA&quot;…
-## $ party      &lt;chr&gt; &quot;D&quot;, &quot;D&quot;, &quot;D&quot;, &quot;R&quot;, &quot;R&quot;, &quot;R&quot;, &quot;R&quot;, &quot;D&quot;, &quot;R&quot;, &quot;R&quot;, &quot;D&quot;, &quot;R&quot;…
-## $ incumbent  &lt;chr&gt; &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;No&quot;, &quot;No&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes…
-## $ termstart  &lt;date&gt; 1947-01-03, 1947-01-03, 1947-01-03, 1947-01-03, 1947-01-0…
-## $ age        &lt;dbl&gt; 85.9, 83.2, 80.7, 78.8, 78.3, 78.0, 77.9, 76.8, 76.0, 75.8…</code></pre>
+## $ congress   [3m[38;5;246m&lt;dbl&gt;[39m[23m 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,…
+## $ chamber    [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;hous…
+## $ bioguide   [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;M000112&quot;, &quot;D000448&quot;, &quot;S000001&quot;, &quot;E000023&quot;, &quot;L000296&quot;, &quot;G00…
+## $ firstname  [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;Joseph&quot;, &quot;Robert&quot;, &quot;Adolph&quot;, &quot;Charles&quot;, &quot;William&quot;, &quot;James&quot;…
+## $ middlename [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;Jefferson&quot;, &quot;Lee&quot;, &quot;Joachim&quot;, &quot;Aubrey&quot;, NA, &quot;A.&quot;, &quot;Joseph&quot;…
+## $ lastname   [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;Mansfield&quot;, &quot;Doughton&quot;, &quot;Sabath&quot;, &quot;Eaton&quot;, &quot;Lewis&quot;, &quot;Galla…
+## $ suffix     [3m[38;5;246m&lt;chr&gt;[39m[23m NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+## $ birthday   [3m[38;5;246m&lt;date&gt;[39m[23m 1861-02-09, 1863-11-07, 1866-04-04, 1868-03-29, 1868-09-22…
+## $ state      [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;TX&quot;, &quot;NC&quot;, &quot;IL&quot;, &quot;NJ&quot;, &quot;KY&quot;, &quot;PA&quot;, &quot;CA&quot;, &quot;NY&quot;, &quot;WI&quot;, &quot;MA&quot;,…
+## $ party      [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;D&quot;, &quot;D&quot;, &quot;D&quot;, &quot;R&quot;, &quot;R&quot;, &quot;R&quot;, &quot;R&quot;, &quot;D&quot;, &quot;R&quot;, &quot;R&quot;, &quot;D&quot;, &quot;R&quot;,…
+## $ incumbent  [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;No&quot;, &quot;No&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;…
+## $ termstart  [3m[38;5;246m&lt;date&gt;[39m[23m 1947-01-03, 1947-01-03, 1947-01-03, 1947-01-03, 1947-01-03…
+## $ age        [3m[38;5;246m&lt;dbl&gt;[39m[23m 85.9, 83.2, 80.7, 78.8, 78.3, 78.0, 77.9, 76.8, 76.0, 75.8,…</code></pre>
 </div>
 <div id="now-i-need-to-do-quite-a-bit-of-data-management-to-get-it-in-the-form-we-need-to-plot" class="section level3">
 <h3>Now I need to do quite a bit of data management to get it in the form we need to plot</h3>
@@ -410,21 +410,21 @@ new &lt;-<span class="st"> </span>data <span class="op">%&gt;%</span>
 
 <span class="co">#checking. looks good, but we need to look at only republican and democrat</span>
 <span class="kw">print</span>(new)</code></pre></div>
-<pre><code>## # A tibble: 104 x 3
-## # Groups:   year [34]
+<pre><code>## [38;5;246m# A tibble: 104 × 3[39m
+## [38;5;246m# Groups:   year [34][39m
 ##    year  party  name
-##    &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;
-##  1 1947  AL     40.5
-##  2 1947  D      52.1
-##  3 1947  R      53.0
-##  4 1949  AL     46  
-##  5 1949  D      51.5
-##  6 1949  I      38  
-##  7 1949  L      34  
-##  8 1949  R      54.6
-##  9 1951  D      52.3
-## 10 1951  I      47  
-## # … with 94 more rows</code></pre>
+##    [3m[38;5;246m&lt;chr&gt;[39m[23m [3m[38;5;246m&lt;chr&gt;[39m[23m [3m[38;5;246m&lt;dbl&gt;[39m[23m
+## [38;5;250m 1[39m 1947  AL     40.5
+## [38;5;250m 2[39m 1947  D      52.1
+## [38;5;250m 3[39m 1947  R      53.0
+## [38;5;250m 4[39m 1949  AL     46  
+## [38;5;250m 5[39m 1949  D      51.5
+## [38;5;250m 6[39m 1949  I      38  
+## [38;5;250m 7[39m 1949  L      34  
+## [38;5;250m 8[39m 1949  R      54.6
+## [38;5;250m 9[39m 1951  D      52.3
+## [38;5;250m10[39m 1951  I      47  
+## [38;5;246m# … with 94 more rows[39m</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#here we subset the two parties that we need. we don&#39;t need to look at independent</span>
 new &lt;-<span class="st"> </span>new[ <span class="kw">which</span>(new<span class="op">$</span>party<span class="op">==</span><span class="st">&#39;D&#39;</span> <span class="op">|</span><span class="st"> </span>new<span class="op">$</span>party<span class="op">==</span><span class="st"> &#39;R&#39;</span>),]
 
