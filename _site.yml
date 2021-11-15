@@ -25,9 +25,8 @@ navbar:
           href: ./Flu_Analysis_Exploration.html
         - text: "Flu Data Analysis: Simple and Multivariate Regression"
           href: ./Flu_Analysis_Simple.html
-        - text: "Flu Data Analysis: Decision Tree and Test/Train Split"
+        - text: "Flu Data Analysis: Machine Learning Techniques"
           href: ./Flu_Analysis_Complex.html
-          
   right:
     - icon: fa-github fa-lg
       href: https://github.com/nicholasmallis/NicholasMallis-MADA-portfolio       

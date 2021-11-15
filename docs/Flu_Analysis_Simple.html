@@ -15,7 +15,7 @@
 
 <title>Simple Regression Analysis: Flu Data</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -31,6 +31,7 @@
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -53,42 +54,68 @@
   }
 </style>
 <style type="text/css" data-origin="pandoc">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
-td.sourceCode { padding-left: 5px; }
-pre, code { color: #cccccc; background-color: #303030; }
-code > span.kw { color: #f0dfaf; } /* Keyword */
-code > span.dt { color: #dfdfbf; } /* DataType */
-code > span.dv { color: #dcdccc; } /* DecVal */
-code > span.bn { color: #dca3a3; } /* BaseN */
-code > span.fl { color: #c0bed1; } /* Float */
-code > span.ch { color: #dca3a3; } /* Char */
-code > span.st { color: #cc9393; } /* String */
-code > span.co { color: #7f9f7f; } /* Comment */
-code > span.ot { color: #efef8f; } /* Other */
-code > span.al { color: #ffcfaf; } /* Alert */
-code > span.fu { color: #efef8f; } /* Function */
-code > span.er { color: #c3bf9f; } /* Error */
-code > span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
-code > span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
-code > span.sc { color: #dca3a3; } /* SpecialChar */
-code > span.vs { color: #cc9393; } /* VerbatimString */
-code > span.ss { color: #cc9393; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { } /* Variable */
-code > span.cf { color: #f0dfaf; } /* ControlFlow */
-code > span.op { color: #f0efd0; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
-code > span.at { } /* Attribute */
-code > span.do { color: #7f9f7f; } /* Documentation */
-code > span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
-code > span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
-code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  { color: #cccccc; background-color: #303030; }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ffcfaf; } /* Alert */
+code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #dca3a3; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #f0dfaf; } /* ControlFlow */
+code span.ch { color: #dca3a3; } /* Char */
+code span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code span.co { color: #7f9f7f; } /* Comment */
+code span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code span.do { color: #7f9f7f; } /* Documentation */
+code span.dt { color: #dfdfbf; } /* DataType */
+code span.dv { color: #dcdccc; } /* DecVal */
+code span.er { color: #c3bf9f; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #c0bed1; } /* Float */
+code span.fu { color: #efef8f; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+code span.kw { color: #f0dfaf; } /* Keyword */
+code span.op { color: #f0efd0; } /* Operator */
+code span.ot { color: #efef8f; } /* Other */
+code span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code span.sc { color: #dca3a3; } /* SpecialChar */
+code span.ss { color: #cc9393; } /* SpecialString */
+code span.st { color: #cc9393; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #cc9393; } /* VerbatimString */
+code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 
 </style>
 <script>
@@ -329,7 +356,7 @@ $(document).ready(function () {
       <a href="./Flu_Analysis_Simple.html">Flu Data Analysis: Simple and Multivariate Regression</a>
     </li>
     <li>
-      <a href="./Flu_Analysis_Complex.html">Flu Data Analysis: Decision Tree and Test/Train Split</a>
+      <a href="./Flu_Analysis_Complex.html">Flu Data Analysis: Machine Learning Techniques</a>
     </li>
   </ul>
 </li>
@@ -357,57 +384,44 @@ $(document).ready(function () {
 </div>
 
 
-<p>This is part of an analysis exercise I did in a Modern Applied data analysis course at UGA with Dr. Andreas Handel. We used data on flu patients You can find the full steps to data cleaning on more information <a href="https://github.com/nicholasmallis/NicholasMallis-MADA-analysis3">here at the github page</a></p>
-<div id="data-loading" class="section level3">
-<h3>Data Loading</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#loads needed packages.</span>
-<span class="kw">library</span>(ggplot2) <span class="co">#for plotting</span>
-<span class="kw">library</span>(broom) <span class="co">#for cleaning up output from lm()</span>
-<span class="kw">library</span>(here) <span class="co">#for data loading/saving</span>
-<span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(dplyr)
-
-<span class="co">#path to data</span>
-<span class="co">#note the use of the here() package and not absolute paths</span>
-data_location &lt;-<span class="st"> </span>here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;processeddata.rds&quot;</span>)
-
-<span class="co">#load data. </span>
-mydata &lt;-<span class="st"> </span><span class="kw">readRDS</span>(data_location)</code></pre></div>
-</div>
-<div id="linear-models" class="section level2">
-<h2>Linear Models</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidymodels)  <span class="co"># for the parsnip package, along with the rest of tidymodels</span>
-
-<span class="co"># Helper packages</span>
-<span class="kw">library</span>(readr)       <span class="co"># for importing data</span>
-<span class="kw">library</span>(broom.mixed) <span class="co"># for converting bayesian models to tidy tibbles</span>
-<span class="kw">library</span>(dotwhisker)  <span class="co"># for visualizing regression results</span></code></pre></div>
-<pre><code>## Registered S3 methods overwritten by &#39;parameters&#39;:
-##   method                           from      
-##   as.double.parameters_kurtosis    datawizard
-##   as.double.parameters_skewness    datawizard
-##   as.double.parameters_smoothness  datawizard
-##   as.numeric.parameters_kurtosis   datawizard
-##   as.numeric.parameters_skewness   datawizard
-##   as.numeric.parameters_smoothness datawizard
-##   print.parameters_distribution    datawizard
-##   print.parameters_kurtosis        datawizard
-##   print.parameters_skewness        datawizard
-##   summary.parameters_kurtosis      datawizard
-##   summary.parameters_skewness      datawizard</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#setting engine</span>
-lm_mod &lt;-<span class="st"> </span>
-<span class="st">  </span><span class="kw">linear_reg</span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;lm&quot;</span>)
-
-<span class="co">#running model</span>
-lm_fit &lt;-<span class="st"> </span>
-<span class="st">  </span>lm_mod <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">fit</span>(BodyTemp <span class="op">~</span><span class="st"> </span>RunnyNose, <span class="dt">data =</span> mydata)
-lm_fit</code></pre></div>
+<p>This is part of an analysis exercise I did in a Modern Applied Data Analysis course at UGA with Dr. Andreas Handel. We used data on flu patients You can find the full steps to data cleaning on more information <a href="https://github.com/nicholasmallis/NicholasMallis-MADA-analysis3">here at the github page</a></p>
+<p>###Data Loading</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">#loads needed packages.</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(ggplot2) <span class="co">#for plotting</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">library</span>(broom) <span class="co">#for cleaning up output from lm()</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="kw">library</span>(here) <span class="co">#for data loading/saving</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co">#path to data</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co">#note the use of the here() package and not absolute paths</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>data_location &lt;-<span class="st"> </span>here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;processeddata.rds&quot;</span>)</span>
+<span id="cb1-11"><a href="#cb1-11"></a></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="co">#load data. </span></span>
+<span id="cb1-13"><a href="#cb1-13"></a>mydata &lt;-<span class="st"> </span><span class="kw">readRDS</span>(data_location)</span></code></pre></div>
+<p>##Linear Models</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(tidymodels)  <span class="co"># for the parsnip package, along with the rest of tidymodels</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co"># Helper packages</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="kw">library</span>(readr)       <span class="co"># for importing data</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="kw">library</span>(broom.mixed) <span class="co"># for converting bayesian models to tidy tibbles</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="kw">library</span>(dotwhisker)  <span class="co"># for visualizing regression results</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a></span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="co">#setting engine</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>lm_mod &lt;-<span class="st"> </span></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="st">  </span><span class="kw">linear_reg</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;lm&quot;</span>)</span>
+<span id="cb2-14"><a href="#cb2-14"></a></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="co">#running model</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a>lm_fit &lt;-<span class="st"> </span></span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="st">  </span>lm_mod <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-18"><a href="#cb2-18"></a><span class="st">  </span><span class="kw">fit</span>(BodyTemp <span class="op">~</span><span class="st"> </span>RunnyNose, <span class="dt">data =</span> mydata)</span>
+<span id="cb2-19"><a href="#cb2-19"></a>lm_fit</span></code></pre></div>
 <pre><code>## parsnip model object
 ## 
-## Fit time:  1ms 
+## Fit time:  2ms 
 ## 
 ## Call:
 ## stats::lm(formula = BodyTemp ~ RunnyNose, data = data)
@@ -415,20 +429,20 @@ lm_fit</code></pre></div>
 ## Coefficients:
 ##  (Intercept)  RunnyNoseYes  
 ##      99.1431       -0.2926</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#saving as table</span>
-lm_fit_table &lt;-<span class="st"> </span><span class="kw">tidy</span>(lm_fit)
-
-<span class="co">#saved it as a file</span>
-summarytable_file2 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;lm_fit_table.rds&quot;</span>)
-<span class="kw">saveRDS</span>(lm_fit_table, <span class="dt">file =</span> summarytable_file2)
-
-<span class="co">#using glance to get statistics</span>
-lm_fit_stats &lt;-<span class="st"> </span><span class="kw">glance</span>(lm_fit)
-
-
-<span class="co">#saved it as a file</span>
-summarytable_file3 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;lm_fit_stats.rds&quot;</span>)
-<span class="kw">saveRDS</span>(lm_fit_stats, <span class="dt">file =</span> summarytable_file3)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">#saving as table</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>lm_fit_table &lt;-<span class="st"> </span><span class="kw">tidy</span>(lm_fit)</span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="co">#saved it as a file</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>summarytable_file2 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;lm_fit_table.rds&quot;</span>)</span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="kw">saveRDS</span>(lm_fit_table, <span class="dt">file =</span> summarytable_file2)</span>
+<span id="cb4-7"><a href="#cb4-7"></a></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="co">#using glance to get statistics</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>lm_fit_stats &lt;-<span class="st"> </span><span class="kw">glance</span>(lm_fit)</span>
+<span id="cb4-10"><a href="#cb4-10"></a></span>
+<span id="cb4-11"><a href="#cb4-11"></a></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="co">#saved it as a file</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a>summarytable_file3 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;lm_fit_stats.rds&quot;</span>)</span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="kw">saveRDS</span>(lm_fit_stats, <span class="dt">file =</span> summarytable_file3)</span></code></pre></div>
 <p>Now I display the saved file for an improved aesthetic.</p>
 <table>
 <caption>Coefficients from Simple Linear Regression Model with Body Temperature as the outcome and Runny Nose as the predictor</caption>
@@ -459,7 +473,7 @@ summarytable_file3 =<span class="st"> </span><span class="kw">here</span>(<span 
 </tbody>
 </table>
 <p>Now I display the saved file for an improved aesthetic.</p>
-<table style="width:100%;">
+<table>
 <caption>Simple Linear Regression Model with Body Temperature as the outcome and Runny Nose as the predictor</caption>
 <colgroup>
 <col width="9%" />
@@ -467,13 +481,13 @@ summarytable_file3 =<span class="st"> </span><span class="kw">here</span>(<span 
 <col width="8%" />
 <col width="9%" />
 <col width="7%" />
-<col width="3%" />
+<col width="2%" />
 <col width="9%" />
 <col width="8%" />
 <col width="8%" />
 <col width="8%" />
-<col width="10%" />
-<col width="5%" />
+<col width="11%" />
+<col width="4%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -509,18 +523,18 @@ summarytable_file3 =<span class="st"> </span><span class="kw">here</span>(<span 
 </tbody>
 </table>
 <p>Fits another linear model to the continuous outcome using all (important) predictors of interest.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#same thing this time, but for multivariable</span>
-lm_mod2 &lt;-<span class="st"> </span>
-<span class="st">  </span><span class="kw">linear_reg</span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;lm&quot;</span>)
-
-lm_fit2 &lt;-<span class="st"> </span>
-<span class="st">  </span>lm_mod2 <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">fit</span>(BodyTemp <span class="op">~</span><span class="st">  </span>.<span class="op">-</span>SwollenLymphNodes <span class="op">-</span><span class="st"> </span>Wheeze, <span class="dt">data =</span> mydata)
-lm_fit2</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">#same thing this time, but for multivariable</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>lm_mod2 &lt;-<span class="st"> </span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="st">  </span><span class="kw">linear_reg</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;lm&quot;</span>)</span>
+<span id="cb5-5"><a href="#cb5-5"></a></span>
+<span id="cb5-6"><a href="#cb5-6"></a>lm_fit2 &lt;-<span class="st"> </span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="st">  </span>lm_mod2 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="st">  </span><span class="kw">fit</span>(BodyTemp <span class="op">~</span><span class="st">  </span>.<span class="op">-</span>SwollenLymphNodes <span class="op">-</span><span class="st"> </span>Wheeze, <span class="dt">data =</span> mydata)</span>
+<span id="cb5-9"><a href="#cb5-9"></a>lm_fit2</span></code></pre></div>
 <pre><code>## parsnip model object
 ## 
-## Fit time:  10ms 
+## Fit time:  15ms 
 ## 
 ## Call:
 ## stats::lm(formula = BodyTemp ~ . - SwollenLymphNodes - Wheeze, 
@@ -543,19 +557,19 @@ lm_fit2</code></pre></div>
 ##          -0.024566            0.087189            0.267819            0.062433  
 ##         ToothPnYes            VomitYes  
 ##          -0.043296            0.149671</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#saving table of all coefficients</span>
-lm_fit_full_table &lt;-<span class="st"> </span><span class="kw">tidy</span>(lm_fit2)
-
-<span class="co">#saved it as a file</span>
-summarytable_file4 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;lm_fit_full_table.rds&quot;</span>)
-<span class="kw">saveRDS</span>(lm_fit_full_table, <span class="dt">file =</span> summarytable_file4)
-
-<span class="co">#using glance to get statistics</span>
-lm_fit_full_stats &lt;-<span class="st"> </span><span class="kw">glance</span>(lm_fit2)
-
-<span class="co">#saved it as a file</span>
-summarytable_file5 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;lm_fit_full_stats.rds&quot;</span>)
-<span class="kw">saveRDS</span>(lm_fit_full_stats, <span class="dt">file =</span> summarytable_file5)</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co">#saving table of all coefficients</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>lm_fit_full_table &lt;-<span class="st"> </span><span class="kw">tidy</span>(lm_fit2)</span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="co">#saved it as a file</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>summarytable_file4 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;lm_fit_full_table.rds&quot;</span>)</span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="kw">saveRDS</span>(lm_fit_full_table, <span class="dt">file =</span> summarytable_file4)</span>
+<span id="cb7-7"><a href="#cb7-7"></a></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="co">#using glance to get statistics</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a>lm_fit_full_stats &lt;-<span class="st"> </span><span class="kw">glance</span>(lm_fit2)</span>
+<span id="cb7-10"><a href="#cb7-10"></a></span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="co">#saved it as a file</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a>summarytable_file5 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;lm_fit_full_stats.rds&quot;</span>)</span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="kw">saveRDS</span>(lm_fit_full_stats, <span class="dt">file =</span> summarytable_file5)</span></code></pre></div>
 <p>Now I display the saved file for an improved aesthetic.</p>
 <table>
 <caption>Coefficients from Multivariate Linear Regression Model with Body Temperature as the outcome and Runny Nose and all other covariates as the predictors</caption>
@@ -809,20 +823,17 @@ summarytable_file5 =<span class="st"> </span><span class="kw">here</span>(<span 
 </tr>
 </tbody>
 </table>
-</div>
-<div id="comparing-both-linear-models" class="section level1">
-<h1>Comparing both linear models:</h1>
-<p>Here I use ANOVA to test whether the more complex model is significantly better at capturing the data than the simpler model. The resulting p-value is sufficiently low so we conclude that the more complex model is significantly better than the simpler model. Also, from the glance() output prior, we see that the AIC for the multivariate model is lower that the simple model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">comparing_lm_anova &lt;-<span class="st"> </span><span class="kw">anova</span>(lm_fit<span class="op">$</span>fit, lm_fit2<span class="op">$</span>fit)
-
-<span class="kw">tidy</span>(<span class="kw">anova</span>(lm_fit<span class="op">$</span>fit, lm_fit2<span class="op">$</span>fit))</code></pre></div>
-<pre><code>## [38;5;246m# A tibble: 2 × 6[39m
+<p>#Comparing both linear models: Here I use ANOVA to test whether the more complex model is significantly better at capturing the data than the simpler model. The resulting p-value is sufficiently low so we conclude that the more complex model is significantly better than the simpler model. Also, from the glance() output prior, we see that the AIC for the multivariate model is lower that the simple model.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>comparing_lm_anova &lt;-<span class="st"> </span><span class="kw">anova</span>(lm_fit<span class="op">$</span>fit, lm_fit2<span class="op">$</span>fit)</span>
+<span id="cb8-2"><a href="#cb8-2"></a></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="kw">tidy</span>(<span class="kw">anova</span>(lm_fit<span class="op">$</span>fit, lm_fit2<span class="op">$</span>fit))</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 6
 ##   res.df   rss    df sumsq statistic      p.value
-##    [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;dbl&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m        [3m[38;5;246m&lt;dbl&gt;[39m[23m
-## [38;5;250m1[39m    728 [4m1[24m031.    [31mNA[39m   [31mNA[39m      [31mNA[39m    [31mNA[39m          
-## [38;5;250m2[39m    700  918.    28  112.      3.06  0.000[4m0[24m[4m0[24m[4m0[24m304</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">summarytable_file6 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;comparing_lm_anova.rds&quot;</span>)
-<span class="kw">saveRDS</span>(comparing_lm_anova, <span class="dt">file =</span> summarytable_file6)</code></pre></div>
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;
+## 1    728 1031.    NA   NA      NA    NA          
+## 2    700  918.    28  112.      3.06  0.000000304</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>summarytable_file6 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;comparing_lm_anova.rds&quot;</span>)</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="kw">saveRDS</span>(comparing_lm_anova, <span class="dt">file =</span> summarytable_file6)</span></code></pre></div>
 <p>Now I display the saved file for an improved aesthetic.</p>
 <table>
 <caption>ANOVA Table Comparing the Simple and Complex Models</caption>
@@ -855,21 +866,19 @@ summarytable_file5 =<span class="st"> </span><span class="kw">here</span>(<span 
 </tr>
 </tbody>
 </table>
-<div id="logistic-models" class="section level3">
-<h3>Logistic Models</h3>
-<p>Fits a logistic model to the categorical outcome using only the main predictor of interest.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#setting engine</span>
-log_mod &lt;-<span class="st"> </span>
-<span class="st">  </span><span class="kw">logistic_reg</span>()  <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;glm&quot;</span>)
-
-log_fit &lt;-<span class="st"> </span>
-<span class="st">  </span>log_mod <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">fit</span>(Nausea <span class="op">~</span><span class="st"> </span>RunnyNose , <span class="dt">data =</span> mydata)
-log_fit</code></pre></div>
+<p>###Logistic Models Fits a logistic model to the categorical outcome using only the main predictor of interest.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co">#setting engine</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>log_mod &lt;-<span class="st"> </span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="st">  </span><span class="kw">logistic_reg</span>()  <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;glm&quot;</span>)</span>
+<span id="cb11-5"><a href="#cb11-5"></a></span>
+<span id="cb11-6"><a href="#cb11-6"></a>log_fit &lt;-<span class="st"> </span></span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="st">  </span>log_mod <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb11-8"><a href="#cb11-8"></a><span class="st">  </span><span class="kw">fit</span>(Nausea <span class="op">~</span><span class="st"> </span>RunnyNose , <span class="dt">data =</span> mydata)</span>
+<span id="cb11-9"><a href="#cb11-9"></a>log_fit</span></code></pre></div>
 <pre><code>## parsnip model object
 ## 
-## Fit time:  9ms 
+## Fit time:  7ms 
 ## 
 ## Call:  stats::glm(formula = Nausea ~ RunnyNose, family = stats::binomial, 
 ##     data = data)
@@ -881,19 +890,19 @@ log_fit</code></pre></div>
 ## Degrees of Freedom: 729 Total (i.e. Null);  728 Residual
 ## Null Deviance:       944.7 
 ## Residual Deviance: 944.6     AIC: 948.6</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#saving coeffiecents in a table</span>
-log_fit_table &lt;-<span class="st"> </span><span class="kw">tidy</span>(log_fit)
-
-<span class="co">#save as a table object in resutls </span>
-summarytable_file7 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;log_fit_table.rds&quot;</span>)
-<span class="kw">saveRDS</span>(log_fit_table, <span class="dt">file =</span> summarytable_file7)
-
-<span class="co">#glancing at stats</span>
-log_fit_stats &lt;-<span class="st"> </span><span class="kw">glance</span>(log_fit)
-
-<span class="co">#saving</span>
-summarytable_file8 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;log_fit_stats.rds&quot;</span>)
-<span class="kw">saveRDS</span>(log_fit_stats, <span class="dt">file =</span> summarytable_file8)</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co">#saving coeffiecents in a table</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>log_fit_table &lt;-<span class="st"> </span><span class="kw">tidy</span>(log_fit)</span>
+<span id="cb13-3"><a href="#cb13-3"></a></span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="co">#save as a table object in resutls </span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>summarytable_file7 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;log_fit_table.rds&quot;</span>)</span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="kw">saveRDS</span>(log_fit_table, <span class="dt">file =</span> summarytable_file7)</span>
+<span id="cb13-7"><a href="#cb13-7"></a></span>
+<span id="cb13-8"><a href="#cb13-8"></a><span class="co">#glancing at stats</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a>log_fit_stats &lt;-<span class="st"> </span><span class="kw">glance</span>(log_fit)</span>
+<span id="cb13-10"><a href="#cb13-10"></a></span>
+<span id="cb13-11"><a href="#cb13-11"></a><span class="co">#saving</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a>summarytable_file8 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;log_fit_stats.rds&quot;</span>)</span>
+<span id="cb13-13"><a href="#cb13-13"></a><span class="kw">saveRDS</span>(log_fit_stats, <span class="dt">file =</span> summarytable_file8)</span></code></pre></div>
 <table>
 <caption>Simple Logistic Model with Runny Nose as the Predictor and Nausea as the Outcome</caption>
 <thead>
@@ -950,18 +959,18 @@ summarytable_file8 =<span class="st"> </span><span class="kw">here</span>(<span 
 </tbody>
 </table>
 <p>Fits another logistic model to the categorical outcome using all (important) predictors of interest. Compares the model results for the categorical model with just the main predictor and all predictors.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#same here but for multivariable model</span>
-log_mod2 &lt;-<span class="st"> </span>
-<span class="st">  </span><span class="kw">logistic_reg</span>()  <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;glm&quot;</span>)
-
-log_fit2 &lt;-<span class="st"> </span>
-<span class="st">  </span>log_mod2 <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">fit</span>(Nausea <span class="op">~</span><span class="st">  </span>.<span class="op">-</span>SwollenLymphNodes <span class="op">-</span><span class="st"> </span>Wheeze, <span class="dt">data =</span> mydata)
-log_fit2</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co">#same here but for multivariable model</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>log_mod2 &lt;-<span class="st"> </span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="st">  </span><span class="kw">logistic_reg</span>()  <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;glm&quot;</span>)</span>
+<span id="cb14-5"><a href="#cb14-5"></a></span>
+<span id="cb14-6"><a href="#cb14-6"></a>log_fit2 &lt;-<span class="st"> </span></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="st">  </span>log_mod2 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="st">  </span><span class="kw">fit</span>(Nausea <span class="op">~</span><span class="st">  </span>.<span class="op">-</span>SwollenLymphNodes <span class="op">-</span><span class="st"> </span>Wheeze, <span class="dt">data =</span> mydata)</span>
+<span id="cb14-9"><a href="#cb14-9"></a>log_fit2</span></code></pre></div>
 <pre><code>## parsnip model object
 ## 
-## Fit time:  14ms 
+## Fit time:  17ms 
 ## 
 ## Call:  stats::glm(formula = Nausea ~ . - SwollenLymphNodes - Wheeze, 
 ##     family = stats::binomial, data = data)
@@ -987,15 +996,15 @@ log_fit2</code></pre></div>
 ## Degrees of Freedom: 729 Total (i.e. Null);  700 Residual
 ## Null Deviance:       944.7 
 ## Residual Deviance: 755.2     AIC: 815.2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">log_fit_full_table &lt;-<span class="st"> </span><span class="kw">tidy</span>(log_fit2)
-
-summarytable_file9 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;log_fit_full_table.rds&quot;</span>)
-<span class="kw">saveRDS</span>(log_fit_full_table, <span class="dt">file =</span> summarytable_file9)
-
-log_fit_full_stats &lt;-<span class="st"> </span><span class="kw">glance</span>(log_fit2)
-
-summarytable_file10 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;log_fit_full_stats.rds&quot;</span>)
-<span class="kw">saveRDS</span>(log_fit_full_stats, <span class="dt">file =</span> summarytable_file10)</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>log_fit_full_table &lt;-<span class="st"> </span><span class="kw">tidy</span>(log_fit2)</span>
+<span id="cb16-2"><a href="#cb16-2"></a></span>
+<span id="cb16-3"><a href="#cb16-3"></a>summarytable_file9 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;log_fit_full_table.rds&quot;</span>)</span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="kw">saveRDS</span>(log_fit_full_table, <span class="dt">file =</span> summarytable_file9)</span>
+<span id="cb16-5"><a href="#cb16-5"></a></span>
+<span id="cb16-6"><a href="#cb16-6"></a>log_fit_full_stats &lt;-<span class="st"> </span><span class="kw">glance</span>(log_fit2)</span>
+<span id="cb16-7"><a href="#cb16-7"></a></span>
+<span id="cb16-8"><a href="#cb16-8"></a>summarytable_file10 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;log_fit_full_stats.rds&quot;</span>)</span>
+<span id="cb16-9"><a href="#cb16-9"></a><span class="kw">saveRDS</span>(log_fit_full_stats, <span class="dt">file =</span> summarytable_file10)</span></code></pre></div>
 <table>
 <caption>Multivariate Logistic Model with Runny Nose and other Covariates as the Predictors and Nausea as the Outcome</caption>
 <thead>
@@ -1247,17 +1256,13 @@ summarytable_file10 =<span class="st"> </span><span class="kw">here</span>(<span
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div id="comparing-both-logistic-models" class="section level1">
-<h1>Comparing both logistic models:</h1>
-<p>Due to the high scaled deviance 189.73, we conclude that the model with all predictors is significantly better at capturing the data than the simpler model. Also, from the glance() output prior, we see that the AIC for the multivariate model is lower that the simple model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#using anova to compare both the complex and simple</span>
-anova_log &lt;-<span class="st"> </span><span class="kw">anova</span>(log_fit<span class="op">$</span>fit, log_fit2<span class="op">$</span>fit)
-
-<span class="co">#saving as table</span>
-summarytable_file11 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;anova_log.rds&quot;</span>)
-<span class="kw">saveRDS</span>(anova_log, <span class="dt">file =</span> summarytable_file11)</code></pre></div>
+<p>#Comparing both logistic models: Due to the high scaled deviance 189.73, we conclude that the model with all predictors is significantly better at capturing the data than the simpler model. Also, from the glance() output prior, we see that the AIC for the multivariate model is lower that the simple model.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co">#using anova to compare both the complex and simple</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>anova_log &lt;-<span class="st"> </span><span class="kw">anova</span>(log_fit<span class="op">$</span>fit, log_fit2<span class="op">$</span>fit)</span>
+<span id="cb17-3"><a href="#cb17-3"></a></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="co">#saving as table</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a>summarytable_file11 =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;anova_log.rds&quot;</span>)</span>
+<span id="cb17-6"><a href="#cb17-6"></a><span class="kw">saveRDS</span>(anova_log, <span class="dt">file =</span> summarytable_file11)</span></code></pre></div>
 <table>
 <caption>Comparing the Simple and Complex Models</caption>
 <thead>
@@ -1283,7 +1288,6 @@ summarytable_file11 =<span class="st"> </span><span class="kw">here</span>(<span
 </tr>
 </tbody>
 </table>
-</div>
 
 
 

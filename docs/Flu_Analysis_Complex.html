@@ -12,9 +12,9 @@
 <meta name="author" content="Nicholas Mallis" />
 
 
-<title>Flu Analysis: Decision Tree</title>
+<title>Flu Analysis: Machine Learning Techniques</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -30,6 +30,7 @@
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -52,42 +53,68 @@
   }
 </style>
 <style type="text/css" data-origin="pandoc">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
-td.sourceCode { padding-left: 5px; }
-pre, code { color: #cccccc; background-color: #303030; }
-code > span.kw { color: #f0dfaf; } /* Keyword */
-code > span.dt { color: #dfdfbf; } /* DataType */
-code > span.dv { color: #dcdccc; } /* DecVal */
-code > span.bn { color: #dca3a3; } /* BaseN */
-code > span.fl { color: #c0bed1; } /* Float */
-code > span.ch { color: #dca3a3; } /* Char */
-code > span.st { color: #cc9393; } /* String */
-code > span.co { color: #7f9f7f; } /* Comment */
-code > span.ot { color: #efef8f; } /* Other */
-code > span.al { color: #ffcfaf; } /* Alert */
-code > span.fu { color: #efef8f; } /* Function */
-code > span.er { color: #c3bf9f; } /* Error */
-code > span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
-code > span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
-code > span.sc { color: #dca3a3; } /* SpecialChar */
-code > span.vs { color: #cc9393; } /* VerbatimString */
-code > span.ss { color: #cc9393; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { } /* Variable */
-code > span.cf { color: #f0dfaf; } /* ControlFlow */
-code > span.op { color: #f0efd0; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
-code > span.at { } /* Attribute */
-code > span.do { color: #7f9f7f; } /* Documentation */
-code > span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
-code > span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
-code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  { color: #cccccc; background-color: #303030; }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ffcfaf; } /* Alert */
+code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #dca3a3; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #f0dfaf; } /* ControlFlow */
+code span.ch { color: #dca3a3; } /* Char */
+code span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code span.co { color: #7f9f7f; } /* Comment */
+code span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code span.do { color: #7f9f7f; } /* Documentation */
+code span.dt { color: #dfdfbf; } /* DataType */
+code span.dv { color: #dcdccc; } /* DecVal */
+code span.er { color: #c3bf9f; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #c0bed1; } /* Float */
+code span.fu { color: #efef8f; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+code span.kw { color: #f0dfaf; } /* Keyword */
+code span.op { color: #f0efd0; } /* Operator */
+code span.ot { color: #efef8f; } /* Other */
+code span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code span.sc { color: #dca3a3; } /* SpecialChar */
+code span.ss { color: #cc9393; } /* SpecialString */
+code span.st { color: #cc9393; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #cc9393; } /* VerbatimString */
+code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 
 </style>
 <script>
@@ -328,7 +355,7 @@ $(document).ready(function () {
       <a href="./Flu_Analysis_Simple.html">Flu Data Analysis: Simple and Multivariate Regression</a>
     </li>
     <li>
-      <a href="./Flu_Analysis_Complex.html">Flu Data Analysis: Decision Tree and Test/Train Split</a>
+      <a href="./Flu_Analysis_Complex.html">Flu Data Analysis: Machine Learning Techniques</a>
     </li>
   </ul>
 </li>
@@ -349,235 +376,224 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Flu Analysis: Decision Tree</h1>
+<h1 class="title toc-ignore">Flu Analysis: Machine Learning Techniques</h1>
 <h4 class="author">Nicholas Mallis</h4>
 <h4 class="date">11/2/2021</h4>
 
 </div>
 
 
-<p>This is part of an analysis exercise I did in a Modern Applied data analysis course at UGA with Dr. Andreas Handel. We used data on flu patients You can find the full steps to data cleaning on more information <a href="https://github.com/nicholasmallis/NicholasMallis-MADA-analysis3">here at the github page</a></p>
-<p>Note: The contents of this exercise include code, output, and figures for fitting the null models and Decision Tree. I unfortunately still could not get my LASSO or Random Forest models to work, even after using your code . Everytime I try to run tune_grid(), R crashes. I tried multiple ways and seeked help, but nothing would work.I'm not sure if it's my computer. I have a seperate R script called LASSO and RF.R which includes include code, output, and figures for fitting the null models, LASSO, and Random Forests. While these do not work on my computer, maybe they will on yours?</p>
+<p>This is part of an analysis exercise I did in a Modern Applied Data Analysis course at UGA with Dr. Andreas Handel. We used data on flu patients You can find the full steps to data cleaning on more information <a href="https://github.com/nicholasmallis/NicholasMallis-MADA-analysis3">here at the github page</a></p>
 <div id="setting-up" class="section level1">
 <h1>Setting up</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#loading packages</span>
-<span class="kw">library</span>(broom)
-<span class="kw">library</span>(here) <span class="co">#for data loading/saving</span>
-<span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(recipes)
-<span class="kw">library</span>(tidymodels)
-<span class="kw">library</span>(workflowr) 
-<span class="kw">library</span>(parsnip)
-<span class="kw">library</span>(rsample)
-<span class="kw">library</span>(rpart)
-<span class="kw">library</span>(glmnet)
-<span class="kw">library</span>(ranger)
-<span class="kw">library</span>(modeldata)
-<span class="kw">library</span>(rpart.plot)
-<span class="kw">library</span>(dials)
-<span class="kw">library</span>(workflows)
-<span class="kw">library</span>(vip)
-<span class="kw">library</span>(glmnet)
-<span class="kw">library</span>(yardstick)
-<span class="kw">library</span>(doParallel) <span class="co"># for parallel computing </span></code></pre></div>
-</div>
-<div id="loading-data" class="section level1">
-<h1>Loading Data</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#first loading in processed data</span>
-data_location &lt;-<span class="st"> </span>here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>,<span class="st">&quot;processeddata.rds&quot;</span>)
-
-<span class="co">#load data. </span>
-data &lt;-<span class="st"> </span><span class="kw">readRDS</span>(data_location)
-
-<span class="co">#checking</span>
-<span class="kw">glimpse</span>(data)</code></pre></div>
-</div>
-<div id="setting-up-random-seed-data-split-and-cross-validation" class="section level1">
-<h1>Setting up: Random Seed, Data Split, and Cross Validation</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">123</span>)
-
-data_split &lt;-<span class="st"> </span><span class="kw">initial_split</span>(data, <span class="dt">prop =</span> .<span class="dv">7</span>, <span class="dt">strata =</span> BodyTemp)
-
-train_data &lt;-<span class="st"> </span><span class="kw">training</span>(data_split)
-test_data  &lt;-<span class="st"> </span><span class="kw">testing</span>(data_split)
-
-folds &lt;-<span class="st"> </span><span class="kw">vfold_cv</span>(train_data, <span class="dt">v =</span> <span class="dv">5</span>, <span class="dt">r=</span><span class="dv">5</span>, <span class="dt">strata=</span> <span class="st">&quot;BodyTemp&quot;</span>)
-folds</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">#loading packages</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(broom)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">library</span>(here) <span class="co">#for data loading/saving</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="kw">library</span>(recipes)</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="kw">library</span>(tidymodels)</span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="kw">library</span>(workflowr) </span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="kw">library</span>(parsnip)</span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="kw">library</span>(rsample)</span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="kw">library</span>(rpart)</span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="kw">library</span>(glmnet)</span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="kw">library</span>(ranger)</span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="kw">library</span>(modeldata)</span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="kw">library</span>(rpart.plot)</span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="kw">library</span>(dials)</span>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="kw">library</span>(workflows)</span>
+<span id="cb1-17"><a href="#cb1-17"></a><span class="kw">library</span>(vip)</span>
+<span id="cb1-18"><a href="#cb1-18"></a><span class="kw">library</span>(glmnet)</span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="kw">library</span>(yardstick)</span>
+<span id="cb1-20"><a href="#cb1-20"></a><span class="kw">library</span>(doParallel) <span class="co"># for parallel computing </span></span></code></pre></div>
+<p>#Loading Data</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">#first loading in processed data</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>data_location &lt;-<span class="st"> </span>here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;files&quot;</span>,<span class="st">&quot;processeddata.rds&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#load data. </span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>data &lt;-<span class="st"> </span><span class="kw">readRDS</span>(data_location)</span>
+<span id="cb2-6"><a href="#cb2-6"></a></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#checking</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="kw">glimpse</span>(data)</span></code></pre></div>
+<p>#Setting up: Random Seed, Data Split, and Cross Validation</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a>data_split &lt;-<span class="st"> </span><span class="kw">initial_split</span>(data, <span class="dt">prop =</span> <span class="fl">.7</span>, <span class="dt">strata =</span> BodyTemp)</span>
+<span id="cb3-4"><a href="#cb3-4"></a></span>
+<span id="cb3-5"><a href="#cb3-5"></a>train_data &lt;-<span class="st"> </span><span class="kw">training</span>(data_split)</span>
+<span id="cb3-6"><a href="#cb3-6"></a>test_data  &lt;-<span class="st"> </span><span class="kw">testing</span>(data_split)</span>
+<span id="cb3-7"><a href="#cb3-7"></a></span>
+<span id="cb3-8"><a href="#cb3-8"></a>folds &lt;-<span class="st"> </span><span class="kw">vfold_cv</span>(train_data, <span class="dt">v =</span> <span class="dv">5</span>, <span class="dt">r=</span><span class="dv">5</span>, <span class="dt">strata=</span> <span class="st">&quot;BodyTemp&quot;</span>)</span>
+<span id="cb3-9"><a href="#cb3-9"></a>folds</span></code></pre></div>
 <pre><code>## #  5-fold cross-validation repeated 5 times using stratification 
-## [38;5;246m# A tibble: 25 × 3[39m
+## # A tibble: 25 × 3
 ##    splits            id      id2  
-##    [3m[38;5;246m&lt;list&gt;[39m[23m            [3m[38;5;246m&lt;chr&gt;[39m[23m   [3m[38;5;246m&lt;chr&gt;[39m[23m
-## [38;5;250m 1[39m [38;5;246m&lt;split [405/103]&gt;[39m Repeat1 Fold1
-## [38;5;250m 2[39m [38;5;246m&lt;split [405/103]&gt;[39m Repeat1 Fold2
-## [38;5;250m 3[39m [38;5;246m&lt;split [406/102]&gt;[39m Repeat1 Fold3
-## [38;5;250m 4[39m [38;5;246m&lt;split [408/100]&gt;[39m Repeat1 Fold4
-## [38;5;250m 5[39m [38;5;246m&lt;split [408/100]&gt;[39m Repeat1 Fold5
-## [38;5;250m 6[39m [38;5;246m&lt;split [405/103]&gt;[39m Repeat2 Fold1
-## [38;5;250m 7[39m [38;5;246m&lt;split [405/103]&gt;[39m Repeat2 Fold2
-## [38;5;250m 8[39m [38;5;246m&lt;split [406/102]&gt;[39m Repeat2 Fold3
-## [38;5;250m 9[39m [38;5;246m&lt;split [408/100]&gt;[39m Repeat2 Fold4
-## [38;5;250m10[39m [38;5;246m&lt;split [408/100]&gt;[39m Repeat2 Fold5
-## [38;5;246m# … with 15 more rows[39m</code></pre>
+##    &lt;list&gt;            &lt;chr&gt;   &lt;chr&gt;
+##  1 &lt;split [405/103]&gt; Repeat1 Fold1
+##  2 &lt;split [405/103]&gt; Repeat1 Fold2
+##  3 &lt;split [406/102]&gt; Repeat1 Fold3
+##  4 &lt;split [408/100]&gt; Repeat1 Fold4
+##  5 &lt;split [408/100]&gt; Repeat1 Fold5
+##  6 &lt;split [405/103]&gt; Repeat2 Fold1
+##  7 &lt;split [405/103]&gt; Repeat2 Fold2
+##  8 &lt;split [406/102]&gt; Repeat2 Fold3
+##  9 &lt;split [408/100]&gt; Repeat2 Fold4
+## 10 &lt;split [408/100]&gt; Repeat2 Fold5
+## # … with 15 more rows</code></pre>
 <p>Creating a Recipe/Workflow</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Recipe() has two arguments: a formula and the data</span>
-bodytemp_cont_rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(BodyTemp <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> train_data) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal_predictors</span>()) <span class="co">#adding step_dummy</span>
-
-<span class="co">#Build a model specification using the parsnip package</span>
-lm_mod &lt;-<span class="st"> </span><span class="kw">linear_reg</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;lm&quot;</span>) 
-
-<span class="co">#Model workflow pairs a model and recipe together</span>
-bodytemp_cont_workflow &lt;-<span class="st"> </span>
-<span class="st">  </span><span class="kw">workflow</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">add_model</span>(lm_mod) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">add_recipe</span>(bodytemp_cont_rec)</code></pre></div>
-</div>
-<div id="fitting-the-null-model" class="section level1">
-<h1>Fitting the Null Model</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Creates a simple recipe that fits null model</span>
-bodytmp_rec_null &lt;-<span class="st"> </span><span class="kw">recipe</span>(BodyTemp <span class="op">~</span><span class="st">  </span><span class="dv">1</span> , <span class="dt">data =</span> train_data)
-
-<span class="co"># Set a model as we did in the previous exercise</span>
-lr_mod &lt;-<span class="st"> </span>
-<span class="st">  </span><span class="kw">linear_reg</span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;lm&quot;</span>)
-
-bodytmp_wflow_null &lt;-<span class="st"> </span>
-<span class="st">  </span><span class="kw">workflow</span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">add_model</span>(lr_mod) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">add_recipe</span>(bodytmp_rec_null)
-
-<span class="co"># Fitting the model</span>
-bodytmp_fit_null &lt;-<span class="st"> </span>
-<span class="st">  </span>bodytmp_wflow_null <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">fit</span>(<span class="dt">data =</span> train_data)
-
-<span class="co"># Extracting Model/Recipes with Parsnip</span>
-bodytmp_fit_null <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">extract_fit_parsnip</span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">tidy</span>()</code></pre></div>
-<pre><code>## [38;5;246m# A tibble: 1 × 5[39m
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">#Recipe() has two arguments: a formula and the data</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>bodytemp_cont_rec &lt;-<span class="st"> </span><span class="kw">recipe</span>(BodyTemp <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> train_data) <span class="op">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="st">  </span><span class="kw">step_dummy</span>(<span class="kw">all_nominal_predictors</span>()) <span class="co">#adding step_dummy</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="co">#Build a model specification using the parsnip package</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>lm_mod &lt;-<span class="st"> </span><span class="kw">linear_reg</span>() <span class="op">%&gt;%</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;lm&quot;</span>) </span>
+<span id="cb5-8"><a href="#cb5-8"></a></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="co">#Model workflow pairs a model and recipe together</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a>bodytemp_cont_workflow &lt;-<span class="st"> </span></span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="st">  </span><span class="kw">workflow</span>() <span class="op">%&gt;%</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="st">  </span><span class="kw">add_model</span>(lm_mod) <span class="op">%&gt;%</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="st">  </span><span class="kw">add_recipe</span>(bodytemp_cont_rec)</span></code></pre></div>
+<p>#Fitting the Null Model</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Creates a simple recipe that fits null model</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>bodytmp_rec_null &lt;-<span class="st"> </span><span class="kw">recipe</span>(BodyTemp <span class="op">~</span><span class="st">  </span><span class="dv">1</span> , <span class="dt">data =</span> train_data)</span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co"># Set a model as we did in the previous exercise</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>lr_mod &lt;-<span class="st"> </span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="st">  </span><span class="kw">linear_reg</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;lm&quot;</span>)</span>
+<span id="cb6-8"><a href="#cb6-8"></a></span>
+<span id="cb6-9"><a href="#cb6-9"></a>bodytmp_wflow_null &lt;-<span class="st"> </span></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="st">  </span><span class="kw">workflow</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="st">  </span><span class="kw">add_model</span>(lr_mod) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="st">  </span><span class="kw">add_recipe</span>(bodytmp_rec_null)</span>
+<span id="cb6-13"><a href="#cb6-13"></a></span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="co"># Fitting the model</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a>bodytmp_fit_null &lt;-<span class="st"> </span></span>
+<span id="cb6-16"><a href="#cb6-16"></a><span class="st">  </span>bodytmp_wflow_null <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb6-17"><a href="#cb6-17"></a><span class="st">  </span><span class="kw">fit</span>(<span class="dt">data =</span> train_data)</span>
+<span id="cb6-18"><a href="#cb6-18"></a></span>
+<span id="cb6-19"><a href="#cb6-19"></a><span class="co"># Extracting Model/Recipes with Parsnip</span></span>
+<span id="cb6-20"><a href="#cb6-20"></a>bodytmp_fit_null <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb6-21"><a href="#cb6-21"></a><span class="st">  </span><span class="kw">extract_fit_parsnip</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb6-22"><a href="#cb6-22"></a><span class="st">  </span><span class="kw">tidy</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 5
 ##   term        estimate std.error statistic p.value
-##   [3m[38;5;246m&lt;chr&gt;[39m[23m          [3m[38;5;246m&lt;dbl&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m     [3m[38;5;246m&lt;dbl&gt;[39m[23m   [3m[38;5;246m&lt;dbl&gt;[39m[23m
-## [38;5;250m1[39m (Intercept)     98.9    0.053[4m7[24m     [4m1[24m842.       0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Obtaining Predictions</span>
-<span class="kw">predict</span>(bodytmp_fit_null, train_data)</code></pre></div>
-<pre><code>## [38;5;246m# A tibble: 508 × 1[39m
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)     98.9    0.0537     1842.       0</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Obtaining Predictions</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="kw">predict</span>(bodytmp_fit_null, train_data)</span></code></pre></div>
+<pre><code>## # A tibble: 508 × 1
 ##    .pred
-##    [3m[38;5;246m&lt;dbl&gt;[39m[23m
-## [38;5;250m 1[39m  98.9
-## [38;5;250m 2[39m  98.9
-## [38;5;250m 3[39m  98.9
-## [38;5;250m 4[39m  98.9
-## [38;5;250m 5[39m  98.9
-## [38;5;250m 6[39m  98.9
-## [38;5;250m 7[39m  98.9
-## [38;5;250m 8[39m  98.9
-## [38;5;250m 9[39m  98.9
-## [38;5;250m10[39m  98.9
-## [38;5;246m# … with 498 more rows[39m</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bodytmp_aug_null &lt;-<span class="st"> </span>
-<span class="st">  </span><span class="kw">augment</span>(bodytmp_fit_null, train_data)
-
-bodytmp_aug_null <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(BodyTemp)</code></pre></div>
-<pre><code>## [38;5;246m# A tibble: 508 × 1[39m
+##    &lt;dbl&gt;
+##  1  98.9
+##  2  98.9
+##  3  98.9
+##  4  98.9
+##  5  98.9
+##  6  98.9
+##  7  98.9
+##  8  98.9
+##  9  98.9
+## 10  98.9
+## # … with 498 more rows</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>bodytmp_aug_null &lt;-<span class="st"> </span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="st">  </span><span class="kw">augment</span>(bodytmp_fit_null, train_data)</span>
+<span id="cb10-3"><a href="#cb10-3"></a></span>
+<span id="cb10-4"><a href="#cb10-4"></a>bodytmp_aug_null <span class="op">%&gt;%</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="st">  </span><span class="kw">select</span>(BodyTemp)</span></code></pre></div>
+<pre><code>## # A tibble: 508 × 1
 ##    BodyTemp
-##       [3m[38;5;246m&lt;dbl&gt;[39m[23m
-## [38;5;250m 1[39m     97.8
-## [38;5;250m 2[39m     98.1
-## [38;5;250m 3[39m     98.1
-## [38;5;250m 4[39m     98.2
-## [38;5;250m 5[39m     97.8
-## [38;5;250m 6[39m     98.2
-## [38;5;250m 7[39m     98.1
-## [38;5;250m 8[39m     98  
-## [38;5;250m 9[39m     97.7
-## [38;5;250m10[39m     98.2
-## [38;5;246m# … with 498 more rows[39m</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Calculating Root RMSE </span>
-rmse_train &lt;-<span class="st"> </span>bodytmp_aug_null <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">rmse</span>(<span class="dt">truth =</span> BodyTemp, .pred)
-
-<span class="co"># RMSE 1.21</span>
-rmse_train</code></pre></div>
-<pre><code>## [38;5;246m# A tibble: 1 × 3[39m
+##       &lt;dbl&gt;
+##  1     97.8
+##  2     98.1
+##  3     98.1
+##  4     98.2
+##  5     97.8
+##  6     98.2
+##  7     98.1
+##  8     98  
+##  9     97.7
+## 10     98.2
+## # … with 498 more rows</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># Calculating Root RMSE </span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>rmse_train &lt;-<span class="st"> </span>bodytmp_aug_null <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="st">  </span><span class="kw">rmse</span>(<span class="dt">truth =</span> BodyTemp, .pred)</span>
+<span id="cb12-4"><a href="#cb12-4"></a></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="co"># RMSE 1.21</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a>rmse_train</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 3
 ##   .metric .estimator .estimate
-##   [3m[38;5;246m&lt;chr&gt;[39m[23m   [3m[38;5;246m&lt;chr&gt;[39m[23m          [3m[38;5;246m&lt;dbl&gt;[39m[23m
-## [38;5;250m1[39m rmse    standard        1.21</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now on Test Data</span>
-
-
-<span class="co"># Obtaining Predictions</span>
-<span class="kw">predict</span>(bodytmp_fit_null, test_data)</code></pre></div>
-<pre><code>## [38;5;246m# A tibble: 222 × 1[39m
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+## 1 rmse    standard        1.21</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># Now on Test Data</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a></span>
+<span id="cb14-3"><a href="#cb14-3"></a></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="co"># Obtaining Predictions</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="kw">predict</span>(bodytmp_fit_null, test_data)</span></code></pre></div>
+<pre><code>## # A tibble: 222 × 1
 ##    .pred
-##    [3m[38;5;246m&lt;dbl&gt;[39m[23m
-## [38;5;250m 1[39m  98.9
-## [38;5;250m 2[39m  98.9
-## [38;5;250m 3[39m  98.9
-## [38;5;250m 4[39m  98.9
-## [38;5;250m 5[39m  98.9
-## [38;5;250m 6[39m  98.9
-## [38;5;250m 7[39m  98.9
-## [38;5;250m 8[39m  98.9
-## [38;5;250m 9[39m  98.9
-## [38;5;250m10[39m  98.9
-## [38;5;246m# … with 212 more rows[39m</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bodytmp_aug_null &lt;-<span class="st"> </span>
-<span class="st">  </span><span class="kw">augment</span>(bodytmp_fit_null, test_data)
-
-bodytmp_aug_null <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(BodyTemp)</code></pre></div>
-<pre><code>## [38;5;246m# A tibble: 222 × 1[39m
+##    &lt;dbl&gt;
+##  1  98.9
+##  2  98.9
+##  3  98.9
+##  4  98.9
+##  5  98.9
+##  6  98.9
+##  7  98.9
+##  8  98.9
+##  9  98.9
+## 10  98.9
+## # … with 212 more rows</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>bodytmp_aug_null &lt;-<span class="st"> </span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="st">  </span><span class="kw">augment</span>(bodytmp_fit_null, test_data)</span>
+<span id="cb16-3"><a href="#cb16-3"></a></span>
+<span id="cb16-4"><a href="#cb16-4"></a>bodytmp_aug_null <span class="op">%&gt;%</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a><span class="st">  </span><span class="kw">select</span>(BodyTemp)</span></code></pre></div>
+<pre><code>## # A tibble: 222 × 1
 ##    BodyTemp
-##       [3m[38;5;246m&lt;dbl&gt;[39m[23m
-## [38;5;250m 1[39m    100. 
-## [38;5;250m 2[39m     98.8
-## [38;5;250m 3[39m     98.2
-## [38;5;250m 4[39m     97.9
-## [38;5;250m 5[39m    102. 
-## [38;5;250m 6[39m     99.3
-## [38;5;250m 7[39m     97.8
-## [38;5;250m 8[39m     99.5
-## [38;5;250m 9[39m     99.7
-## [38;5;250m10[39m     98.8
-## [38;5;246m# … with 212 more rows[39m</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Calculating Root RMSE </span>
-rmse_test &lt;-<span class="st"> </span>bodytmp_aug_null <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">rmse</span>(<span class="dt">truth =</span> BodyTemp, .pred)
-
-<span class="co"># RMSE 1.16</span>
-rmse_test </code></pre></div>
-<pre><code>## [38;5;246m# A tibble: 1 × 3[39m
+##       &lt;dbl&gt;
+##  1    100. 
+##  2     98.8
+##  3     98.2
+##  4     97.9
+##  5    102. 
+##  6     99.3
+##  7     97.8
+##  8     99.5
+##  9     99.7
+## 10     98.8
+## # … with 212 more rows</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># Calculating Root RMSE </span></span>
+<span id="cb18-2"><a href="#cb18-2"></a>rmse_test &lt;-<span class="st"> </span>bodytmp_aug_null <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="st">  </span><span class="kw">rmse</span>(<span class="dt">truth =</span> BodyTemp, .pred)</span>
+<span id="cb18-4"><a href="#cb18-4"></a></span>
+<span id="cb18-5"><a href="#cb18-5"></a><span class="co"># RMSE 1.16</span></span>
+<span id="cb18-6"><a href="#cb18-6"></a>rmse_test </span></code></pre></div>
+<pre><code>## # A tibble: 1 × 3
 ##   .metric .estimator .estimate
-##   [3m[38;5;246m&lt;chr&gt;[39m[23m   [3m[38;5;246m&lt;chr&gt;[39m[23m          [3m[38;5;246m&lt;dbl&gt;[39m[23m
-## [38;5;250m1[39m rmse    standard        1.16</code></pre>
-<div id="here-we-see-that-the-rmse-on-train-data-from-the-null-model-is-1.21" class="section level3">
-<h3>Here we see that the RMSE on train data from the null model is 1.21</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># RMSE 1.21</span>
-rmse_train</code></pre></div>
-<pre><code>## [38;5;246m# A tibble: 1 × 3[39m
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+## 1 rmse    standard        1.16</code></pre>
+<p>###Here we see that the RMSE on train data from the null model is 1.21</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># RMSE 1.21</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>rmse_train</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 3
 ##   .metric .estimator .estimate
-##   [3m[38;5;246m&lt;chr&gt;[39m[23m   [3m[38;5;246m&lt;chr&gt;[39m[23m          [3m[38;5;246m&lt;dbl&gt;[39m[23m
-## [38;5;250m1[39m rmse    standard        1.21</code></pre>
-</div>
-</div>
-<div id="fitting-a-tree" class="section level1">
-<h1>Fitting a Tree</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># TREE </span>
-
-<span class="co"># model specification</span>
-tune_spec &lt;-<span class="st"> </span>
-<span class="st">  </span><span class="kw">decision_tree</span>(
-    <span class="dt">cost_complexity =</span> <span class="kw">tune</span>(),
-    <span class="dt">tree_depth =</span> <span class="kw">tune</span>()
-  ) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;rpart&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">set_mode</span>(<span class="st">&quot;regression&quot;</span>)    <span class="co"># setting it to regression instead of classification</span>
-
-tune_spec</code></pre></div>
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+## 1 rmse    standard        1.21</code></pre>
+<p>#Fitting a Tree</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># TREE </span></span>
+<span id="cb22-2"><a href="#cb22-2"></a></span>
+<span id="cb22-3"><a href="#cb22-3"></a><span class="co"># model specification</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a>tune_spec &lt;-<span class="st"> </span></span>
+<span id="cb22-5"><a href="#cb22-5"></a><span class="st">  </span><span class="kw">decision_tree</span>(</span>
+<span id="cb22-6"><a href="#cb22-6"></a>    <span class="dt">cost_complexity =</span> <span class="kw">tune</span>(),</span>
+<span id="cb22-7"><a href="#cb22-7"></a>    <span class="dt">tree_depth =</span> <span class="kw">tune</span>()</span>
+<span id="cb22-8"><a href="#cb22-8"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb22-9"><a href="#cb22-9"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;rpart&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb22-10"><a href="#cb22-10"></a><span class="st">  </span><span class="kw">set_mode</span>(<span class="st">&quot;regression&quot;</span>)    <span class="co"># setting it to regression instead of classification</span></span>
+<span id="cb22-11"><a href="#cb22-11"></a></span>
+<span id="cb22-12"><a href="#cb22-12"></a>tune_spec</span></code></pre></div>
 <pre><code>## Decision Tree Model Specification (regression)
 ## 
 ## Main Arguments:
@@ -585,36 +601,36 @@ tune_spec</code></pre></div>
 ##   tree_depth = tune()
 ## 
 ## Computational engine: rpart</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># tuning grid specification</span>
-tree_grid &lt;-<span class="st"> </span><span class="kw">grid_regular</span>(<span class="kw">cost_complexity</span>(),
-                          <span class="kw">tree_depth</span>(),
-                          <span class="dt">levels =</span> <span class="dv">5</span>)
-
-
-tree_grid <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">count</span>(tree_depth)</code></pre></div>
-<pre><code>## [38;5;246m# A tibble: 5 × 2[39m
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co"># tuning grid specification</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>tree_grid &lt;-<span class="st"> </span><span class="kw">grid_regular</span>(<span class="kw">cost_complexity</span>(),</span>
+<span id="cb24-3"><a href="#cb24-3"></a>                          <span class="kw">tree_depth</span>(),</span>
+<span id="cb24-4"><a href="#cb24-4"></a>                          <span class="dt">levels =</span> <span class="dv">5</span>)</span>
+<span id="cb24-5"><a href="#cb24-5"></a></span>
+<span id="cb24-6"><a href="#cb24-6"></a></span>
+<span id="cb24-7"><a href="#cb24-7"></a>tree_grid <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb24-8"><a href="#cb24-8"></a><span class="st">  </span><span class="kw">count</span>(tree_depth)</span></code></pre></div>
+<pre><code>## # A tibble: 5 × 2
 ##   tree_depth     n
-##        [3m[38;5;246m&lt;int&gt;[39m[23m [3m[38;5;246m&lt;int&gt;[39m[23m
-## [38;5;250m1[39m          1     5
-## [38;5;250m2[39m          4     5
-## [38;5;250m3[39m          8     5
-## [38;5;250m4[39m         11     5
-## [38;5;250m5[39m         15     5</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Tune a workflow() that bundles together a model</span>
-<span class="co"># specification and a recipe or model preprocessor.</span>
-<span class="co"># Here we use a workflow() with a straightforward formula; </span>
-<span class="co"># if this model required more involved data preprocessing, </span>
-<span class="co"># we could use add_recipe() instead of add_formula().</span>
-
-
-tree_wf &lt;-<span class="st"> </span><span class="kw">workflow</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">add_model</span>(tune_spec) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">add_recipe</span>(bodytemp_cont_rec) <span class="co"># using predefined recipe</span></code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># tuning using cross-validation and the tune_grid() function</span>
-tree_res &lt;-<span class="st"> </span>
-<span class="st">  </span>tree_wf <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">tune_grid</span>(<span class="dt">resamples =</span> folds, <span class="dt">grid =</span> tree_grid)</code></pre></div>
+##        &lt;int&gt; &lt;int&gt;
+## 1          1     5
+## 2          4     5
+## 3          8     5
+## 4         11     5
+## 5         15     5</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co"># Tune a workflow() that bundles together a model</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="co"># specification and a recipe or model preprocessor.</span></span>
+<span id="cb26-3"><a href="#cb26-3"></a><span class="co"># Here we use a workflow() with a straightforward formula; </span></span>
+<span id="cb26-4"><a href="#cb26-4"></a><span class="co"># if this model required more involved data preprocessing, </span></span>
+<span id="cb26-5"><a href="#cb26-5"></a><span class="co"># we could use add_recipe() instead of add_formula().</span></span>
+<span id="cb26-6"><a href="#cb26-6"></a></span>
+<span id="cb26-7"><a href="#cb26-7"></a></span>
+<span id="cb26-8"><a href="#cb26-8"></a>tree_wf &lt;-<span class="st"> </span><span class="kw">workflow</span>() <span class="op">%&gt;%</span></span>
+<span id="cb26-9"><a href="#cb26-9"></a><span class="st">  </span><span class="kw">add_model</span>(tune_spec) <span class="op">%&gt;%</span></span>
+<span id="cb26-10"><a href="#cb26-10"></a><span class="st">  </span><span class="kw">add_recipe</span>(bodytemp_cont_rec) <span class="co"># using predefined recipe</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co"># tuning using cross-validation and the tune_grid() function</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a>tree_res &lt;-<span class="st"> </span></span>
+<span id="cb27-3"><a href="#cb27-3"></a><span class="st">  </span>tree_wf <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb27-4"><a href="#cb27-4"></a><span class="st">  </span><span class="kw">tune_grid</span>(<span class="dt">resamples =</span> folds, <span class="dt">grid =</span> tree_grid)</span></code></pre></div>
 <pre><code>## ! Fold1, Repeat1: internal: A correlation computation is required, but `estimate` is const...</code></pre>
 <pre><code>## ! Fold2, Repeat1: internal: A correlation computation is required, but `estimate` is const...</code></pre>
 <pre><code>## ! Fold3, Repeat1: internal: A correlation computation is required, but `estimate` is const...</code></pre>
@@ -640,51 +656,51 @@ tree_res &lt;-<span class="st"> </span>
 <pre><code>## ! Fold3, Repeat5: internal: A correlation computation is required, but `estimate` is const...</code></pre>
 <pre><code>## ! Fold4, Repeat5: internal: A correlation computation is required, but `estimate` is const...</code></pre>
 <pre><code>## ! Fold5, Repeat5: internal: A correlation computation is required, but `estimate` is const...</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tree_res <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">collect_metrics</span>()</code></pre></div>
-<pre><code>## [38;5;246m# A tibble: 50 × 8[39m
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>tree_res <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb53-2"><a href="#cb53-2"></a><span class="st">  </span><span class="kw">collect_metrics</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 50 × 8
 ##    cost_complexity tree_depth .metric .estimator     mean     n  std_err .config
-##              [3m[38;5;246m&lt;dbl&gt;[39m[23m      [3m[38;5;246m&lt;int&gt;[39m[23m [3m[38;5;246m&lt;chr&gt;[39m[23m   [3m[38;5;246m&lt;chr&gt;[39m[23m         [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;int&gt;[39m[23m    [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;chr&gt;[39m[23m  
-## [38;5;250m 1[39m    0.000[4m0[24m[4m0[24m[4m0[24m000[4m1[24m          1 rmse    standard     1.19      25  0.018[4m1[24m  Prepro…
-## [38;5;250m 2[39m    0.000[4m0[24m[4m0[24m[4m0[24m000[4m1[24m          1 rsq     standard     0.036[4m1[24m    25  0.004[4m2[24m[4m2[24m Prepro…
-## [38;5;250m 3[39m    0.000[4m0[24m[4m0[24m[4m0[24m017[4m8[24m          1 rmse    standard     1.19      25  0.018[4m1[24m  Prepro…
-## [38;5;250m 4[39m    0.000[4m0[24m[4m0[24m[4m0[24m017[4m8[24m          1 rsq     standard     0.036[4m1[24m    25  0.004[4m2[24m[4m2[24m Prepro…
-## [38;5;250m 5[39m    0.000[4m0[24m[4m0[24m[4m3[24m16            1 rmse    standard     1.19      25  0.018[4m1[24m  Prepro…
-## [38;5;250m 6[39m    0.000[4m0[24m[4m0[24m[4m3[24m16            1 rsq     standard     0.036[4m1[24m    25  0.004[4m2[24m[4m2[24m Prepro…
-## [38;5;250m 7[39m    0.000[4m5[24m[4m6[24m[4m2[24m              1 rmse    standard     1.19      25  0.018[4m1[24m  Prepro…
-## [38;5;250m 8[39m    0.000[4m5[24m[4m6[24m[4m2[24m              1 rsq     standard     0.036[4m1[24m    25  0.004[4m2[24m[4m2[24m Prepro…
-## [38;5;250m 9[39m    0.1                   1 rmse    standard     1.21      25  0.017[4m7[24m  Prepro…
-## [38;5;250m10[39m    0.1                   1 rsq     standard   [31mNaN[39m          0 [31mNA[39m       Prepro…
-## [38;5;246m# … with 40 more rows[39m</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Once you have done the tuning, you can take a look at some diagnostics</span>
-<span class="co">#by sending your object returned from the tune_grid() function to autoplot(). </span>
-<span class="co">#For instance if you tuned the tree and saved the result as tree_tune_res,</span>
-<span class="co">#you can run tree_tune_res %&gt;% autoplot(). Depending on the model, the plot</span>
-<span class="co">#will be different, but in general it shows you what happened during the tuning process.</span>
-
-<span class="co">#plotting metrics</span>
-tree_res <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">autoplot</span>()</code></pre></div>
+##              &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;         &lt;dbl&gt; &lt;int&gt;    &lt;dbl&gt; &lt;chr&gt;  
+##  1    0.0000000001          1 rmse    standard     1.19      25  0.0181  Prepro…
+##  2    0.0000000001          1 rsq     standard     0.0361    25  0.00422 Prepro…
+##  3    0.0000000178          1 rmse    standard     1.19      25  0.0181  Prepro…
+##  4    0.0000000178          1 rsq     standard     0.0361    25  0.00422 Prepro…
+##  5    0.00000316            1 rmse    standard     1.19      25  0.0181  Prepro…
+##  6    0.00000316            1 rsq     standard     0.0361    25  0.00422 Prepro…
+##  7    0.000562              1 rmse    standard     1.19      25  0.0181  Prepro…
+##  8    0.000562              1 rsq     standard     0.0361    25  0.00422 Prepro…
+##  9    0.1                   1 rmse    standard     1.21      25  0.0177  Prepro…
+## 10    0.1                   1 rsq     standard   NaN          0 NA       Prepro…
+## # … with 40 more rows</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a><span class="co"># Once you have done the tuning, you can take a look at some diagnostics</span></span>
+<span id="cb55-2"><a href="#cb55-2"></a><span class="co">#by sending your object returned from the tune_grid() function to autoplot(). </span></span>
+<span id="cb55-3"><a href="#cb55-3"></a><span class="co">#For instance if you tuned the tree and saved the result as tree_tune_res,</span></span>
+<span id="cb55-4"><a href="#cb55-4"></a><span class="co">#you can run tree_tune_res %&gt;% autoplot(). Depending on the model, the plot</span></span>
+<span id="cb55-5"><a href="#cb55-5"></a><span class="co">#will be different, but in general it shows you what happened during the tuning process.</span></span>
+<span id="cb55-6"><a href="#cb55-6"></a></span>
+<span id="cb55-7"><a href="#cb55-7"></a><span class="co">#plotting metrics</span></span>
+<span id="cb55-8"><a href="#cb55-8"></a>tree_res <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">autoplot</span>()</span></code></pre></div>
 <p><img src="Flu_Analysis_Complex_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Next, you want to get the model that the tuning process has determined </span>
-<span class="co"># is the best. You can get the best-fit model with select_best() </span>
-<span class="co"># and finalize_workflow() and then do one more fit to the training data with </span>
-<span class="co"># this final workflow using the fit() function. Follow the examples in the tutorial.</span>
-
-<span class="co"># selecting best</span>
-best_tree &lt;-<span class="st"> </span>tree_res <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select_best</span>(tree_res, <span class="dt">metric =</span> <span class="st">&quot;rsq&quot;</span>)
-
-best_tree</code></pre></div>
-<pre><code>## [38;5;246m# A tibble: 1 × 3[39m
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1"></a><span class="co"># Next, you want to get the model that the tuning process has determined </span></span>
+<span id="cb56-2"><a href="#cb56-2"></a><span class="co"># is the best. You can get the best-fit model with select_best() </span></span>
+<span id="cb56-3"><a href="#cb56-3"></a><span class="co"># and finalize_workflow() and then do one more fit to the training data with </span></span>
+<span id="cb56-4"><a href="#cb56-4"></a><span class="co"># this final workflow using the fit() function. Follow the examples in the tutorial.</span></span>
+<span id="cb56-5"><a href="#cb56-5"></a></span>
+<span id="cb56-6"><a href="#cb56-6"></a><span class="co"># selecting best</span></span>
+<span id="cb56-7"><a href="#cb56-7"></a>best_tree &lt;-<span class="st"> </span>tree_res <span class="op">%&gt;%</span></span>
+<span id="cb56-8"><a href="#cb56-8"></a><span class="st">  </span><span class="kw">select_best</span>(tree_res, <span class="dt">metric =</span> <span class="st">&quot;rsq&quot;</span>)</span>
+<span id="cb56-9"><a href="#cb56-9"></a></span>
+<span id="cb56-10"><a href="#cb56-10"></a>best_tree</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 3
 ##   cost_complexity tree_depth .config              
-##             [3m[38;5;246m&lt;dbl&gt;[39m[23m      [3m[38;5;246m&lt;int&gt;[39m[23m [3m[38;5;246m&lt;chr&gt;[39m[23m                
-## [38;5;250m1[39m    0.000[4m0[24m[4m0[24m[4m0[24m000[4m1[24m          4 Preprocessor1_Model06</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># finalizing model</span>
-final_wf &lt;-<span class="st"> </span>
-<span class="st">  </span>tree_wf <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">finalize_workflow</span>(best_tree)
-
-final_wf</code></pre></div>
+##             &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;                
+## 1    0.0000000001          4 Preprocessor1_Model06</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1"></a><span class="co"># finalizing model</span></span>
+<span id="cb58-2"><a href="#cb58-2"></a>final_wf &lt;-<span class="st"> </span></span>
+<span id="cb58-3"><a href="#cb58-3"></a><span class="st">  </span>tree_wf <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb58-4"><a href="#cb58-4"></a><span class="st">  </span><span class="kw">finalize_workflow</span>(best_tree)</span>
+<span id="cb58-5"><a href="#cb58-5"></a></span>
+<span id="cb58-6"><a href="#cb58-6"></a>final_wf</span></code></pre></div>
 <pre><code>## ══ Workflow ════════════════════════════════════════════════════════════════════
 ## Preprocessor: Recipe
 ## Model: decision_tree()
@@ -702,78 +718,269 @@ final_wf</code></pre></div>
 ##   tree_depth = 4
 ## 
 ## Computational engine: rpart</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># one more fit to the training data with </span>
-<span class="co"># this final workflow using the fit() function</span>
-
-final_fit &lt;-<span class="st"> </span>
-<span class="st">  </span>final_wf <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">last_fit</span>(data_split) 
-
-
-<span class="co"># RMSE= 1.23, not much different from the null</span>
-final_fit <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">collect_metrics</span>()</code></pre></div>
-<pre><code>## [38;5;246m# A tibble: 2 × 4[39m
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a><span class="co"># one more fit to the training data with </span></span>
+<span id="cb60-2"><a href="#cb60-2"></a><span class="co"># this final workflow using the fit() function</span></span>
+<span id="cb60-3"><a href="#cb60-3"></a></span>
+<span id="cb60-4"><a href="#cb60-4"></a>final_fit &lt;-<span class="st"> </span></span>
+<span id="cb60-5"><a href="#cb60-5"></a><span class="st">  </span>final_wf <span class="op">%&gt;%</span></span>
+<span id="cb60-6"><a href="#cb60-6"></a><span class="st">  </span><span class="kw">last_fit</span>(data_split) </span>
+<span id="cb60-7"><a href="#cb60-7"></a></span>
+<span id="cb60-8"><a href="#cb60-8"></a></span>
+<span id="cb60-9"><a href="#cb60-9"></a><span class="co"># RMSE= 1.23, not much different from the null</span></span>
+<span id="cb60-10"><a href="#cb60-10"></a>final_fit <span class="op">%&gt;%</span></span>
+<span id="cb60-11"><a href="#cb60-11"></a><span class="st">  </span><span class="kw">collect_metrics</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 4
 ##   .metric .estimator .estimate .config             
-##   [3m[38;5;246m&lt;chr&gt;[39m[23m   [3m[38;5;246m&lt;chr&gt;[39m[23m          [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;chr&gt;[39m[23m               
-## [38;5;250m1[39m rmse    standard     1.23    Preprocessor1_Model1
-## [38;5;250m2[39m rsq     standard     0.006[4m4[24m[4m5[24m Preprocessor1_Model1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Collecting Predictions</span>
-tree_pred &lt;-<span class="st"> </span>final_fit <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">collect_predictions</span>() </code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Make two plots, one that shows model predictions from the tuned model </span>
-<span class="co"># versus actual outcomes</span>
-  
-<span class="kw">ggplot</span>(<span class="dt">data=</span>tree_pred, <span class="kw">aes</span>(<span class="dt">x=</span>.pred, <span class="dt">y=</span>BodyTemp)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">title=</span> <span class="st">&quot;Plot of Model Predictions from Tuned Model vs Actual Outcomes&quot;</span>, 
-       <span class="dt">x=</span> <span class="st">&quot;Model Predictions&quot;</span>, <span class="dt">y=</span> <span class="st">&quot;Actual Outcomes&quot;</span>) </code></pre></div>
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               
+## 1 rmse    standard     1.23    Preprocessor1_Model1
+## 2 rsq     standard     0.00645 Preprocessor1_Model1</code></pre>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a><span class="co">#Collecting Predictions</span></span>
+<span id="cb62-2"><a href="#cb62-2"></a>tree_pred &lt;-<span class="st"> </span>final_fit <span class="op">%&gt;%</span></span>
+<span id="cb62-3"><a href="#cb62-3"></a><span class="st">  </span><span class="kw">collect_predictions</span>() </span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1"></a><span class="co"># Make two plots, one that shows model predictions from the tuned model </span></span>
+<span id="cb63-2"><a href="#cb63-2"></a><span class="co"># versus actual outcomes</span></span>
+<span id="cb63-3"><a href="#cb63-3"></a>  </span>
+<span id="cb63-4"><a href="#cb63-4"></a><span class="kw">ggplot</span>(<span class="dt">data=</span>tree_pred, <span class="kw">aes</span>(<span class="dt">x=</span>.pred, <span class="dt">y=</span>BodyTemp)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">title=</span> <span class="st">&quot;Plot of Model Predictions from Tuned Model vs Actual Outcomes&quot;</span>, </span>
+<span id="cb63-5"><a href="#cb63-5"></a>       <span class="dt">x=</span> <span class="st">&quot;Model Predictions&quot;</span>, <span class="dt">y=</span> <span class="st">&quot;Actual Outcomes&quot;</span>) </span></code></pre></div>
 <p><img src="Flu_Analysis_Complex_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#calculating residuals</span>
-tree_pred<span class="op">$</span>resid &lt;-<span class="st"> </span>tree_pred<span class="op">$</span>BodyTemp <span class="op">-</span><span class="st"> </span>tree_pred<span class="op">$</span>.pred 
-
-<span class="co"># one that plots residuals.</span>
-<span class="co"># plotting residuals </span>
-<span class="kw">ggplot</span>(<span class="dt">data=</span>tree_pred, <span class="kw">aes</span>(<span class="dt">x=</span>.pred , <span class="dt">y=</span>resid)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span> <span class="st">&quot;Plot of Model Predictions from Tuned Model vs Actual Outcomes&quot;</span>, 
-       <span class="dt">x=</span> <span class="st">&quot;Model Predictions&quot;</span>, <span class="dt">y=</span> <span class="st">&quot;Residuals&quot;</span>) </code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1"></a><span class="co">#calculating residuals</span></span>
+<span id="cb64-2"><a href="#cb64-2"></a>tree_pred<span class="op">$</span>resid &lt;-<span class="st"> </span>tree_pred<span class="op">$</span>BodyTemp <span class="op">-</span><span class="st"> </span>tree_pred<span class="op">$</span>.pred </span>
+<span id="cb64-3"><a href="#cb64-3"></a></span>
+<span id="cb64-4"><a href="#cb64-4"></a><span class="co"># one that plots residuals.</span></span>
+<span id="cb64-5"><a href="#cb64-5"></a><span class="co"># plotting residuals </span></span>
+<span id="cb64-6"><a href="#cb64-6"></a><span class="kw">ggplot</span>(<span class="dt">data=</span>tree_pred, <span class="kw">aes</span>(<span class="dt">x=</span>.pred , <span class="dt">y=</span>resid)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb64-7"><a href="#cb64-7"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span> <span class="st">&quot;Plot of Model Predictions from Tuned Model vs Actual Outcomes&quot;</span>, </span>
+<span id="cb64-8"><a href="#cb64-8"></a>       <span class="dt">x=</span> <span class="st">&quot;Model Predictions&quot;</span>, <span class="dt">y=</span> <span class="st">&quot;Residuals&quot;</span>) </span></code></pre></div>
 <p><img src="Flu_Analysis_Complex_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Look at/print the model performance and compare it with the null model</span>
-<span class="co"># (still only on training data). Here, we want the performance of the tuned, </span>
-<span class="co"># best-fitting model on the CV dataset (we are not yet touching the test data). </span>
-<span class="co"># You can get that for instance with the show_best() function, which gives you</span>
-<span class="co"># the mean cross-validated performance for the best models. It also shows the</span>
-<span class="co"># standard deviation for the performance. Compare that model performance with the null model</span></code></pre></div>
-<div id="comparing-rmse-to-null" class="section level3">
-<h3>Comparing RMSE to Null</h3>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1"></a><span class="co"># Look at/print the model performance and compare it with the null model</span></span>
+<span id="cb65-2"><a href="#cb65-2"></a><span class="co"># (still only on training data). Here, we want the performance of the tuned, </span></span>
+<span id="cb65-3"><a href="#cb65-3"></a><span class="co"># best-fitting model on the CV dataset (we are not yet touching the test data). </span></span>
+<span id="cb65-4"><a href="#cb65-4"></a><span class="co"># You can get that for instance with the show_best() function, which gives you</span></span>
+<span id="cb65-5"><a href="#cb65-5"></a><span class="co"># the mean cross-validated performance for the best models. It also shows the</span></span>
+<span id="cb65-6"><a href="#cb65-6"></a><span class="co"># standard deviation for the performance. Compare that model performance with the null model</span></span></code></pre></div>
+<p>###Comparing RMSE to Null</p>
 <p>The tree model does not perform very well, and the model only predicts a few discrete outcome values. That’s also noticeable when we compare RMSE for the tree model(1.23) and the null model (1.21). They are very similar.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># RMSE= 1.23</span>
-<span class="kw">show_best</span>(final_fit, <span class="dt">metric=</span> <span class="st">&quot;rmse&quot;</span>)</code></pre></div>
-<pre><code>## [38;5;246m# A tibble: 1 × 7[39m
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1"></a><span class="co"># RMSE= 1.23</span></span>
+<span id="cb66-2"><a href="#cb66-2"></a><span class="kw">show_best</span>(final_fit, <span class="dt">metric=</span> <span class="st">&quot;rmse&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 7
 ##   .workflow  .metric .estimator  mean     n std_err .config             
-##   [3m[38;5;246m&lt;list&gt;[39m[23m     [3m[38;5;246m&lt;chr&gt;[39m[23m   [3m[38;5;246m&lt;chr&gt;[39m[23m      [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;int&gt;[39m[23m   [3m[38;5;246m&lt;dbl&gt;[39m[23m [3m[38;5;246m&lt;chr&gt;[39m[23m               
-## [38;5;250m1[39m [38;5;246m&lt;workflow&gt;[39m rmse    standard    1.23     1      [31mNA[39m Preprocessor1_Model1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Null Model. RMSE 1.21</span>
-rmse_train</code></pre></div>
-<pre><code>## [38;5;246m# A tibble: 1 × 3[39m
+##   &lt;list&gt;     &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               
+## 1 &lt;workflow&gt; rmse    standard    1.23     1      NA Preprocessor1_Model1</code></pre>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a><span class="co"># Null Model. RMSE 1.21</span></span>
+<span id="cb68-2"><a href="#cb68-2"></a>rmse_train</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 3
 ##   .metric .estimator .estimate
-##   [3m[38;5;246m&lt;chr&gt;[39m[23m   [3m[38;5;246m&lt;chr&gt;[39m[23m          [3m[38;5;246m&lt;dbl&gt;[39m[23m
-## [38;5;250m1[39m rmse    standard        1.21</code></pre>
-</div>
-<div id="tree-plot" class="section level3">
-<h3>Tree Plot</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">final_fit <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">extract_fit_engine</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">rpart.plot</span>(<span class="dt">roundint =</span> <span class="ot">FALSE</span>)</code></pre></div>
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+## 1 rmse    standard        1.21</code></pre>
+<p>###Tree Plot</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a>final_fit <span class="op">%&gt;%</span></span>
+<span id="cb70-2"><a href="#cb70-2"></a><span class="st">  </span><span class="kw">extract_fit_engine</span>() <span class="op">%&gt;%</span></span>
+<span id="cb70-3"><a href="#cb70-3"></a><span class="st">  </span><span class="kw">rpart.plot</span>(<span class="dt">roundint =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <p><img src="Flu_Analysis_Complex_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-</div>
 <div id="estimate-variable-importance-based-on-the-models-structure." class="section level3">
 <h3>Estimate variable importance based on the model’s structure.</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(vip)
-
-final_fit <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">extract_fit_parsnip</span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">vip</span>()</code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1"></a><span class="kw">library</span>(vip)</span>
+<span id="cb71-2"><a href="#cb71-2"></a></span>
+<span id="cb71-3"><a href="#cb71-3"></a>final_fit <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb71-4"><a href="#cb71-4"></a><span class="st">  </span><span class="kw">extract_fit_parsnip</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb71-5"><a href="#cb71-5"></a><span class="st">  </span><span class="kw">vip</span>()</span></code></pre></div>
 <p><img src="Flu_Analysis_Complex_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
+<div id="lasso-linear-model" class="section level2">
+<h2>LASSO linear model</h2>
+<p>Repeating the steps above, now for LASSO.</p>
+<div id="lasso-setup" class="section level3">
+<h3>LASSO setup</h3>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1"></a><span class="co">#model</span></span>
+<span id="cb72-2"><a href="#cb72-2"></a>lasso_model &lt;-<span class="st"> </span><span class="kw">linear_reg</span>() <span class="op">%&gt;%</span></span>
+<span id="cb72-3"><a href="#cb72-3"></a><span class="st">  </span><span class="kw">set_mode</span>(<span class="st">&quot;regression&quot;</span>) <span class="op">%&gt;%</span><span class="st">           </span></span>
+<span id="cb72-4"><a href="#cb72-4"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;glmnet&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb72-5"><a href="#cb72-5"></a><span class="st">  </span><span class="kw">set_args</span>(<span class="dt">penalty =</span> <span class="kw">tune</span>(), <span class="dt">mixture =</span> <span class="dv">1</span>) <span class="co">#mixture = 1 means we use the LASSO model</span></span>
+<span id="cb72-6"><a href="#cb72-6"></a><span class="co">#workflow</span></span>
+<span id="cb72-7"><a href="#cb72-7"></a>lasso_wf &lt;-<span class="st"> </span><span class="kw">workflow</span>() <span class="op">%&gt;%</span></span>
+<span id="cb72-8"><a href="#cb72-8"></a><span class="st">  </span><span class="kw">add_model</span>(lasso_model) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb72-9"><a href="#cb72-9"></a><span class="st">  </span><span class="kw">add_recipe</span>(bodytemp_cont_rec)</span></code></pre></div>
+</div>
+<div id="lasso-tuning" class="section level3">
+<h3>LASSO tuning</h3>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1"></a><span class="co">#parallel computing</span></span>
+<span id="cb73-2"><a href="#cb73-2"></a><span class="co">#ncores = 18 #adjust based on your computer</span></span>
+<span id="cb73-3"><a href="#cb73-3"></a><span class="co">#cl &lt;- makePSOCKcluster(ncores)</span></span>
+<span id="cb73-4"><a href="#cb73-4"></a><span class="co">#registerDoParallel(cl)</span></span>
+<span id="cb73-5"><a href="#cb73-5"></a><span class="co">#tuning grid</span></span>
+<span id="cb73-6"><a href="#cb73-6"></a>lasso_reg_grid &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">penalty =</span> <span class="dv">10</span><span class="op">^</span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">3</span>, <span class="dv">0</span>, <span class="dt">length.out =</span> <span class="dv">30</span>))</span>
+<span id="cb73-7"><a href="#cb73-7"></a><span class="co">#tune model</span></span>
+<span id="cb73-8"><a href="#cb73-8"></a>lasso_tune_res &lt;-<span class="st"> </span>lasso_wf <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb73-9"><a href="#cb73-9"></a><span class="st">  </span><span class="kw">tune_grid</span>(<span class="dt">resamples =</span> folds,</span>
+<span id="cb73-10"><a href="#cb73-10"></a>            <span class="dt">grid =</span> lasso_reg_grid,</span>
+<span id="cb73-11"><a href="#cb73-11"></a>            <span class="dt">control =</span> <span class="kw">control_grid</span>(<span class="dt">save_pred =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb73-12"><a href="#cb73-12"></a>            <span class="dt">metrics =</span> <span class="kw">metric_set</span>(rmse)</span>
+<span id="cb73-13"><a href="#cb73-13"></a>            )</span>
+<span id="cb73-14"><a href="#cb73-14"></a><span class="co"># turn off parallel cluster</span></span></code></pre></div>
+</div>
+<div id="lasso-evaluation" class="section level3">
+<h3>LASSO evaluation</h3>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1"></a><span class="co">#see a plot of performance for different tuning parameters</span></span>
+<span id="cb74-2"><a href="#cb74-2"></a>lasso_tune_res <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">autoplot</span>()</span></code></pre></div>
+<p><img src="Flu_Analysis_Complex_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1"></a><span class="co"># get the tuned model that performs best </span></span>
+<span id="cb75-2"><a href="#cb75-2"></a>best_lasso &lt;-<span class="st"> </span>lasso_tune_res <span class="op">%&gt;%</span><span class="st">  </span><span class="kw">select_best</span>(<span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span>
+<span id="cb75-3"><a href="#cb75-3"></a><span class="co"># finalize workflow with best model</span></span>
+<span id="cb75-4"><a href="#cb75-4"></a>best_lasso_wf &lt;-<span class="st"> </span>lasso_wf <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">finalize_workflow</span>(best_lasso)</span>
+<span id="cb75-5"><a href="#cb75-5"></a><span class="co"># fitting best performing model</span></span>
+<span id="cb75-6"><a href="#cb75-6"></a>best_lasso_fit &lt;-<span class="st"> </span>best_lasso_wf <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb75-7"><a href="#cb75-7"></a><span class="st">  </span><span class="kw">fit</span>(<span class="dt">data =</span> train_data)</span>
+<span id="cb75-8"><a href="#cb75-8"></a>lasso_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(best_lasso_fit, train_data)</span></code></pre></div>
+<p>Plotting LASSO variables as function of tuning parameter</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1"></a>x &lt;-<span class="st"> </span>best_lasso_fit<span class="op">$</span>fit<span class="op">$</span>fit<span class="op">$</span>fit</span>
+<span id="cb76-2"><a href="#cb76-2"></a><span class="kw">plot</span>(x, <span class="st">&quot;lambda&quot;</span>)</span></code></pre></div>
+<p><img src="Flu_Analysis_Complex_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>The higher the regularization, the fewer predictor variables that remain in the model. (Once a coefficient is at 0, the corresponding variable is not in the model anymore).</p>
+<p>Below are the variables that are part of the best-fit LASSO.</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1"></a><span class="kw">tidy</span>(<span class="kw">extract_fit_parsnip</span>(best_lasso_fit)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(estimate <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 13 × 3
+##    term                estimate penalty
+##    &lt;chr&gt;                  &lt;dbl&gt;   &lt;dbl&gt;
+##  1 (Intercept)         98.7      0.0574
+##  2 ChestCongestion_Yes  0.0332   0.0574
+##  3 ChillsSweats_Yes     0.0894   0.0574
+##  4 NasalCongestion_Yes -0.140    0.0574
+##  5 Sneeze_Yes          -0.391    0.0574
+##  6 Fatigue_Yes          0.178    0.0574
+##  7 SubjectiveFever_Yes  0.377    0.0574
+##  8 Weakness_1           0.178    0.0574
+##  9 Myalgia_2           -0.00994  0.0574
+## 10 Myalgia_3            0.0679   0.0574
+## 11 RunnyNose_Yes       -0.0825   0.0574
+## 12 Nausea_Yes           0.00349  0.0574
+## 13 Pharyngitis_Yes      0.148    0.0574</code></pre>
+<p>Plotting observed/predicted and residuals.</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1"></a><span class="co">#predicted versus observed</span></span>
+<span id="cb79-2"><a href="#cb79-2"></a><span class="kw">plot</span>(lasso_pred<span class="op">$</span>.pred,train_data<span class="op">$</span>BodyTemp, <span class="dt">xlim =</span><span class="kw">c</span>(<span class="dv">97</span>,<span class="dv">103</span>), <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">97</span>,<span class="dv">103</span>))</span>
+<span id="cb79-3"><a href="#cb79-3"></a><span class="kw">abline</span>(<span class="dt">a=</span><span class="dv">0</span>,<span class="dt">b=</span><span class="dv">1</span>, <span class="dt">col =</span> <span class="st">&#39;red&#39;</span>) <span class="co">#45 degree line, along which the results should fall</span></span></code></pre></div>
+<p><img src="Flu_Analysis_Complex_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1"></a><span class="co">#residuals</span></span>
+<span id="cb80-2"><a href="#cb80-2"></a><span class="kw">plot</span>(lasso_pred<span class="op">$</span>.pred<span class="op">-</span>train_data<span class="op">$</span>BodyTemp)</span>
+<span id="cb80-3"><a href="#cb80-3"></a><span class="kw">abline</span>(<span class="dt">a=</span><span class="dv">0</span>,<span class="dt">b=</span><span class="dv">0</span>, <span class="dt">col =</span> <span class="st">&#39;red&#39;</span>) <span class="co">#straight line, along which the results should fall</span></span></code></pre></div>
+<p><img src="Flu_Analysis_Complex_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
+<p>The diagnostic plots show that this model isn’t much better either. We want the points to be along the red lines in each plot. They are not.</p>
+<p>Looking at model performance.</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1"></a>lasso_perfomance &lt;-<span class="st"> </span>lasso_tune_res <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">show_best</span>(<span class="dt">n =</span> <span class="dv">1</span>)</span>
+<span id="cb81-2"><a href="#cb81-2"></a><span class="kw">print</span>(lasso_perfomance)</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 7
+##   penalty .metric .estimator  mean     n std_err .config              
+##     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
+## 1  0.0574 rmse    standard    1.15    25  0.0169 Preprocessor1_Model18</code></pre>
+<p>The mean RMSE was 1.15, which is still not great.</p>
+</div>
+</div>
+<div id="random-forest-model" class="section level2">
+<h2>Random forest model</h2>
+<p>Repeating the steps above, now for a random forest.</p>
+<div id="random-forest-setup" class="section level3">
+<h3>Random forest setup</h3>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1"></a>rf_model &lt;-<span class="st"> </span><span class="kw">rand_forest</span>() <span class="op">%&gt;%</span></span>
+<span id="cb83-2"><a href="#cb83-2"></a><span class="st">  </span><span class="kw">set_args</span>(<span class="dt">mtry =</span> <span class="kw">tune</span>(),     </span>
+<span id="cb83-3"><a href="#cb83-3"></a>    <span class="dt">trees =</span> <span class="kw">tune</span>(),</span>
+<span id="cb83-4"><a href="#cb83-4"></a>    <span class="dt">min_n =</span> <span class="kw">tune</span>()</span>
+<span id="cb83-5"><a href="#cb83-5"></a>  ) <span class="op">%&gt;%</span></span>
+<span id="cb83-6"><a href="#cb83-6"></a><span class="st">  </span><span class="co"># select the engine/package that underlies the model</span></span>
+<span id="cb83-7"><a href="#cb83-7"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;ranger&quot;</span>,</span>
+<span id="cb83-8"><a href="#cb83-8"></a>             <span class="dt">num.threads =</span> <span class="dv">18</span>, <span class="co">#for some reason for RF, we need to set this in the engine too</span></span>
+<span id="cb83-9"><a href="#cb83-9"></a>             <span class="dt">importance =</span> <span class="st">&quot;permutation&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb83-10"><a href="#cb83-10"></a><span class="st">  </span><span class="co"># choose either the continuous regression or binary classification mode</span></span>
+<span id="cb83-11"><a href="#cb83-11"></a><span class="st">  </span><span class="kw">set_mode</span>(<span class="st">&quot;regression&quot;</span>)           </span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1"></a><span class="co">#workflow</span></span>
+<span id="cb84-2"><a href="#cb84-2"></a>rf_wf &lt;-<span class="st"> </span><span class="kw">workflow</span>() <span class="op">%&gt;%</span></span>
+<span id="cb84-3"><a href="#cb84-3"></a><span class="st">  </span><span class="kw">add_model</span>(rf_model) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb84-4"><a href="#cb84-4"></a><span class="st">  </span><span class="kw">add_recipe</span>(bodytemp_cont_rec)</span></code></pre></div>
+</div>
+<div id="random-forest-tuning" class="section level3">
+<h3>Random forest tuning</h3>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1"></a><span class="co">#parallel computing</span></span>
+<span id="cb85-2"><a href="#cb85-2"></a><span class="co">#tuning grid</span></span>
+<span id="cb85-3"><a href="#cb85-3"></a>rf_grid  &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">mtry =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="dt">min_n =</span> <span class="kw">c</span>(<span class="dv">40</span>,<span class="dv">50</span>,<span class="dv">60</span>), <span class="dt">trees =</span> <span class="kw">c</span>(<span class="dv">500</span>,<span class="dv">1000</span>)  )</span>
+<span id="cb85-4"><a href="#cb85-4"></a><span class="co"># tune the model, optimizing RMSE</span></span>
+<span id="cb85-5"><a href="#cb85-5"></a>rf_tune_res &lt;-<span class="st"> </span>rf_wf <span class="op">%&gt;%</span></span>
+<span id="cb85-6"><a href="#cb85-6"></a><span class="st">  </span><span class="kw">tune_grid</span>(</span>
+<span id="cb85-7"><a href="#cb85-7"></a>            <span class="dt">resamples =</span> folds, <span class="co">#CV object</span></span>
+<span id="cb85-8"><a href="#cb85-8"></a>            <span class="dt">grid =</span> rf_grid, <span class="co"># grid of values to try</span></span>
+<span id="cb85-9"><a href="#cb85-9"></a>            <span class="dt">metrics =</span> <span class="kw">metric_set</span>(rmse) </span>
+<span id="cb85-10"><a href="#cb85-10"></a>  )</span>
+<span id="cb85-11"><a href="#cb85-11"></a><span class="co"># turn off parallel cluster</span></span></code></pre></div>
+</div>
+<div id="random-forest-evaluation" class="section level3">
+<h3>Random forest evaluation</h3>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1"></a><span class="co">#see a plot of performance for different tuning parameters</span></span>
+<span id="cb86-2"><a href="#cb86-2"></a>rf_tune_res <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">autoplot</span>()</span></code></pre></div>
+<p><img src="Flu_Analysis_Complex_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1"></a><span class="co"># get the tuned model that performs best </span></span>
+<span id="cb87-2"><a href="#cb87-2"></a>best_rf &lt;-<span class="st"> </span>rf_tune_res <span class="op">%&gt;%</span><span class="st">  </span><span class="kw">select_best</span>(<span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span>
+<span id="cb87-3"><a href="#cb87-3"></a><span class="co"># finalize workflow with best model</span></span>
+<span id="cb87-4"><a href="#cb87-4"></a>best_rf_wf &lt;-<span class="st"> </span>rf_wf <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">finalize_workflow</span>(best_rf)</span>
+<span id="cb87-5"><a href="#cb87-5"></a><span class="co"># fitting best performing model</span></span>
+<span id="cb87-6"><a href="#cb87-6"></a>best_rf_fit &lt;-<span class="st"> </span>best_rf_wf <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb87-7"><a href="#cb87-7"></a><span class="st">  </span><span class="kw">fit</span>(<span class="dt">data =</span> train_data)</span>
+<span id="cb87-8"><a href="#cb87-8"></a>rf_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(best_rf_fit, train_data)</span></code></pre></div>
+<p>Looking at important predictors</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1"></a><span class="co">#pull out the fit object</span></span>
+<span id="cb88-2"><a href="#cb88-2"></a>x &lt;-<span class="st"> </span>best_rf_fit<span class="op">$</span>fit<span class="op">$</span>fit<span class="op">$</span>fit</span>
+<span id="cb88-3"><a href="#cb88-3"></a><span class="co">#plot variable importance</span></span>
+<span id="cb88-4"><a href="#cb88-4"></a>vip<span class="op">::</span><span class="kw">vip</span>(x, <span class="dt">num_features =</span> <span class="dv">20</span>)</span></code></pre></div>
+<p><img src="Flu_Analysis_Complex_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p>Sneeze and Subject fever look like the most important.</p>
+<p>Plotting observed/predicted and residuals.</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1"></a><span class="co">#predicted versus observed</span></span>
+<span id="cb89-2"><a href="#cb89-2"></a><span class="kw">plot</span>(rf_pred<span class="op">$</span>.pred,train_data<span class="op">$</span>BodyTemp, <span class="dt">xlim =</span><span class="kw">c</span>(<span class="dv">97</span>,<span class="dv">103</span>), <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">97</span>,<span class="dv">103</span>))</span>
+<span id="cb89-3"><a href="#cb89-3"></a><span class="kw">abline</span>(<span class="dt">a=</span><span class="dv">0</span>,<span class="dt">b=</span><span class="dv">1</span>, <span class="dt">col =</span> <span class="st">&#39;red&#39;</span>) <span class="co">#45 degree line, along which the results should fall</span></span></code></pre></div>
+<p><img src="Flu_Analysis_Complex_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1"></a><span class="co">#residuals</span></span>
+<span id="cb90-2"><a href="#cb90-2"></a><span class="kw">plot</span>(rf_pred<span class="op">$</span>.pred<span class="op">-</span>train_data<span class="op">$</span>BodyTemp)</span>
+<span id="cb90-3"><a href="#cb90-3"></a><span class="kw">abline</span>(<span class="dt">a=</span><span class="dv">0</span>,<span class="dt">b=</span><span class="dv">0</span>, <span class="dt">col =</span> <span class="st">&#39;red&#39;</span>) <span class="co">#straight line, along which the results should fall</span></span></code></pre></div>
+<p><img src="Flu_Analysis_Complex_files/figure-html/unnamed-chunk-24-2.png" width="672" /></p>
+<p>Looking at model performance.</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1"></a>rf_perfomance &lt;-<span class="st"> </span>rf_tune_res <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">show_best</span>(<span class="dt">n =</span> <span class="dv">1</span>)</span>
+<span id="cb91-2"><a href="#cb91-2"></a><span class="kw">print</span>(rf_perfomance)</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 9
+##    mtry trees min_n .metric .estimator  mean     n std_err .config              
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
+## 1     6  1000    60 rmse    standard    1.16    25  0.0167 Preprocessor1_Model24</code></pre>
+<p>Based on the diagnostic plots and the model performance, it seems that RF isn’t much better.</p>
+</div>
+</div>
+</div>
+<div id="picking-a-model" class="section level1">
+<h1>Picking a Model</h1>
+<p>None of these models are peforming that well, but for the sake of the exercise, we go with the LASSO.</p>
+</div>
+<div id="final-model-evaluation" class="section level1">
+<h1>Final Model Evaluation</h1>
+<p>We’ll now apply the model a single time to the test data.</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1"></a><span class="co"># for reasons that make no sense (likely a bug in tidymodels)</span></span>
+<span id="cb93-2"><a href="#cb93-2"></a><span class="co"># I need to re-start a parallel cluster here to get the command below to work </span></span>
+<span id="cb93-3"><a href="#cb93-3"></a><span class="co"># fit on the training set and evaluate on test set</span></span>
+<span id="cb93-4"><a href="#cb93-4"></a>final_fit &lt;-<span class="st"> </span>best_lasso_wf  <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">last_fit</span>(data_split)</span></code></pre></div>
+<p>Let’s look at the performance of the final fit, evaluated on the test data.</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1"></a>test_performance &lt;-<span class="st"> </span>final_fit <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">collect_metrics</span>()</span>
+<span id="cb94-2"><a href="#cb94-2"></a><span class="kw">print</span>(test_performance)</span></code></pre></div>
+<pre><code>## # A tibble: 2 × 4
+##   .metric .estimator .estimate .config             
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               
+## 1 rmse    standard      1.15   Preprocessor1_Model1
+## 2 rsq     standard      0.0291 Preprocessor1_Model1</code></pre>
+<p>Looking at RMSE on test and train, we that they are similar, suggesting that we avoided overfitting.</p>
+<p>If we compare the RMSE on the test data to the performance/RMSE of the null model on the test data, we see it’s not much better, showing that none of these models are good.</p>
+<p>Diagnostic plots for test data.</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1"></a>test_predictions &lt;-<span class="st"> </span>final_fit <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">collect_predictions</span>()</span></code></pre></div>
+<p>Plotting observed/predicted and residuals.</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1"></a><span class="co">#predicted versus observed</span></span>
+<span id="cb97-2"><a href="#cb97-2"></a><span class="kw">plot</span>(test_predictions<span class="op">$</span>.pred,test_data<span class="op">$</span>BodyTemp, <span class="dt">xlim =</span><span class="kw">c</span>(<span class="dv">97</span>,<span class="dv">103</span>), <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">97</span>,<span class="dv">103</span>))</span>
+<span id="cb97-3"><a href="#cb97-3"></a><span class="kw">abline</span>(<span class="dt">a=</span><span class="dv">0</span>,<span class="dt">b=</span><span class="dv">1</span>, <span class="dt">col =</span> <span class="st">&#39;red&#39;</span>) <span class="co">#45 degree line, along which the results should fall</span></span></code></pre></div>
+<p><img src="Flu_Analysis_Complex_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1"></a><span class="co">#residuals</span></span>
+<span id="cb98-2"><a href="#cb98-2"></a><span class="kw">plot</span>(test_predictions<span class="op">$</span>.pred<span class="op">-</span>test_data<span class="op">$</span>BodyTemp)</span>
+<span id="cb98-3"><a href="#cb98-3"></a><span class="kw">abline</span>(<span class="dt">a=</span><span class="dv">0</span>,<span class="dt">b=</span><span class="dv">0</span>, <span class="dt">col =</span> <span class="st">&#39;red&#39;</span>) <span class="co">#straight line, along which the results should fall</span></span></code></pre></div>
+<p><img src="Flu_Analysis_Complex_files/figure-html/unnamed-chunk-29-2.png" width="672" /></p>
 </div>
 
 

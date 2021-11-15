@@ -13,7 +13,7 @@
 
 <title>Visualization</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -29,6 +29,7 @@
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -51,42 +52,68 @@
   }
 </style>
 <style type="text/css" data-origin="pandoc">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
-td.sourceCode { padding-left: 5px; }
-pre, code { color: #cccccc; background-color: #303030; }
-code > span.kw { color: #f0dfaf; } /* Keyword */
-code > span.dt { color: #dfdfbf; } /* DataType */
-code > span.dv { color: #dcdccc; } /* DecVal */
-code > span.bn { color: #dca3a3; } /* BaseN */
-code > span.fl { color: #c0bed1; } /* Float */
-code > span.ch { color: #dca3a3; } /* Char */
-code > span.st { color: #cc9393; } /* String */
-code > span.co { color: #7f9f7f; } /* Comment */
-code > span.ot { color: #efef8f; } /* Other */
-code > span.al { color: #ffcfaf; } /* Alert */
-code > span.fu { color: #efef8f; } /* Function */
-code > span.er { color: #c3bf9f; } /* Error */
-code > span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
-code > span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
-code > span.sc { color: #dca3a3; } /* SpecialChar */
-code > span.vs { color: #cc9393; } /* VerbatimString */
-code > span.ss { color: #cc9393; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { } /* Variable */
-code > span.cf { color: #f0dfaf; } /* ControlFlow */
-code > span.op { color: #f0efd0; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
-code > span.at { } /* Attribute */
-code > span.do { color: #7f9f7f; } /* Documentation */
-code > span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
-code > span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
-code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  { color: #cccccc; background-color: #303030; }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ffcfaf; } /* Alert */
+code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #dca3a3; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #f0dfaf; } /* ControlFlow */
+code span.ch { color: #dca3a3; } /* Char */
+code span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code span.co { color: #7f9f7f; } /* Comment */
+code span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code span.do { color: #7f9f7f; } /* Documentation */
+code span.dt { color: #dfdfbf; } /* DataType */
+code span.dv { color: #dcdccc; } /* DecVal */
+code span.er { color: #c3bf9f; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #c0bed1; } /* Float */
+code span.fu { color: #efef8f; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+code span.kw { color: #f0dfaf; } /* Keyword */
+code span.op { color: #f0efd0; } /* Operator */
+code span.ot { color: #efef8f; } /* Other */
+code span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code span.sc { color: #dca3a3; } /* SpecialChar */
+code span.ss { color: #cc9393; } /* SpecialString */
+code span.st { color: #cc9393; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #cc9393; } /* VerbatimString */
+code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 
 </style>
 <script>
@@ -327,7 +354,7 @@ $(document).ready(function () {
       <a href="./Flu_Analysis_Simple.html">Flu Data Analysis: Simple and Multivariate Regression</a>
     </li>
     <li>
-      <a href="./Flu_Analysis_Complex.html">Flu Data Analysis: Decision Tree and Test/Train Split</a>
+      <a href="./Flu_Analysis_Complex.html">Flu Data Analysis: Machine Learning Techniques</a>
     </li>
   </ul>
 </li>
@@ -353,128 +380,114 @@ $(document).ready(function () {
 </div>
 
 
-<div id="fivethirtyeight-figure" class="section level1">
-<h1>FiveThirtyEight Figure</h1>
-<p><a href="https://fivethirtyeight.com/features/both-republicans-and-democrats-have-an-age-problem/">Full Article Here</a></p>
+<p>#FiveThirtyEight Figure <a href="https://fivethirtyeight.com/features/both-republicans-and-democrats-have-an-age-problem/">Full Article Here</a></p>
 <center>
 <img src="538.jpg" />
 </center>
-<div id="loading-and-checking-data" class="section level3">
-<h3>Loading and Checking Data</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#packages</span>
-<span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(ggplot2)
-<span class="kw">library</span>(readr)
-<span class="kw">library</span>(here)
-
-<span class="co">#setting paths</span>
-data_location &lt;-<span class="st"> </span>here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>,<span class="st">&quot;congress-terms copy.csv&quot;</span>)
-
-<span class="co">#reading in data</span>
-data &lt;-<span class="st"> </span><span class="kw">read_csv</span>(data_location)</code></pre></div>
+<p>###Loading and Checking Data</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">#packages</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="kw">library</span>(readr)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="kw">library</span>(here)</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co">#setting paths</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>data_location &lt;-<span class="st"> </span>here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>,<span class="st">&quot;congress-terms copy.csv&quot;</span>)</span>
+<span id="cb1-9"><a href="#cb1-9"></a></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co">#reading in data</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>data &lt;-<span class="st"> </span><span class="kw">read_csv</span>(data_location)</span></code></pre></div>
+<pre><code>## Rows: 18635 Columns: 13</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (9): chamber, bioguide, firstname, middlename, lastname, suffix, state,...
+## dbl  (2): congress, age
+## date (2): birthday, termstart</code></pre>
 <pre><code>## 
-## ── Column specification ────────────────────────────────────────────────────────
-## cols(
-##   congress = col_double(),
-##   chamber = col_character(),
-##   bioguide = col_character(),
-##   firstname = col_character(),
-##   middlename = col_character(),
-##   lastname = col_character(),
-##   suffix = col_character(),
-##   birthday = col_date(format = &quot;&quot;),
-##   state = col_character(),
-##   party = col_character(),
-##   incumbent = col_character(),
-##   termstart = col_date(format = &quot;&quot;),
-##   age = col_double()
-## )</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#taking a look</span>
-<span class="kw">glimpse</span>(data)</code></pre></div>
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">#taking a look</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="kw">glimpse</span>(data)</span></code></pre></div>
 <pre><code>## Rows: 18,635
 ## Columns: 13
-## $ congress   [3m[38;5;246m&lt;dbl&gt;[39m[23m 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,…
-## $ chamber    [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;hous…
-## $ bioguide   [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;M000112&quot;, &quot;D000448&quot;, &quot;S000001&quot;, &quot;E000023&quot;, &quot;L000296&quot;, &quot;G00…
-## $ firstname  [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;Joseph&quot;, &quot;Robert&quot;, &quot;Adolph&quot;, &quot;Charles&quot;, &quot;William&quot;, &quot;James&quot;…
-## $ middlename [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;Jefferson&quot;, &quot;Lee&quot;, &quot;Joachim&quot;, &quot;Aubrey&quot;, NA, &quot;A.&quot;, &quot;Joseph&quot;…
-## $ lastname   [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;Mansfield&quot;, &quot;Doughton&quot;, &quot;Sabath&quot;, &quot;Eaton&quot;, &quot;Lewis&quot;, &quot;Galla…
-## $ suffix     [3m[38;5;246m&lt;chr&gt;[39m[23m NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
-## $ birthday   [3m[38;5;246m&lt;date&gt;[39m[23m 1861-02-09, 1863-11-07, 1866-04-04, 1868-03-29, 1868-09-22…
-## $ state      [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;TX&quot;, &quot;NC&quot;, &quot;IL&quot;, &quot;NJ&quot;, &quot;KY&quot;, &quot;PA&quot;, &quot;CA&quot;, &quot;NY&quot;, &quot;WI&quot;, &quot;MA&quot;,…
-## $ party      [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;D&quot;, &quot;D&quot;, &quot;D&quot;, &quot;R&quot;, &quot;R&quot;, &quot;R&quot;, &quot;R&quot;, &quot;D&quot;, &quot;R&quot;, &quot;R&quot;, &quot;D&quot;, &quot;R&quot;,…
-## $ incumbent  [3m[38;5;246m&lt;chr&gt;[39m[23m &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;No&quot;, &quot;No&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;…
-## $ termstart  [3m[38;5;246m&lt;date&gt;[39m[23m 1947-01-03, 1947-01-03, 1947-01-03, 1947-01-03, 1947-01-03…
-## $ age        [3m[38;5;246m&lt;dbl&gt;[39m[23m 85.9, 83.2, 80.7, 78.8, 78.3, 78.0, 77.9, 76.8, 76.0, 75.8,…</code></pre>
-</div>
-<div id="now-i-need-to-do-quite-a-bit-of-data-management-to-get-it-in-the-form-we-need-to-plot" class="section level3">
-<h3>Now I need to do quite a bit of data management to get it in the form we need to plot</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#this creates a new variable for age of each politician using their term start and birthday</span>
-data<span class="op">$</span>age &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">round</span>((<span class="kw">as.Date</span>(data<span class="op">$</span>termstart) <span class="op">-</span><span class="st"> </span><span class="kw">as.Date</span>(data<span class="op">$</span>birthday))<span class="op">/</span><span class="dv">365</span>))
-
-<span class="co">#this creates a new variable that seperates the year in which each politicial started their term</span>
-data<span class="op">$</span>year &lt;-<span class="st"> </span><span class="kw">substring</span>(data<span class="op">$</span>termstart,<span class="dv">1</span>,<span class="dv">4</span>) 
-
-<span class="co">#this calculates the mean age for each year by party and makes a new dataset that we&#39;ll use to plot</span>
-new &lt;-<span class="st"> </span>data <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">group_by</span>(year, party ) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">summarise_at</span>(<span class="kw">vars</span>(age), <span class="kw">list</span>(<span class="dt">name =</span> mean))
-
-<span class="co">#checking. looks good, but we need to look at only republican and democrat</span>
-<span class="kw">print</span>(new)</code></pre></div>
-<pre><code>## [38;5;246m# A tibble: 104 × 3[39m
-## [38;5;246m# Groups:   year [34][39m
+## $ congress   &lt;dbl&gt; 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,…
+## $ chamber    &lt;chr&gt; &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;house&quot;, &quot;hous…
+## $ bioguide   &lt;chr&gt; &quot;M000112&quot;, &quot;D000448&quot;, &quot;S000001&quot;, &quot;E000023&quot;, &quot;L000296&quot;, &quot;G00…
+## $ firstname  &lt;chr&gt; &quot;Joseph&quot;, &quot;Robert&quot;, &quot;Adolph&quot;, &quot;Charles&quot;, &quot;William&quot;, &quot;James&quot;…
+## $ middlename &lt;chr&gt; &quot;Jefferson&quot;, &quot;Lee&quot;, &quot;Joachim&quot;, &quot;Aubrey&quot;, NA, &quot;A.&quot;, &quot;Joseph&quot;…
+## $ lastname   &lt;chr&gt; &quot;Mansfield&quot;, &quot;Doughton&quot;, &quot;Sabath&quot;, &quot;Eaton&quot;, &quot;Lewis&quot;, &quot;Galla…
+## $ suffix     &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+## $ birthday   &lt;date&gt; 1861-02-09, 1863-11-07, 1866-04-04, 1868-03-29, 1868-09-22…
+## $ state      &lt;chr&gt; &quot;TX&quot;, &quot;NC&quot;, &quot;IL&quot;, &quot;NJ&quot;, &quot;KY&quot;, &quot;PA&quot;, &quot;CA&quot;, &quot;NY&quot;, &quot;WI&quot;, &quot;MA&quot;,…
+## $ party      &lt;chr&gt; &quot;D&quot;, &quot;D&quot;, &quot;D&quot;, &quot;R&quot;, &quot;R&quot;, &quot;R&quot;, &quot;R&quot;, &quot;D&quot;, &quot;R&quot;, &quot;R&quot;, &quot;D&quot;, &quot;R&quot;,…
+## $ incumbent  &lt;chr&gt; &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;No&quot;, &quot;No&quot;, &quot;Yes&quot;, &quot;Yes&quot;, &quot;Yes&quot;…
+## $ termstart  &lt;date&gt; 1947-01-03, 1947-01-03, 1947-01-03, 1947-01-03, 1947-01-03…
+## $ age        &lt;dbl&gt; 85.9, 83.2, 80.7, 78.8, 78.3, 78.0, 77.9, 76.8, 76.0, 75.8,…</code></pre>
+<p>###Now I need to do quite a bit of data management to get it in the form we need to plot</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co">#this creates a new variable for age of each politician using their term start and birthday</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>data<span class="op">$</span>age &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">round</span>((<span class="kw">as.Date</span>(data<span class="op">$</span>termstart) <span class="op">-</span><span class="st"> </span><span class="kw">as.Date</span>(data<span class="op">$</span>birthday))<span class="op">/</span><span class="dv">365</span>))</span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="co">#this creates a new variable that seperates the year in which each politicial started their term</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>data<span class="op">$</span>year &lt;-<span class="st"> </span><span class="kw">substring</span>(data<span class="op">$</span>termstart,<span class="dv">1</span>,<span class="dv">4</span>) </span>
+<span id="cb7-6"><a href="#cb7-6"></a></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="co">#this calculates the mean age for each year by party and makes a new dataset that we&#39;ll use to plot</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a>new &lt;-<span class="st"> </span>data <span class="op">%&gt;%</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="st">  </span><span class="kw">group_by</span>(year, party ) <span class="op">%&gt;%</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="st">  </span><span class="kw">summarise_at</span>(<span class="kw">vars</span>(age), <span class="kw">list</span>(<span class="dt">name =</span> mean))</span>
+<span id="cb7-11"><a href="#cb7-11"></a></span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="co">#checking. looks good, but we need to look at only republican and democrat</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="kw">print</span>(new)</span></code></pre></div>
+<pre><code>## # A tibble: 104 × 3
+## # Groups:   year [34]
 ##    year  party  name
-##    [3m[38;5;246m&lt;chr&gt;[39m[23m [3m[38;5;246m&lt;chr&gt;[39m[23m [3m[38;5;246m&lt;dbl&gt;[39m[23m
-## [38;5;250m 1[39m 1947  AL     40.5
-## [38;5;250m 2[39m 1947  D      52.1
-## [38;5;250m 3[39m 1947  R      53.0
-## [38;5;250m 4[39m 1949  AL     46  
-## [38;5;250m 5[39m 1949  D      51.5
-## [38;5;250m 6[39m 1949  I      38  
-## [38;5;250m 7[39m 1949  L      34  
-## [38;5;250m 8[39m 1949  R      54.6
-## [38;5;250m 9[39m 1951  D      52.3
-## [38;5;250m10[39m 1951  I      47  
-## [38;5;246m# … with 94 more rows[39m</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#here we subset the two parties that we need. we don&#39;t need to look at independent</span>
-new &lt;-<span class="st"> </span>new[ <span class="kw">which</span>(new<span class="op">$</span>party<span class="op">==</span><span class="st">&#39;D&#39;</span> <span class="op">|</span><span class="st"> </span>new<span class="op">$</span>party<span class="op">==</span><span class="st"> &#39;R&#39;</span>),]
-
-<span class="co">#finally, we make a new year variable that is saved as a date.</span>
-new<span class="op">$</span>year2 &lt;-<span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(new<span class="op">$</span>year, <span class="dt">truncated =</span> 2L)</code></pre></div>
-<div id="plotting" class="section level4">
-<h4>Plotting</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="kw">ggplot</span>(new, <span class="kw">aes</span>(<span class="dt">x=</span>year2, <span class="dt">y=</span>name, <span class="dt">group=</span>party)) <span class="op">+</span><span class="st"> </span><span class="co">#plots mean age for each year by party</span>
-<span class="st">  </span>
-<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">color=</span>party), <span class="dt">size=</span><span class="fl">1.1</span>) <span class="op">+</span><span class="st"> </span><span class="co">#adds the line for each party and colors by party</span>
-<span class="st">  </span>
-<span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits=</span> <span class="kw">c</span>(<span class="dv">40</span>, <span class="dv">61</span>), <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">40</span>, <span class="dv">45</span>, <span class="dv">50</span>, <span class="dv">55</span>, <span class="dv">60</span>), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;40&quot;</span>, <span class="st">&quot;45&quot;</span>, <span class="st">&quot;50&quot;</span>, <span class="st">&quot;55&quot;</span>, <span class="st">&quot;60 yrs&quot;</span>)) <span class="op">+</span><span class="st"> </span><span class="co">#scales the y axis and labels the ticks like they have them in the figure</span>
-<span class="st">  </span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span> <span class="st">&quot;Average Age of Members of Congress&quot;</span>, <span class="dt">subtitle=</span> <span class="st">&quot;At start of term, 1947-2013&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="co">#main and subtitle</span>
-<span class="st">  </span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot; &quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot; &quot;</span>) <span class="op">+</span><span class="st"> </span><span class="co">#takes away axis labels like they have them</span>
-<span class="st">  </span>
-<span class="st">  </span><span class="kw">scale_x_date</span>(<span class="dt">breaks =</span> scales<span class="op">::</span><span class="kw">breaks_pretty</span>(<span class="dv">6</span>), <span class="dt">date_labels=</span> <span class="kw">c</span>( <span class="st">&quot;&#39;10&quot;</span>, <span class="st">&quot;1950&quot;</span>, <span class="st">&quot;&#39;60&quot;</span>,  <span class="st">&quot;&#39;70&quot;</span>, <span class="st">&quot;&#39;80&quot;</span>, <span class="st">&quot;&#39;90&quot;</span>, <span class="st">&quot;2000&quot;</span>)) <span class="op">+</span><span class="st"> </span><span class="co">#date scale and tick labels like they have them</span>
-<span class="st">  </span>
-<span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">&#39;dodgerblue&#39;</span>,<span class="st">&#39;firebrick1&#39;</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="co">#setting colors </span>
-<span class="st">  </span>
-<span class="st">  </span><span class="kw">annotate</span>(<span class="dt">geom=</span><span class="st">&quot;text&quot;</span>,<span class="dt">x=</span><span class="kw">as.Date</span>(<span class="st">&quot;1965-01-01&quot;</span>), <span class="dt">y=</span><span class="dv">56</span>,<span class="dt">label=</span><span class="st">&quot;Republicans&quot;</span>,<span class="dt">fontface=</span><span class="st">&quot;bold&quot;</span>, <span class="dt">color=</span><span class="st">&quot;firebrick1&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="co">#adding text</span>
-<span class="st">  </span>
-<span class="st">  </span><span class="kw">annotate</span>(<span class="dt">geom=</span><span class="st">&quot;text&quot;</span>,<span class="dt">x=</span><span class="kw">as.Date</span>(<span class="st">&quot;1996-01-01&quot;</span>), <span class="dt">y=</span><span class="dv">57</span>,<span class="dt">label=</span><span class="st">&quot;Democrats&quot;</span>,<span class="dt">fontface=</span><span class="st">&quot;bold&quot;</span>, <span class="dt">color=</span><span class="st">&quot;dodgerblue&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="co">#adding text</span>
-
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.grid.minor =</span>   <span class="kw">element_blank</span>(), <span class="dt">panel.grid.major =</span>   <span class="kw">element_line</span>(<span class="dt">colour =</span> <span class="st">&quot;gray&quot;</span>,<span class="dt">size=</span><span class="fl">0.5</span>)) <span class="op">+</span><span class="st"> </span><span class="co">#adjusting grid</span>
-<span class="st">  </span>
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>)) <span class="op">+</span><span class="st">  </span><span class="co">#bolding title </span>
-<span class="st">  </span>
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.grid.minor.x =</span> <span class="kw">element_blank</span>(),
-      <span class="dt">panel.grid.minor.y =</span> <span class="kw">element_blank</span>(),
-      <span class="dt">panel.grid.major =</span> <span class="kw">element_line</span>(<span class="dt">colour =</span> <span class="st">&quot;#cccccc&quot;</span>),
-      <span class="dt">plot.background =</span> <span class="kw">element_rect</span>(<span class="dt">fill =</span> <span class="st">&quot;#EBEBEB&quot;</span>))
-<span class="co"># this brings the title into the figure +</span>
-  <span class="kw">theme</span>(<span class="dt">panel.grid.minor.x =</span> <span class="kw">element_blank</span>(),
-      <span class="dt">panel.grid.minor.y =</span> <span class="kw">element_blank</span>(),
-      <span class="dt">panel.grid.major =</span> <span class="kw">element_line</span>(<span class="dt">colour =</span> <span class="st">&quot;#cccccc&quot;</span>),
-      <span class="dt">plot.background =</span> <span class="kw">element_rect</span>(<span class="dt">fill =</span> <span class="st">&quot;#EBEBEB&quot;</span>))</code></pre></div>
+##    &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1 1947  AL     40.5
+##  2 1947  D      52.1
+##  3 1947  R      53.0
+##  4 1949  AL     46  
+##  5 1949  D      51.5
+##  6 1949  I      38  
+##  7 1949  L      34  
+##  8 1949  R      54.6
+##  9 1951  D      52.3
+## 10 1951  I      47  
+## # … with 94 more rows</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">#here we subset the two parties that we need. we don&#39;t need to look at independent</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>new &lt;-<span class="st"> </span>new[ <span class="kw">which</span>(new<span class="op">$</span>party<span class="op">==</span><span class="st">&#39;D&#39;</span> <span class="op">|</span><span class="st"> </span>new<span class="op">$</span>party<span class="op">==</span><span class="st"> &#39;R&#39;</span>),]</span>
+<span id="cb9-3"><a href="#cb9-3"></a></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="co">#finally, we make a new year variable that is saved as a date.</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>new<span class="op">$</span>year2 &lt;-<span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(new<span class="op">$</span>year, <span class="dt">truncated =</span> 2L)</span></code></pre></div>
+<p>####Plotting</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>p &lt;-<span class="st"> </span><span class="kw">ggplot</span>(new, <span class="kw">aes</span>(<span class="dt">x=</span>year2, <span class="dt">y=</span>name, <span class="dt">group=</span>party)) <span class="op">+</span><span class="st"> </span><span class="co">#plots mean age for each year by party</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="st">  </span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">color=</span>party), <span class="dt">size=</span><span class="fl">1.1</span>) <span class="op">+</span><span class="st"> </span><span class="co">#adds the line for each party and colors by party</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="st">  </span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits=</span> <span class="kw">c</span>(<span class="dv">40</span>, <span class="dv">61</span>), <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">40</span>, <span class="dv">45</span>, <span class="dv">50</span>, <span class="dv">55</span>, <span class="dv">60</span>), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;40&quot;</span>, <span class="st">&quot;45&quot;</span>, <span class="st">&quot;50&quot;</span>, <span class="st">&quot;55&quot;</span>, <span class="st">&quot;60 yrs&quot;</span>)) <span class="op">+</span><span class="st"> </span><span class="co">#scales the y axis and labels the ticks like they have them in the figure</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="st">  </span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span> <span class="st">&quot;Average Age of Members of Congress&quot;</span>, <span class="dt">subtitle=</span> <span class="st">&quot;At start of term, 1947-2013&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="co">#main and subtitle</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="st">  </span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot; &quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot; &quot;</span>) <span class="op">+</span><span class="st"> </span><span class="co">#takes away axis labels like they have them</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="st">  </span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="st">  </span><span class="kw">scale_x_date</span>(<span class="dt">breaks =</span> scales<span class="op">::</span><span class="kw">breaks_pretty</span>(<span class="dv">6</span>), <span class="dt">date_labels=</span> <span class="kw">c</span>( <span class="st">&quot;&#39;10&quot;</span>, <span class="st">&quot;1950&quot;</span>, <span class="st">&quot;&#39;60&quot;</span>,  <span class="st">&quot;&#39;70&quot;</span>, <span class="st">&quot;&#39;80&quot;</span>, <span class="st">&quot;&#39;90&quot;</span>, <span class="st">&quot;2000&quot;</span>)) <span class="op">+</span><span class="st"> </span><span class="co">#date scale and tick labels like they have them</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="st">  </span></span>
+<span id="cb10-13"><a href="#cb10-13"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">&#39;dodgerblue&#39;</span>,<span class="st">&#39;firebrick1&#39;</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="co">#setting colors </span></span>
+<span id="cb10-14"><a href="#cb10-14"></a><span class="st">  </span></span>
+<span id="cb10-15"><a href="#cb10-15"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="dt">geom=</span><span class="st">&quot;text&quot;</span>,<span class="dt">x=</span><span class="kw">as.Date</span>(<span class="st">&quot;1965-01-01&quot;</span>), <span class="dt">y=</span><span class="dv">56</span>,<span class="dt">label=</span><span class="st">&quot;Republicans&quot;</span>,<span class="dt">fontface=</span><span class="st">&quot;bold&quot;</span>, <span class="dt">color=</span><span class="st">&quot;firebrick1&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="co">#adding text</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a><span class="st">  </span></span>
+<span id="cb10-17"><a href="#cb10-17"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="dt">geom=</span><span class="st">&quot;text&quot;</span>,<span class="dt">x=</span><span class="kw">as.Date</span>(<span class="st">&quot;1996-01-01&quot;</span>), <span class="dt">y=</span><span class="dv">57</span>,<span class="dt">label=</span><span class="st">&quot;Democrats&quot;</span>,<span class="dt">fontface=</span><span class="st">&quot;bold&quot;</span>, <span class="dt">color=</span><span class="st">&quot;dodgerblue&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="co">#adding text</span></span>
+<span id="cb10-18"><a href="#cb10-18"></a></span>
+<span id="cb10-19"><a href="#cb10-19"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.grid.minor =</span>   <span class="kw">element_blank</span>(), <span class="dt">panel.grid.major =</span>   <span class="kw">element_line</span>(<span class="dt">colour =</span> <span class="st">&quot;gray&quot;</span>,<span class="dt">size=</span><span class="fl">0.5</span>)) <span class="op">+</span><span class="st"> </span><span class="co">#adjusting grid</span></span>
+<span id="cb10-20"><a href="#cb10-20"></a><span class="st">  </span></span>
+<span id="cb10-21"><a href="#cb10-21"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>)) <span class="op">+</span><span class="st">  </span><span class="co">#bolding title </span></span>
+<span id="cb10-22"><a href="#cb10-22"></a><span class="st">  </span></span>
+<span id="cb10-23"><a href="#cb10-23"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.grid.minor.x =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb10-24"><a href="#cb10-24"></a>      <span class="dt">panel.grid.minor.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb10-25"><a href="#cb10-25"></a>      <span class="dt">panel.grid.major =</span> <span class="kw">element_line</span>(<span class="dt">colour =</span> <span class="st">&quot;#cccccc&quot;</span>),</span>
+<span id="cb10-26"><a href="#cb10-26"></a>      <span class="dt">plot.background =</span> <span class="kw">element_rect</span>(<span class="dt">fill =</span> <span class="st">&quot;#EBEBEB&quot;</span>))</span>
+<span id="cb10-27"><a href="#cb10-27"></a><span class="co"># this brings the title into the figure +</span></span>
+<span id="cb10-28"><a href="#cb10-28"></a>  <span class="kw">theme</span>(<span class="dt">panel.grid.minor.x =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb10-29"><a href="#cb10-29"></a>      <span class="dt">panel.grid.minor.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb10-30"><a href="#cb10-30"></a>      <span class="dt">panel.grid.major =</span> <span class="kw">element_line</span>(<span class="dt">colour =</span> <span class="st">&quot;#cccccc&quot;</span>),</span>
+<span id="cb10-31"><a href="#cb10-31"></a>      <span class="dt">plot.background =</span> <span class="kw">element_rect</span>(<span class="dt">fill =</span> <span class="st">&quot;#EBEBEB&quot;</span>))</span></code></pre></div>
 <pre><code>## List of 4
 ##  $ panel.grid.major  :List of 6
 ##   ..$ colour       : chr &quot;#cccccc&quot;
@@ -498,22 +511,15 @@ new<span class="op">$</span>year2 &lt;-<span class="st"> </span>lubridate<span c
 ##  - attr(*, &quot;class&quot;)= chr [1:2] &quot;theme&quot; &quot;gg&quot;
 ##  - attr(*, &quot;complete&quot;)= logi FALSE
 ##  - attr(*, &quot;validate&quot;)= logi TRUE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># this brings the title into the figure</span>
-
-<span class="kw">print</span>(p)</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># this brings the title into the figure</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="kw">print</span>(p)</span></code></pre></div>
 <p><img src="visualization_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-</div>
-<div id="comparing" class="section level4">
-<h4>Comparing</h4>
+####Comparing
 <center>
 <img src="538.jpg" />
 </center>
-</div>
-</div>
-<div id="final-thoughts-this-is-only-about-100-lines-of-code-and-a-fairly-simple-plot-but-it-was-a-journey-getting-the-tick-marks-and-everything-as-close-as-i-could-get-it-to-the-original.-definiteley-took-me-a-lot-of-googling-and-time-but-i-feel-like-i-understand-a-lot-more-about-the-infinite-options-of-r-graphics." class="section level3">
-<h3>Final Thoughts: This is only about 100 lines of code and a fairly simple plot, but it was a journey getting the tick marks and everything as close as I could get it to the original. Definiteley took me a lot of googling and time, but I feel like I understand a lot more about the infinite options of R graphics.</h3>
-</div>
-</div>
+<p>###Final Thoughts: This is only about 100 lines of code and a fairly simple plot, but it was a journey getting the tick marks and everything as close as I could get it to the original. Definiteley took me a lot of googling and time, but I feel like I understand a lot more about the infinite options of R graphics.</p>
 
 
 
