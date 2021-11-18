@@ -5,4 +5,845 @@ output:
     toc: FALSE
 ---
 
-#To be filled
+
+This is a Tidy Tuesday exercise that I did in a Modern Applied Data Analysis course at UGA with Dr. Andreas Handel. With this exercise, I use data on competitive marble racing, a recent youTube phenomena. You can find more information [here at the github page](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-06-02/readme.md)
+
+## Data Import
+The following chunk of code loads packages and imports the data. I also use skim() to get some quick decriptive statistics on the data.
+```{r}
+
+#packages
+library(readr)
+library(tidyverse)
+library(tidytuesdayR)
+library(skimr)
+library(janitor)
+library(broom)
+library(here) #for data loading/saving
+library(tidyverse)
+library(recipes)
+library(tidymodels)
+library(workflowr) 
+library(parsnip)
+library(rsample)
+library(rpart)
+library(glmnet)
+library(ranger)
+library(modeldata)
+library(rpart.plot)
+library(dials)
+library(workflows)
+library(vip)
+library(glmnet)
+library(yardstick)
+library(doParallel) # for parallel computing 
+
+
+# Get the Data
+
+marbles <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-06-02/marbles.csv')
+
+
+glimpse(marbles)
+
+head(marbles)
+tail(marbles)
+
+
+skimr::skim(marbles)
+
+```
+
+
+
+
+Exploring Data: First I want to check on some simple characteristics of the data like how many races were collected, how many teams, how many marbles, and how many marbles per team.
+
+```{r}
+
+
+
+# how many teams hosted
+table(marbles$host)
+
+# examining which teams hosted
+table(marbles$host, marbles$team_name)
+
+# How many sites?
+table(marbles$site)
+
+# How many races? Looks here like we have an equal number of observations per race with 16 total races
+table(marbles$race)
+
+
+#number of teams. 16 teams
+table(marbles$team_name)
+
+#And an equal number of teams in each race
+table(marbles$race, marbles$team_name)
+
+# number of individual marbles. 31. Tabling this, we see that not every marble
+# raced in every event. It looks like they had to qualify to race
+table(marbles$marble_name)
+table(marbles$marble_name, marbles$race)
+
+
+# exploring missing data
+#there are a lot missing with the points variable seen below
+sum(is.na(marbles$points))
+
+
+```
+
+
+
+
+
+
+Descriptive Questions: Which marble performs the best (has the lowest median race time)? Which team performs the best? Since the races are all different lengths, I standardize the race times similar to how they did in the paper linked on the github. I first calculate the average race time for each specific race and then divide each marble's time by the average to get the standard.Then I calculate the median race time by marble and by team
+
+```{r}
+
+#marbles$qual <- grepl('Q', marbles$race, fixed = TRUE)
+
+
+#first standardizing race...
+
+#calculating average time by race and saving as a new df
+av_race_times <- marbles %>%
+  group_by(race) %>%
+  dplyr::summarize(mean_race_time = mean(time_s, na.rm=TRUE))
+
+#then repeating measures for merging
+av_race_times <- av_race_times[rep(seq_len(nrow(av_race_times)), each = 16), ]
+
+#merging with original set on id
+
+#but first a sort
+marbles<- marbles[
+  with(marbles, order(race)),
+]
+
+
+#
+marbles_new <- cbind(marbles, av_race_times$mean_race_time)
+
+glimpse(marbles_new)
+
+#let's rename that one...
+
+marbles_new <- rename(marbles_new, average_by_race = `av_race_times$mean_race_time`)
+
+#marbles_new <- marbles_new[which(marbles_new$qual == FALSE),  ]
+
+#calculating standard like they did in paper
+marbles_new <- marbles_new  %>% 
+  dplyr::mutate(standard_time= time_s/average_by_race)
+
+glimpse(marbles_new)
+
+
+#creating a new median variable by marble for plotting in order
+med_st <- marbles_new  %>% 
+  group_by(marble_name) %>%
+  dplyr::summarize(med_st_time = median(standard_time, na.rm = TRUE ))
+
+
+#then repeating measures for merging
+med_st <- med_st[rep(seq_len(nrow(med_st)), each = 8), ]
+
+
+marbles_new <- marbles_new[
+  with(marbles_new, order(marble_name)),
+]
+
+glimpse(marbles_new)
+
+marbles_new1 <- cbind(marbles_new, med_st$med_st_time)
+
+
+
+glimpse(marbles_new1)
+
+
+
+
+
+#creating another median variable by team for plotting in order
+med_st_team <- marbles_new  %>% 
+  group_by(team_name) %>%
+  dplyr::summarize(med_st_team = median(standard_time, na.rm = TRUE ))
+
+#then repeating measures for merging
+med_st_team <- med_st_team[rep(seq_len(nrow(med_st_team)), each = 16), ]
+
+
+marbles_new1 <- marbles_new1[
+  with(marbles_new1, order(team_name)),
+]
+
+
+marbles_new1 <- cbind(marbles_new1, med_st_team$med_st_team)
+
+
+
+glimpse(marbles_new1)
+
+
+# renaming 
+
+
+
+```
+
+
+## Descriptive Statistics: The boxplots below show the standardized race times by marble name and team name. This includes both qualifier and official races. Here we see that Smoggy, Prim, and Oringin tend to have better race times than the rest and Anarchy, Sublime, and Mary have the worst. Regarding teams, Hazers, Savage Speeders, and Mellow Yellow are at the top with the lowest median race times.
+```{r}
+# boxplots of standardized times by marble
+ggplot(marbles_new1, aes(x=reorder(marble_name, `med_st$med_st_time` ), y=standard_time)) + geom_boxplot() + labs(title= "Boxplots of Standardized Race Times by Marble Name") + xlab("Marble Name") + ylab("Standardized Race Time") +
+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+#boxplots of standardized times by team
+ggplot(marbles_new1, aes(x=reorder(team_name,  `med_st_team$med_st_team`), y=standard_time)) + geom_boxplot() +
+  labs(title= "Boxplots of Standardized Race Times by Team Name") + xlab("Team Name") + ylab("Standardized Race Time") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+
+
+
+```
+
+
+```{r}
+
+#here i make a new dataset sorted by time and race. i will then assign ranks to plot who ranks highest most often
+marble_rank <- marbles[order(marbles$race, marbles$time_s),] 
+
+marble_rank$ranks <- rep(1:16, 16)
+
+glimpse(marble_rank)
+
+
+#calculating average time by race and saving as a new df
+team_rank_median <- marble_rank %>%
+  group_by(team_name) %>%
+  dplyr::summarize(med_team_rank = median(ranks, na.rm=TRUE))
+
+#then repeating measures for merging
+team_rank_median <- team_rank_median [rep(seq_len(nrow(team_rank_median)), each = 16), ]
+
+#merging with original set 
+
+#but first a sort
+marble_rank <- marble_rank[order(marble_rank$team_name),]
+
+# merging
+marble_rank <- cbind(marble_rank, team_rank_median$med_team_rank)
+
+glimpse(marble_rank)
+
+
+```
+
+```{r}
+#boxplots of standardized times by team
+ggplot(marble_rank, aes(reorder(x= team_name, `team_rank_median$med_team_rank`), y=ranks)) + geom_boxplot() +
+  labs(title= "Boxplots of Ranks by Team Name") + xlab("Team Name") + ylab("Ranks") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+```
+
+## Modeling
+
+Now that we've explored the data, we see that certain teams might be more likely to rank better (have faster times), and certain marbles might be more likely to rank better. Let's do some predictive modeling to see if team predicts race time. Due to races being different lengths, I've decided to calculate meters per second for each observation and use that as our outcome. I know I used this standardized outcome before for plotting, but I don't think that makes as much sense for modeling. I want to model speed! Our main predictor is going to be team, but we will also see if host(if the marble's team hosted the race or not) has an impact on speed. I think we should also control for Race because each race/track set up is going to be different and that needs to be accounted for in the modeling. On that note, I'm also going to throw in site. 
+
+
+# Setting up: Recipe, Random Seed, Data Split, and Cross Validation 
+
+
+```{r}
+
+
+
+#creating factors and our outcome variable
+marbles_new1 <- marbles_new1 %>%
+    dplyr::mutate(team_factor = as.factor(team_name),
+                  site_factor = as.factor(site),
+                  host_factor = as.factor(host),
+                  meters_ps = track_length_m / time_s,
+                  race_factor= as.factor(race))
+
+#checking
+glimpse(marbles_new1)
+
+
+#calculating average time by race and saving as a new df
+av_race_times <- marbles_new1 %>%
+  group_by(race) %>%
+  dplyr::summarize(mean_race_time = mean(meters_ps, na.rm=TRUE))
+
+lm(data= marbles_new1, meters_ps ~ race )
+#subsetting what we need
+
+newdata <- marbles_new1[c(19:23)]
+
+newdata <- na.omit(newdata)
+
+set.seed(123)
+
+data_split <- initial_split(newdata, prop = .7, strata = "meters_ps")
+
+train_data <- training(data_split)
+test_data  <- testing(data_split)
+
+folds <- vfold_cv(train_data, v = 5, r=5, strata= "meters_ps")
+folds
+
+```
+
+
+Creating a Recipe/Workflow and running the multivariate model
+
+```{r}
+
+
+
+# THEN WE CALCULATE THE RMSE FOR THE NULL MODEL (TRAINING DATA)
+RMSE_null_train <- sqrt(sum( (train_data$meters_ps - mean(train_data$meters_ps))^2 )/nrow(train_data))
+print(RMSE_null_train)
+
+
+
+
+#Recipe() has two arguments: a formula and the data
+time_s_recipe <- recipe(meters_ps~ ., data = train_data) %>%
+  step_dummy(all_nominal_predictors()) #adding step_dummy
+
+
+
+
+#Build a model specification using the parsnip package
+lm_mod <- linear_reg() %>%
+  set_engine("lm") 
+
+#Model workflow pairs a model and recipe together
+time_cont_workflow <- 
+  workflow() %>%
+  add_model(lm_mod) %>%
+  add_recipe(time_s_recipe)
+
+
+# Fitting the model
+time_fit <- 
+  time_cont_workflow %>% 
+  fit(data = train_data)
+
+# Extracting Model/Recipes with Parsnip
+time_fit %>% 
+  extract_fit_parsnip() %>% 
+  tidy()
+
+
+# Obtaining Predictions
+predict(time_fit , train_data)
+
+time_aug <- 
+  augment(time_fit, train_data)
+
+time_aug %>%
+  select(meters_ps)
+
+
+# Calculating Root RMSE 
+rmse_train <- time_aug %>% 
+  rmse(truth = meters_ps, .pred)
+```
+
+
+Below we see that the multivarite model reduces the RMSE compared with the null.The multivariate model had and RMSE of 0.01265661 while the null had 0.2316689.
+```{r}
+
+#COMPARING TO NULL MODEL 
+
+#Looks like our model with all predictors does better than the null at reducing
+#RMSE
+
+rmse_train
+
+print(RMSE_null_train)
+
+
+
+
+
+```
+
+
+## Now let's try a LASSO Model
+
+Below I set up a model, workflow, grid and tune the model. 
+```{r}
+#LASSO
+
+
+
+# model
+lasso_model <- linear_reg() %>%
+  set_mode("regression") %>%           
+  set_engine("glmnet") %>%
+  set_args(penalty = tune(), mixture = 1) #mixture = 1 means we use the LASSO model
+
+# workflow
+lasso_wf <- workflow() %>%
+  add_model(lasso_model) %>% 
+  add_recipe(time_s_recipe)
+
+
+### LASSO tuning
+
+#tuning grid
+lasso_reg_grid <- tibble(penalty = 10^seq(-3, 0, length.out = 30))
+#tune model
+lasso_tune_res <- lasso_wf %>% 
+  tune_grid(resamples = folds,
+            grid = lasso_reg_grid,
+            control = control_grid(save_pred = TRUE),
+            metrics = metric_set(rmse)
+  )
+
+
+```
+
+
+Now we take a look at the model evaluation. As one sees, the larger the regularization penalty, the fewer predictor variables that remain in the model. Once a coefficient is at 0, the corresponding variable 
+is not in the model anymore). 
+
+```{r}
+### LASSO evaluation
+#see a plot of performance for different tuning parameters
+# This plots shows us that model performance is generally better
+# at the smaller penalty values. This suggests that the majority
+# of the predictors are important to the model.
+lasso_plot <- lasso_tune_res %>% autoplot()
+
+lasso_plot
+# get the tuned model that performs best 
+best_lasso <- lasso_tune_res %>%  select_best(metric = "rmse")
+# finalize workflow with best model
+best_lasso_wf <- lasso_wf %>% finalize_workflow(best_lasso)
+# fitting best performing model
+best_lasso_fit <- best_lasso_wf %>% 
+  fit(data = train_data)
+lasso_pred <- predict(best_lasso_fit, train_data)
+
+
+
+#Plotting LASSO variables as function of tuning parameter
+
+x <- best_lasso_fit$fit$fit$fit
+
+LASSO_tune_plot <- plot(x, "lambda")
+LASSO_tune_plot
+
+```
+The Lasso vars shows the variables that are part of the best-fit LASSO model, i.e. those that have a non-zero coefficient The team_factor variable category is being compared to Limers, who had the second lowest ranks. Here we see that the Hazers, Hornets, Mellow Yellow, and Rasberry Racers came out in the LASSO model. Host factor stayed as well and it actually looks like those who host, tend to have a lower speed time. The diagnostic plots don't look great. Maybe that's because we don't have a lot of data? Maybe it's because we used data from both the qualifers and the real races. 
+
+```{r}
+
+
+
+# It appears that all predictors stayed in the model
+LASSO_vars <- tidy(extract_fit_parsnip(best_lasso_fit)) %>% filter(estimate != 0)
+LASSO_vars
+
+#Plotting observed/predicted and residuals.
+#predicted versus observed
+LASSO_predicted_vs_observed <- plot(lasso_pred$.pred,train_data$meters_ps)
+abline(a=0,b=1, col = 'red') #45 degree line, along which the results should fall
+#residuals
+LASSO_residuals <- plot(lasso_pred$.pred-train_data$meters_ps)
+abline(a=0,b=0, col = 'red') #straight line, along which the results should fall
+
+
+# The diagnostic plots show that this model 
+# isn't much better either. We want the points
+# to be along the red lines in each plot. They are not.
+
+```
+Finally, we see that the LASSO brought the RMSE down to 0.0156, which is pretty good compared with the null, but the diagnostic plots still looked pretty bad so it might not be the best model.
+
+```{r}
+
+#Looking at model performance. 
+
+lasso_perfomance <- lasso_tune_res %>% show_best(n = 1)
+print(lasso_perfomance)
+RMSE_null_train
+```
+
+
+
+
+
+
+
+#Fitting a Tree
+```{r}
+# TREE 
+
+# model specification
+tune_spec <- 
+  decision_tree(
+    cost_complexity = tune(),
+    tree_depth = tune()
+  ) %>% 
+  set_engine("rpart") %>% 
+  set_mode("regression")    # setting it to regression instead of classification
+
+tune_spec
+
+
+# tuning grid specification
+tree_grid <- grid_regular(cost_complexity(),
+                          tree_depth(),
+                          levels = 5)
+
+
+tree_grid %>% 
+  count(tree_depth)
+
+
+# Tune a workflow() that bundles together a model
+# specification and a recipe or model preprocessor.
+# Here we use a workflow() with a straightforward formula; 
+# if this model required more involved data preprocessing, 
+# we could use add_recipe() instead of add_formula().
+
+
+tree_wf <- workflow() %>%
+  add_model(tune_spec) %>%
+  add_recipe(time_s_recipe) # using predefined recipe
+
+```
+
+
+
+```{r}
+# tuning using cross-validation and the tune_grid() function
+tree_res <- 
+  tree_wf %>% 
+  tune_grid(resamples = folds, grid = tree_grid)
+```
+
+```{r}
+tree_res %>% 
+  collect_metrics()
+
+# Once you have done the tuning, you can take a look at some diagnostics
+#by sending your object returned from the tune_grid() function to autoplot(). 
+#For instance if you tuned the tree and saved the result as tree_tune_res,
+#you can run tree_tune_res %>% autoplot(). Depending on the model, the plot
+#will be different, but in general it shows you what happened during the tuning process.
+
+#plotting metrics
+tree_res %>% autoplot()
+
+
+# Next, you want to get the model that the tuning process has determined 
+# is the best. You can get the best-fit model with select_best() 
+# and finalize_workflow() and then do one more fit to the training data with 
+# this final workflow using the fit() function. Follow the examples in the tutorial.
+
+# selecting best
+best_tree <- tree_res %>%
+  select_best(tree_res, metric = "rmse")
+
+best_tree
+
+
+
+# finalizing model
+final_wf <- 
+  tree_wf %>% 
+  finalize_workflow(best_tree)
+
+final_wf
+
+# one more fit to the training data with 
+# this final workflow using the fit() function
+
+final_fit <- 
+  final_wf %>%
+  last_fit(data_split) 
+
+
+# RMSE= 1.23, not much different from the null
+final_fit %>%
+  collect_metrics()
+
+#Collecting Predictions
+tree_pred <- final_fit %>%
+  collect_predictions() 
+
+```
+
+
+
+
+```{r}
+# Make two plots, one that shows model predictions from the tuned model 
+# versus actual outcomes
+  
+ggplot(data=tree_pred, aes(x=.pred, y=meters_ps)) + geom_point() + labs(title= "Plot of Model Predictions from Tuned Model vs Actual Outcomes", 
+       x= "Model Predictions", y= "Actual Outcomes") 
+
+#calculating residuals
+tree_pred$resid <- tree_pred$meters_ps - tree_pred$.pred 
+
+# one that plots residuals.
+# plotting residuals 
+ggplot(data=tree_pred, aes(x=.pred , y=resid)) + geom_point() +
+  labs(title= "Plot of Model Predictions from Tuned Model vs Actual Outcomes", 
+       x= "Model Predictions", y= "Residuals") 
+
+
+
+# Look at/print the model performance and compare it with the null model
+# (still only on training data). Here, we want the performance of the tuned, 
+# best-fitting model on the CV dataset (we are not yet touching the test data). 
+# You can get that for instance with the show_best() function, which gives you
+# the mean cross-validated performance for the best models. It also shows the
+# standard deviation for the performance. Compare that model performance with the null model
+
+```
+
+
+###Comparing RMSE to Null
+
+The tree model reduced the RMSE to 0.0963, but the diagnostic plots also look off here. 
+
+```{r}
+
+show_best(final_fit, metric= "rmse")
+
+RMSE_null_train
+```
+
+
+
+
+### Here we estimate variable importance based on the model’s structure. This is expected, but we see that the race is the most important variable, next to site. Our maing predictor did not make it.
+```{r}
+library(vip)
+
+final_fit %>% 
+  extract_fit_parsnip() %>% 
+  vip()
+```
+
+
+
+
+
+
+## Random forest model
+
+Repeating the steps above, now for a random forest.
+
+
+### Random forest setup
+
+
+```{r, start-rf}
+rf_model <- rand_forest() %>%
+  set_args(mtry = tune(),     
+    trees = tune(),
+    min_n = tune()
+  ) %>%
+  # select the engine/package that underlies the model
+  set_engine("ranger",
+             num.threads = 18, #for some reason for RF, we need to set this in the engine too
+             importance = "permutation") %>%
+  # choose either the continuous regression or binary classification mode
+  set_mode("regression")           
+```
+
+
+```{r}
+#workflow
+rf_wf <- workflow() %>%
+  add_model(rf_model) %>% 
+  add_recipe(time_s_recipe)
+```
+
+
+### Random forest tuning
+
+```{r, tune-rf}
+#parallel computing
+#tuning grid
+rf_grid  <- expand.grid(mtry = c(3, 4, 5, 6), min_n = c(40,50,60), trees = c(500,1000)  )
+# tune the model, optimizing RMSE
+rf_tune_res <- rf_wf %>%
+  tune_grid(
+            resamples = folds, #CV object
+            grid = rf_grid, # grid of values to try
+            metrics = metric_set(rmse) 
+  )
+# turn off parallel cluster
+```
+
+
+### Random forest evaluation
+
+```{r}
+#see a plot of performance for different tuning parameters
+rf_tune_res %>% autoplot()
+```
+
+
+
+```{r}
+# get the tuned model that performs best 
+best_rf <- rf_tune_res %>%  select_best(metric = "rmse")
+# finalize workflow with best model
+best_rf_wf <- rf_wf %>% finalize_workflow(best_rf)
+# fitting best performing model
+best_rf_fit <- best_rf_wf %>% 
+  fit(data = train_data)
+rf_pred <- predict(best_rf_fit, train_data)
+```
+
+
+Looking at important predictors. Looks like race and site are the only important ones here again (as no suprise)
+```{r}
+#pull out the fit object
+x <- best_rf_fit$fit$fit$fit
+#plot variable importance
+vip::vip(x, num_features = 20)
+```
+
+
+
+Plotting observed/predicted and residuals. This one doesn't look quite as terrible as the others.
+
+```{r}
+#predicted versus observed
+plot(rf_pred$.pred,train_data$meters_ps)
+abline(a=0,b=1, col = 'red') #45 degree line, along which the results should fall
+#residuals
+plot(rf_pred$.pred-train_data$meters_ps)
+abline(a=0,b=0, col = 'red') #straight line, along which the results should fall
+```
+
+
+Looking at model performance. 
+
+```{r}
+rf_perfomance <- rf_tune_res %>% show_best(n = 1)
+print(rf_perfomance)
+```
+
+
+
+
+## Finally I look at a Simple Model with only our main predictor and our outcome. It looks like the RMSE is pretty much the same with only team in there, which says that it is not doing much in predicting the outcome.  
+```{r}
+
+
+# Here I create a  recipe for the simple model fit with only our main predictor of interest.
+fit_simple <- recipe(meters_ps ~ team_factor , data = train_data)
+
+
+# Use the workflow() package to create a
+# simple workflow that fits a  simple lm 
+
+wflow_simple <- 
+  workflow() %>% 
+  add_model(lm_mod) %>% 
+  add_recipe(fit_simple)
+
+# Fitting the model
+fit_simple <- 
+  wflow_simple %>% 
+  fit(data = train_data)
+
+# Extracting Model/Recipes with Parsnip
+fit_simple %>% 
+  extract_fit_parsnip() %>% 
+  tidy()
+
+
+# Obtaining Predictions
+predict(fit_simple , train_data)
+
+aug_simple <- 
+  augment(fit_simple , train_data)
+
+aug_simple %>%
+  select(meters_ps)
+
+
+# Calculating Root RMSE 
+rmse_train_simple <- aug_simple %>% 
+  rmse(truth = meters_ps, .pred)
+
+
+#COMPARING TO NULL MODEL 
+
+#Looks like our model with all predictors does better than the null at reducing
+#RMSE
+
+#Simple Model RMSE= 12.8
+rmse_train_simple
+
+#Null Model RMSE = 14.41
+print(RMSE_null_train)
+```
+
+
+## Final Fit. The LASSO had the lowest RMSE so let's go with that one for the final fit/
+
+
+
+# Final Model Evaluation
+
+
+
+```{r}
+
+final_fit <- best_lasso_wf  %>% last_fit(data_split)
+
+```
+
+Let's look at the performance of the final fit, evaluated on the test data.
+
+```{r}
+test_performance <- final_fit %>% collect_metrics()
+print(test_performance)
+```
+
+Looking at RMSE on test and train, we that they are similar, suggesting that we avoided overfitting. 
+
+If we compare the RMSE on the test data to the performance/RMSE of the null model on the test data, we see it's not much better, showing that none of these models are good.
+
+
+Diagnostic plots for test data.
+
+```{r}
+test_predictions <- final_fit %>% collect_predictions()
+```
+
+
+Plotting observed/predicted and residuals. This still doesn't look great, but for some reason the residual plot is better
+
+```{r}
+#predicted versus observed
+plot(test_predictions$.pred,test_data$meters_ps)
+abline(a=0,b=1, col = 'red') #45 degree line, along which the results should fall
+#residuals
+plot(test_predictions$.pred-test_data$meters_ps)
+abline(a=0,b=0, col = 'red') #straight line, along which the results should fall
+```
+## From the last fit we see that the RMSE was 0.01519064 while it was 0.01564391 on the train data. 
+
